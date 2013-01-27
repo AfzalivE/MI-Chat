@@ -151,7 +151,7 @@ public class MessagesActivity extends ListActivity implements LoaderManager.Load
     protected void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         Cursor cursor = (Cursor) getListAdapter().getItem(position);
-        String eventId = cursor.getString(cursor.getColumnIndex(MessagesTable._ID));
+        String messageId = cursor.getString(cursor.getColumnIndex(MessagesTable._ID));
         startManagingCursor(cursor);
 
     }
