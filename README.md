@@ -1,6 +1,8 @@
 MI-Chat
 =======
 
+The Android app uses the Apache v2 license. License text to be added later.
+
 Macinsiders native Android chat app
 
 The Android app (workflow)
