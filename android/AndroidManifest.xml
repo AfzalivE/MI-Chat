@@ -16,7 +16,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".MessagesActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,7 +28,7 @@
         <service android:name=".service.Service" />
 
         <provider
-            android:name="com.afzaln.restclient.provider.Provider"
+            android:name="com.macinsiders.chat.provider.Provider"
             android:authorities="com.macinsiders.chat.messagesprovider" />
     </application>
 

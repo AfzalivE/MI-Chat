@@ -35,13 +35,13 @@ public class MessagesProcessor implements ResourceProcessor {
         String newestId = getNewestMessageId();
         RestMethod<Messages> method = new GetMessagesRestMethod(mContext, newestId);
         RestMethodResult<Messages> result = null;
-        try {
+//        try {
             result = method.execute();
-        } catch (UnknownHostException e) {
-            Log.e(TAG, "Internet error: " + e.getLocalizedMessage());
-        }
+//        } catch (UnknownHostException e) {
+//            Log.e(TAG, "Internet error: " + e.getLocalizedMessage());
+//        }
 
-        updateContentProvider(result);
+//        updateContentProvider(result);
 
         callback.send(result.getStatusCode(), null);
     }
@@ -57,11 +57,11 @@ public class MessagesProcessor implements ResourceProcessor {
         RestMethod<Message> method = new PostMessagesRestMethod(mContext, Message);
         Log.d(TAG, "Executing post method");
         RestMethodResult<Message> result = null;
-        try {
+//        try {
             result = method.execute();
-        } catch (UnknownHostException e) {
-            Log.e(TAG, "Internet error: " + e.getLocalizedMessage());
-        }
+//        } catch (UnknownHostException e) {
+//            Log.e(TAG, "Internet error: " + e.getLocalizedMessage());
+//        }
 
         updateNewMessage(messageUri, result);
 

@@ -5,6 +5,7 @@ import java.net.URI;
 import org.json.JSONArray;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.macinsiders.chat.resource.Messages;
 import com.macinsiders.chat.rest.Request;
@@ -45,7 +46,7 @@ public class GetMessagesRestMethod extends AbstractRestMethod<Messages> {
 
 	@Override
 	protected Messages parseResponseBody(String responseBody) throws Exception {
-
+                Log.d(TAG, responseBody);
 	        // also the serverResponse
 	        // TODO Change this to deal with XML data instead of JSON 
 		JSONArray messagesArray = new JSONArray(responseBody);

@@ -64,17 +64,12 @@ public class DefaultRestClient implements RestClient {
             }
 
             status = conn.getResponseCode();
-            if (conn.getContentLength() > 0) {
+            Log.d(TAG, Integer.toString(conn.getContentLength())); // returns -1
+//            if (conn.getContentLength() > 0) {
                 BufferedInputStream in;
                 // If the response code is anything but 200 OK, HttpUrlConnection throws
                 // an IOException on getInputStream(), so we call getErrorStream() then
                 // to read the response body
-//                try {
-//                    in = new BufferedInputStream(conn.getInputStream());
-//                } catch (IOException e) {
-//                    in = new BufferedInputStream(conn.getErrorStream());
-//                }
-                
                 if (status != 200) {
                     in = new BufferedInputStream(conn.getErrorStream());
                 } else {
@@ -83,9 +78,9 @@ public class DefaultRestClient implements RestClient {
                 byte[] body = readStream(in);
                 Log.d(TAG, body.toString());
                 response = new Response(conn.getResponseCode(), conn.getHeaderFields(), body);
-            } else {
-                response = new Response(status, conn.getHeaderFields(), new byte[] {});
-            }
+//            } else {
+//                response = new Response(status, conn.getHeaderFields(), new byte[] {});
+//            }
 
         } catch (IOException e) {
             e.printStackTrace();

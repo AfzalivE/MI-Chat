@@ -1,7 +1,6 @@
 package com.macinsiders.chat.rest.method;
 
 import java.net.URI;
-import java.net.UnknownHostException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +20,7 @@ public abstract class AbstractRestMethod<T extends Resource> implements RestMeth
     private static final String DEFAULT_ENCODING = "UTF-8";
     private RestClient mRestClient;
 
-    public RestMethodResult<T> execute() throws UnknownHostException {
+    public RestMethodResult<T> execute() {
 
         Request request = buildRequest();
         // if (requiresAuthorization()) {
