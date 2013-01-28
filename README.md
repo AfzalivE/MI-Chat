@@ -14,7 +14,7 @@ The Android app (workflow)
 - MessagesProcessor.getResource() generates a GetMessagesRestMethod object, which essentially holds everything for the request. Params, headers, body, uri, everything. Same for the postResource() method. Then getResource() tries to call execute on the RestMethod object.
 - This is the execute() method in AbstractRestMethod class. Calls doRequest() with the argument being the Request object created in GetMessagesRestMethod.buildRequest() method.
 - doRequest() returns the server response which contains HTTP status, headers and body. buildResult() is called on this object. 
-- buildResult() gets the response HTTP status and parses the response body and, in this case, will create a Messages object, which is basically a List<Message>.
+- buildResult() gets the response HTTP status and parses the response body and, in this case, will create a Messages object, which is basically a List\<Message\>.
 
 
 - Now after this, updateContentProvider() is called to update the local database.
