@@ -41,6 +41,7 @@ public abstract class AbstractRestMethod<T extends Resource> implements RestMeth
         if (request != null && login != null) {
 
             List<String> cookie = new ArrayList<String>();
+            // TODO set the cookies in the header here to use for authorized request
             cookie.add("reddit_session=" + login.getCookies());
             request.addHeader("Cookie", cookie);
 
