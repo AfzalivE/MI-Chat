@@ -32,13 +32,7 @@ public class LoginActivity extends Activity {
             Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
             mProgressSpinner.setVisibility(View.GONE);
             mLoginManager.save(login);
-            Intent i = new Intent(LoginActivity.this, MessagesActivity.class);
-            startActivity(i);
-
-            // TODO start activity for result from
-            // MessagesActivity if not logged in
-
-            // setResult(Activity.RESULT_OK);
+            setResult(Activity.RESULT_OK);
             finish();
         }
 
