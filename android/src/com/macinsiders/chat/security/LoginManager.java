@@ -10,8 +10,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.common.base.Joiner;
-import com.google.common.base.Splitter;
-import com.google.common.collect.Lists;
 import com.macinsiders.chat.resource.Login;
 
 public class LoginManager {
@@ -26,18 +24,23 @@ public class LoginManager {
 
     public Login getLogin() {
         String username = mSharedPreferences.getString(Login.KEY_USERNAME, null);
-        Log.d(TAG, username);
+
+        if (username != null) {
+            Log.d(TAG, username);
+        }
+        
         String cookies = mSharedPreferences.getString(Login.KEY_COOKIE, null);
         // Deserialize the cookies from String to List<String> to use it
 
         List<String> cookieList = new ArrayList<String>();
-        
-        // TODO also works without splitting since the
-        // string is in the format we put the "Cookie" 
-        // header value in
-        Collections.addAll(cookieList, cookies.split(";"));
 
-        Log.d(TAG, cookieList.toString());
+        if (cookies != null) {
+            // TODO also works without splitting since the
+            // string is in the format we put the "Cookie"
+            // header value in
+            Collections.addAll(cookieList, cookies.split(";"));
+            Log.d(TAG, cookieList.toString());
+        }
 
         Login login = null;
 
@@ -73,6 +76,7 @@ public class LoginManager {
     }
 
     public void logout() {
-        save(null);
+        // remove login details in SharedPreferences
+        save(null);        
     }
 }

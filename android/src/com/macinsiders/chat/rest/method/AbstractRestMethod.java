@@ -69,6 +69,7 @@ public abstract class AbstractRestMethod<T extends Resource> implements RestMeth
         try {
             responseBody = new String(response.body, getCharacterEncoding(response.headers));
             logResponse(status, responseBody);
+            // both of these are the almost the same objects, aren't they?
             resource = parseResponseBody(responseBody);
             cookies = parseResponseCookies(response.headers);
         } catch (Exception ex) {
