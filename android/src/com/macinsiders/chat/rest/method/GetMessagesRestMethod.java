@@ -1,6 +1,8 @@
 package com.macinsiders.chat.rest.method;
 
 import java.net.URI;
+import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 
@@ -73,5 +75,11 @@ public class GetMessagesRestMethod extends AbstractRestMethod<Messages> {
 	protected URI getURI() {
 		return mUri;
 	}
+
+    @Override
+    protected Messages parseResponseCookies(Map<String, List<String>> headers) throws Exception {
+        // No reason to do anything here yet
+        return null;
+    }
 
 }

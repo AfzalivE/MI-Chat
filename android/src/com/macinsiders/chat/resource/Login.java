@@ -1,54 +1,57 @@
 package com.macinsiders.chat.resource;
 
+import java.util.List;
 
 public class Login implements Resource {
 
-	public static final String KEY_USERNAME = "username";
-	public static final String KEY_COOKIE = "cookie";
-	public static final String KEY_MODHASH = "modhash";
+    public static final String KEY_USERNAME = "username";
+    public static final String KEY_COOKIE = "cookie";
+    public static final String KEY_MODHASH = "modhash";
 
-	private String mUsername;
-	private String mPassword;
-	private String mCookie;
-	private String mModhash;
+    private String mUsername;
+    private String mPassword;
+    private List<String> mCookies;
+    private String mModhash;
 
-	public Login(String username, String password) {
-		mUsername = username;
-		mPassword = password;
-	}
+    public Login(String username, String password) {
+        mUsername = username;
+        mPassword = password;
+    }
 
-	public Login(String username, String cookie, String modhash) {
-		
-		if (username == null || cookie == null || modhash == null) {
-			throw new IllegalArgumentException("null argument");
-		}
-		
-		mUsername = username;
-		mCookie = cookie;
-		mModhash = modhash;
-	}
+    public Login(String username, List<String> cookies, String modhash) {
 
-	public String getUsername() {
-		return mUsername;
-	}
+        if (username == null || cookies == null || modhash == null) {
+            throw new IllegalArgumentException("null argument");
+        }
 
-	public String getPassword() {
-		return mPassword;
-	}
+        mUsername = username;
+        for (String cookie : cookies) {
+            mCookies.add(cookie);
+        }
+        mModhash = modhash;
+    }
 
-	public void setCookie(String cookie) {
-		mCookie = cookie;
-	}
+    public String getUsername() {
+        return mUsername;
+    }
 
-	public String getCookie() {
-		return mCookie;
-	}
+    public String getPassword() {
+        return mPassword;
+    }
 
-	public void setModhash(String modhash) {
-		mModhash = modhash;
-	}
+    public void setCookie(List<String> cookies) {
+        mCookies = cookies;
+    }
 
-	public String getModHash() {
-		return mModhash;
-	}
+    public List<String> getCookies() {
+        return mCookies;
+    }
+
+    public void setModhash(String modhash) {
+        mModhash = modhash;
+    }
+
+    public String getModHash() {
+        return mModhash;
+    }
 }

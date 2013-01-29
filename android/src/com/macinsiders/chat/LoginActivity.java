@@ -80,6 +80,8 @@ public class LoginActivity extends Activity {
     }
 
     public class LoginTask extends AsyncTask<String, Void, RestMethodResult<Login>> {
+        
+        private final String TAG = LoginTask.class.getSimpleName();
 
         private OnLoginTaskCompleteListener mListener;
 
@@ -101,8 +103,9 @@ public class LoginActivity extends Activity {
             super.onPostExecute(result);
 
             Login login = result.getResource();
+//            Log.d(TAG, login.getCookies().toString());
 
-            if (login != null && login.getCookie() != null) {
+            if (login != null && login.getCookies() != null) {
                 mListener.onSuccess(login);
             } else {
                 mListener.onError("Login error", null);
