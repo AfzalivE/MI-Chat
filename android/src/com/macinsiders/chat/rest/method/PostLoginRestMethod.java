@@ -1,6 +1,7 @@
 package com.macinsiders.chat.rest.method;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,28 +58,27 @@ public class PostLoginRestMethod extends AbstractRestMethod<Login> {
 
     @Override
     protected Login parseResponseBody(String responseBody) throws Exception {
-        // // Log.d(TAG, responseBody);
-        // // JSONObject body = new JSONObject(responseBody);
-        // // JSONObject json = body.getJSONObject("json");
-        // // JSONObject data = json.getJSONObject("data");
-        // // String cookie = data.getString("cookie");
-        // // String modhash = data.getString("modhash");
-        // //
-        // // mLogin.setCookie(cookie);
-        // // mLogin.setModhash(modhash);
-        //
         return mLogin;
     }
 
     @Override
     protected Login parseResponseCookies(Map<String, List<String>> headers) throws Exception {
-        List<String> cookies = null;
-        for (String str : headers.get("Set-Cookie")) {
-            if (str.contains("bbpassword")) {
-                cookies = headers.get("Set-Cookie");
+        List<String> cookies = new ArrayList<String>();
+        boolean loginSuccess = false;
+        List<String> headerCookies = headers.get("Set-Cookie");
+
+        for (String cookie : headerCookies) {
+            cookies.add(cookie.split(";")[0]);
+            if (cookie.contains("bbpassword")) {
+                loginSuccess = true;
             }
         }
-        mLogin.setCookie(cookies);
+        
+//        Log.d(TAG, cookies.toString());
+        if (loginSuccess) {
+            mLogin.setCookie(cookies);
+        }
+        
         return mLogin;
 
     }

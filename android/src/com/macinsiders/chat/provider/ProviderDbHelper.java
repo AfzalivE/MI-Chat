@@ -11,8 +11,7 @@ public class ProviderDbHelper extends SQLiteOpenHelper {
 
     public final String TAG = getClass().getSimpleName();
 
-    // TODO Change db name
-    private static final String DATABASE_NAME = "messages.db";
+    private static final String DATABASE_NAME = "michat.db";
     private static final int DATABASE_VERSION = 1;
 
     public ProviderDbHelper(Context context) {

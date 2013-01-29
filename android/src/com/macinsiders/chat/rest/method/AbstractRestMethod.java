@@ -1,7 +1,6 @@
 package com.macinsiders.chat.rest.method;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +25,7 @@ public abstract class AbstractRestMethod<T extends Resource> implements RestMeth
     public RestMethodResult<T> execute() {
 
         Request request = buildRequest();
+        Log.d(TAG, "Authorization required: " + Boolean.toString(requiresAuthorization()));
         if (requiresAuthorization()) {
             LoginManager loginManager = new LoginManager(getContext());
             authorize(request, loginManager.getLogin());
@@ -37,17 +37,11 @@ public abstract class AbstractRestMethod<T extends Resource> implements RestMeth
     }
 
     private void authorize(Request request, Login login) {
-
         if (request != null && login != null) {
-
-            List<String> cookie = new ArrayList<String>();
-            // TODO set the cookies in the header here to use for authorized request
-            cookie.add("reddit_session=" + login.getCookies());
+            List<String> cookie = login.getCookies();
+            // set the cookies in the header here to use for authorized request
             request.addHeader("Cookie", cookie);
 
-            String body = new String(request.getBody());
-            body += "&uh=" + login.getModHash();
-            request.setBody(body.getBytes());
         }
     }
 
@@ -69,7 +63,7 @@ public abstract class AbstractRestMethod<T extends Resource> implements RestMeth
         int status = response.status;
         String statusMsg = "";
         String responseBody = null;
-        T cookies = null; 
+        T cookies = null;
         T resource = null;
 
         try {
@@ -134,6 +128,7 @@ public abstract class AbstractRestMethod<T extends Resource> implements RestMeth
     }
 
     protected abstract T parseResponseBody(String responseBody) throws Exception;
+
     protected abstract T parseResponseCookies(Map<String, List<String>> headers) throws Exception;
 
     protected Response doRequest(Request request) {
@@ -146,11 +141,16 @@ public abstract class AbstractRestMethod<T extends Resource> implements RestMeth
         return mRestClient.execute(request);
     }
 
-    private String getCharacterEncoding(Map<String, List<String>> headers) {     
-        String encoding = headers.get("Content-Type").get(0).split("=")[1];
-        
+    private String getCharacterEncoding(Map<String, List<String>> headers) {
+        String encoding = DEFAULT_ENCODING;
+
+        try {
+            encoding = headers.get("Content-Type").get(0).split("=")[1];
+        } catch (Exception e) {
+            Log.e(TAG, "Couldn't get encoding from page");
+        }
+
         Log.d(TAG, encoding);
-//        return DEFAULT_ENCODING;
         return encoding;
     }
 

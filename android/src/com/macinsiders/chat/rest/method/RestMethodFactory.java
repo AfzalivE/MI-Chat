@@ -35,7 +35,7 @@ public class RestMethodFactory {
 		return instance;
 	}
 
-	public RestMethod getRestMethod(Uri resourceUri, Method method,
+	public RestMethod<?> getRestMethod(Uri resourceUri, Method method,
 			Map<String, List<String>> headers, byte[] body) {
 
 		switch (uriMatcher.match(resourceUri)) {

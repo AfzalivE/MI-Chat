@@ -15,66 +15,66 @@ import com.macinsiders.chat.rest.method.RestMethodFactory.Method;
 
 public class GetMessagesRestMethod extends AbstractRestMethod<Messages> {
 
-	private static final String TAG = GetMessagesRestMethod.class.getSimpleName();
+    private static final String TAG = GetMessagesRestMethod.class.getSimpleName();
 
-	private Context mContext;
+    private Context mContext;
 
-	private static final String BASE_URI = "http://www.macinsiders.com/chat/?ajax=true";
+    private static final String BASE_URI = "http://www.macinsiders.com/chat/?ajax=true";
 
-	/* The id of the most recent message we have */
-	private String mNewestId;
+    /* The id of the most recent message we have */
+    private String mNewestId;
 
-	private URI mUri;
+    private URI mUri;
 
-	public GetMessagesRestMethod(Context context, String newestId) {
-		mContext = context.getApplicationContext();
-		mNewestId = newestId;
-		mUri = buildUri();
-	}
+    public GetMessagesRestMethod(Context context, String newestId) {
+        mContext = context.getApplicationContext();
+        mNewestId = newestId;
+        mUri = buildUri();
+    }
 
-	@Override
-	protected Request buildRequest() {
-		Request request = new Request(Method.GET, mUri, null, null);
-		return request;
-	}
+    @Override
+    protected Request buildRequest() {
+        Request request = new Request(Method.GET, mUri, null, null);
+        return request;
+    }
 
-	private URI buildUri() {
-		String uriString = BASE_URI;
-		if (mNewestId != null) {
-			uriString += "&lastID=" + mNewestId;
-		}
-		return URI.create(uriString);
-	}
+    private URI buildUri() {
+        String uriString = BASE_URI;
+        if (mNewestId != null) {
+            uriString += "&lastID=" + mNewestId;
+        }
+        return URI.create(uriString);
+    }
 
-	@Override
-	protected Messages parseResponseBody(String responseBody) throws Exception {
-                Log.d(TAG, responseBody);
-	        // also the serverResponse
-	        // TODO Change this to deal with XML data instead of JSON 
-		JSONArray messagesArray = new JSONArray(responseBody);
+    @Override
+    protected Messages parseResponseBody(String responseBody) throws Exception {
+        Log.d(TAG, responseBody);
+        // also the serverResponse
+        // TODO Change this to deal with XML data instead of JSON
+        JSONArray messagesArray = new JSONArray(responseBody);
 
-		return new Messages(messagesArray);
-	}
+        return new Messages(messagesArray);
+    }
 
-	@Override
-	protected Context getContext() {
-		return mContext;
-	}
+    @Override
+    protected Context getContext() {
+        return mContext;
+    }
 
-	@Override
-	protected boolean requiresAuthorization() {
-		return false;
-	}
+    @Override
+    protected boolean requiresAuthorization() {
+        return true;
+    }
 
-	@Override
-	protected String getLogTag() {
-		return TAG;
-	}
+    @Override
+    protected String getLogTag() {
+        return TAG;
+    }
 
-	@Override
-	protected URI getURI() {
-		return mUri;
-	}
+    @Override
+    protected URI getURI() {
+        return mUri;
+    }
 
     @Override
     protected Messages parseResponseCookies(Map<String, List<String>> headers) throws Exception {
