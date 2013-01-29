@@ -39,7 +39,7 @@ public class DefaultRestClient implements RestClient {
                 for (String header : request.getHeaders().keySet()) {
                     for (String value : request.getHeaders().get(header)) {
                         Log.d(TAG, header + ": " + value);
-//                        conn.addRequestProperty(header, value);
+                        // conn.addRequestProperty(header, value);
                         conn.setRequestProperty(header, value);
                     }
                 }
@@ -52,8 +52,9 @@ public class DefaultRestClient implements RestClient {
                 case POST:
                     byte[] payload = request.getBody();
                     conn.setDoOutput(true);
-                    // causes EOFException when the request is sent for the first time after opening the app (strange)
-//                    conn.setFixedLengthStreamingMode(payload.length);
+                    // causes EOFException when the request is sent for the
+                    // first time after opening the app (strange)
+                    // conn.setFixedLengthStreamingMode(payload.length);
                     OutputStream outStream = conn.getOutputStream();
                     outStream.write(payload);
                     outStream.flush();
@@ -64,23 +65,23 @@ public class DefaultRestClient implements RestClient {
             }
 
             status = conn.getResponseCode();
-            Log.d(TAG, Integer.toString(conn.getContentLength())); // returns -1
-//            if (conn.getContentLength() > 0) {
-                BufferedInputStream in;
-                // If the response code is anything but 200 OK, HttpUrlConnection throws
-                // an IOException on getInputStream(), so we call getErrorStream() then
-                // to read the response body
-                if (status != 200) {
-                    in = new BufferedInputStream(conn.getErrorStream());
-                } else {
-                    in = new BufferedInputStream(conn.getInputStream());
-                }
-                byte[] body = readStream(in);
-                Log.d(TAG, body.toString());
-                response = new Response(conn.getResponseCode(), conn.getHeaderFields(), body);
-//            } else {
-//                response = new Response(status, conn.getHeaderFields(), new byte[] {});
-//            }
+
+            // returns -1 so we can't use that to check if we should readStream.
+            Log.d(TAG, Integer.toString(conn.getContentLength()));
+
+            BufferedInputStream in;
+            // If the response code is anything but 200 OK,
+            // HttpUrlConnection throws an IOException on
+            // getInputStream(), so we call getErrorStream() then,
+            // to read the response body
+            if (status != 200) {
+                in = new BufferedInputStream(conn.getErrorStream());
+            } else {
+                in = new BufferedInputStream(conn.getInputStream());
+            }
+            byte[] body = readStream(in);
+            Log.d(TAG, body.toString());
+            response = new Response(conn.getResponseCode(), conn.getHeaderFields(), body);
 
         } catch (IOException e) {
             e.printStackTrace();

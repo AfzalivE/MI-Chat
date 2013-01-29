@@ -62,7 +62,7 @@ public class PostMessagesRestMethod extends AbstractRestMethod<Message> {
 
     @Override
     protected Message parseResponseBody(String responseBody) throws Exception {
-
+        Log.d(TAG, responseBody);
         // also the serverResponse
         // TODO Change this to deal with XML data instead of JSON 
         JSONArray eventsArray = new JSONArray(responseBody);
@@ -77,7 +77,7 @@ public class PostMessagesRestMethod extends AbstractRestMethod<Message> {
 
     @Override
     protected boolean requiresAuthorization() {
-        return false;
+        return true;
     }
 
     @Override

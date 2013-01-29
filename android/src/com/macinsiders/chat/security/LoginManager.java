@@ -1,5 +1,7 @@
 package com.macinsiders.chat.security;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.content.Context;
@@ -7,6 +9,9 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
 import com.macinsiders.chat.resource.Login;
 
 public class LoginManager {
@@ -21,17 +26,26 @@ public class LoginManager {
 
     public Login getLogin() {
         String username = mSharedPreferences.getString(Login.KEY_USERNAME, null);
-        // TODO Deserialize the cookies from String to List<String> to use it
-        // String cookie = mSharedPreferences.getString(Login.KEY_COOKIE, null);
-        List<String> cookies = null;
-        String modhash = mSharedPreferences.getString(Login.KEY_MODHASH, null);
+        Log.d(TAG, username);
+        String cookies = mSharedPreferences.getString(Login.KEY_COOKIE, null);
+        // Deserialize the cookies from String to List<String> to use it
+
+        List<String> cookieList = new ArrayList<String>();
+        
+        // TODO also works without splitting since the
+        // string is in the format we put the "Cookie" 
+        // header value in
+        Collections.addAll(cookieList, cookies.split(";"));
+
+        Log.d(TAG, cookieList.toString());
 
         Login login = null;
 
         try {
-            login = new Login(username, cookies, modhash);
+            login = new Login(username, cookieList);
         } catch (IllegalArgumentException e) {
             Log.e(TAG, "User not logged in");
+            Log.d(TAG, e.getLocalizedMessage());
         }
 
         return login;
@@ -42,18 +56,15 @@ public class LoginManager {
 
         String username = null;
         String cookies = null;
-        String modhash = null;
 
         if (login != null) {
             username = login.getUsername();
-            // TODO serialize the cookie List<String> to String to store it
-            // cookie = login.getCookies();
-            modhash = login.getModHash();
+            // Log.d(TAG, Joiner.on(";").join(login.getCookies()));
+            cookies = Joiner.on(";").join(login.getCookies());
         }
 
         editor.putString(Login.KEY_USERNAME, username);
         editor.putString(Login.KEY_COOKIE, cookies);
-        editor.putString(Login.KEY_MODHASH, modhash);
         editor.commit();
     }
 

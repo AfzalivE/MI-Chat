@@ -2,6 +2,7 @@ package com.macinsiders.chat;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -31,7 +32,13 @@ public class LoginActivity extends Activity {
             Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
             mProgressSpinner.setVisibility(View.GONE);
             mLoginManager.save(login);
-            setResult(Activity.RESULT_OK);
+            Intent i = new Intent(LoginActivity.this, MessagesActivity.class);
+            startActivity(i);
+
+            // TODO start activity for result from
+            // MessagesActivity if not logged in
+
+            // setResult(Activity.RESULT_OK);
             finish();
         }
 
@@ -80,7 +87,7 @@ public class LoginActivity extends Activity {
     }
 
     public class LoginTask extends AsyncTask<String, Void, RestMethodResult<Login>> {
-        
+
         private final String TAG = LoginTask.class.getSimpleName();
 
         private OnLoginTaskCompleteListener mListener;
@@ -103,7 +110,7 @@ public class LoginActivity extends Activity {
             super.onPostExecute(result);
 
             Login login = result.getResource();
-//            Log.d(TAG, login.getCookies().toString());
+            // Log.d(TAG, login.getCookies().toString());
 
             if (login != null && login.getCookies() != null) {
                 mListener.onSuccess(login);
