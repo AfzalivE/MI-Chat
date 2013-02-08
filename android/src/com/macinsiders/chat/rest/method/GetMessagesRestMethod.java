@@ -49,8 +49,7 @@ public class GetMessagesRestMethod extends AbstractRestMethod<Messages> {
     @Override
     protected Messages parseResponseBody(String responseBody) throws Exception {
         Log.d(TAG, responseBody);
-        // also the serverResponse
-        // TODO Change this to deal with XML data instead of JSON
+        // TODO Separate the messages parent node and send that to Messages constructor
         JSONArray messagesArray = new JSONArray(responseBody);
 
         return new Messages(messagesArray);

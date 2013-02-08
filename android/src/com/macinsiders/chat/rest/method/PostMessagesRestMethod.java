@@ -42,7 +42,7 @@ public class PostMessagesRestMethod extends AbstractRestMethod<Message> {
         Log.d(TAG, "Building request");
         Map<String, String> params = new HashMap<String, String>();
 
-        params.put(PARAM_NAME, mMessage.user());
+        params.put(PARAM_NAME, mMessage.username());
         params.put(PARAM_MESSAGE, mMessage.message());
         params.put(PARAM_DATETIME, Long.toString(mMessage.datetime()));
 
@@ -67,7 +67,8 @@ public class PostMessagesRestMethod extends AbstractRestMethod<Message> {
         // TODO Change this to deal with XML data instead of JSON 
         JSONArray eventsArray = new JSONArray(responseBody);
 
-        return new Message((JSONObject) eventsArray.get(0));
+//        return new Message((JSONObject) eventsArray.get(0));
+        return null;
     }
 
     @Override

@@ -41,22 +41,31 @@ public class ProviderContract {
                     MessagesTable._STATUS,
                     MessagesTable._RESULT,
                     MessagesTable.REF_ID,
+                    MessagesTable.USERID,
+                    MessagesTable.CHANNELID,
+                    MessagesTable.USERROLE,
+                    MessagesTable.DATETIME, 
                     MessagesTable.USERNAME,
-                    MessagesTable.MESSAGE,
-                    MessagesTable.DATETIME };
+                    MessagesTable.MESSAGE };
 
             DISPLAY_COLUMNS = new String[] {
                     MessagesTable._ID,
                     MessagesTable._STATUS,
+                    MessagesTable.USERID,
+                    MessagesTable.CHANNELID,
+                    MessagesTable.USERROLE,
+                    MessagesTable.DATETIME, 
                     MessagesTable.USERNAME,
-                    MessagesTable.MESSAGE,
-                    MessagesTable.DATETIME };
+                    MessagesTable.MESSAGE };
         }
 
         public static final String REF_ID = "id";
+        public static final String USERID = "userId";
+        public static final String CHANNELID = "channelId";
+        public static final String USERROLE = "userRole";
+        public static final String DATETIME = "datetime";
         public static final String USERNAME = "username";
         public static final String MESSAGE = "message";
-        public static final String DATETIME = "datetime";
 
         // Prevent instantiation of this class
         private MessagesTable() {

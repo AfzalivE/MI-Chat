@@ -2,7 +2,6 @@ package com.macinsiders.chat;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -21,10 +20,9 @@ import com.macinsiders.chat.security.LoginManager;
 
 public class LoginActivity extends Activity {
 
+    protected ProgressBar mProgressSpinner;
     private EditText usernameField;
     private EditText passwordField;
-    protected ProgressBar mProgressSpinner;
-
     private OnLoginTaskCompleteListener mOnLoginTaskCompleteListener = new OnLoginTaskCompleteListener() {
 
         @Override
@@ -61,7 +59,7 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View v) {
                 mProgressSpinner.setVisibility(View.VISIBLE);
-                hideKeybaord();
+                hideKeyboard();
                 String username = usernameField.getText().toString();
                 String password = passwordField.getText().toString();
                 new LoginTask(mOnLoginTaskCompleteListener).execute(username, password);
@@ -75,15 +73,21 @@ public class LoginActivity extends Activity {
         mLoginManager = new LoginManager(this);
     }
 
-    protected void hideKeybaord() {
+    protected void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(passwordField.getWindowToken(), 0);
+    }
+
+    public interface OnLoginTaskCompleteListener {
+
+        public void onSuccess(Login login);
+
+        public void onError(String message, Exception e);
     }
 
     public class LoginTask extends AsyncTask<String, Void, RestMethodResult<Login>> {
 
         private final String TAG = LoginTask.class.getSimpleName();
-
         private OnLoginTaskCompleteListener mListener;
 
         public LoginTask(OnLoginTaskCompleteListener listener) {
@@ -115,12 +119,4 @@ public class LoginActivity extends Activity {
         }
 
     }
-
-    public interface OnLoginTaskCompleteListener {
-
-        public void onSuccess(Login login);
-
-        public void onError(String message, Exception e);
-    }
-
 }
