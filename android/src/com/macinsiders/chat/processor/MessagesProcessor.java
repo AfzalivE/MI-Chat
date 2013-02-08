@@ -87,7 +87,7 @@ public class MessagesProcessor implements ResourceProcessor {
         ContentResolver cr = this.mContext.getContentResolver();
 
         ContentValues values = new ContentValues();
-        values.put(MessagesTable.USERNAME, Message.user());
+        values.put(MessagesTable.USERNAME, Message.username());
         values.put(MessagesTable.MESSAGE, Message.message());
         values.put(MessagesTable.DATETIME, Message.datetime());
 

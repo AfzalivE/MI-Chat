@@ -36,10 +36,13 @@ public class ProviderDbHelper extends SQLiteOpenHelper {
                MessagesTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                MessagesTable._STATUS + " INTEGER, " +
                MessagesTable._RESULT + " INTEGER, " +
-               MessagesTable.REF_ID + " INTEGER, " +
+               MessagesTable.REF_ID + " LONG, " +
+               MessagesTable.USERID + " LONG, " +
+               MessagesTable.CHANNELID + " INTEGER, " +
+               MessagesTable.USERROLE + " INTEGER, " +
+               MessagesTable.DATETIME + " TEXT, " +
                MessagesTable.USERNAME + " TEXT, " +
-               MessagesTable.MESSAGE + " TEXT, " +
-               MessagesTable.DATETIME + " TEXT" +
+               MessagesTable.MESSAGE + " TEXT" +
                ");");
 
         String sqlMessages = messageTableBuilder.toString();

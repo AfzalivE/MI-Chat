@@ -1,29 +1,33 @@
 package com.macinsiders.chat.resource;
 
-import org.json.JSONObject;
-
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.macinsiders.chat.provider.ProviderContract.MessagesTable;
-import com.macinsiders.chat.utils.JSONUtil;
 
 public class Message implements Resource {
 
     private static final String TAG = Message.class.getSimpleName();
 
-    private int id;
-    private String user;
-    private String message;
+    private long id;
+    private long userId;
+    private int channelId;
+    private int userRole;
     private long datetime;
+    private String username;
+    private String message;
 
-    public Message(JSONObject json) {
+    // TODO Constructor to take messages node as argument
+    public Message(long id, long userId, int channelId, int userRole, long datetime, String username, String message) {
         try {
-            this.id = JSONUtil.getInt(json, "id");
-            this.user = JSONUtil.getString(json, "username");
-            this.message = JSONUtil.getString(json, "place");
-            this.datetime = JSONUtil.getLong(json, "datetime") * 1000;
+            this.id = id;
+            this.userId = userId;
+            this.channelId = channelId;
+            this.userRole = userRole;
+            this.datetime = datetime;
+            this.username = username;
+            this.message = message;
         } catch (IllegalArgumentException e) {
             Log.e(TAG, e.getLocalizedMessage());
         }
@@ -31,35 +35,52 @@ public class Message implements Resource {
 
     public Message(Bundle values) {
         try {
-            this.user = values.getString(MessagesTable.USERNAME);
+            this.username = values.getString(MessagesTable.USERNAME);
             this.message = values.getString(MessagesTable.MESSAGE);
             this.datetime = values.getLong(MessagesTable.DATETIME);
         } catch (NullPointerException e) {
-            Log.e(TAG,  "No values specified for new message");
+            Log.e(TAG, "No values specified for new message");
         }
     }
 
-    public int id() {
+    // apparently getters aren't a good idea for java
+    public long id() {
         return id;
     }
 
-    public String user() {
-        return user;
+    public long userId() {
+        return id;
     }
-    public String message() {
-        return message;
+
+    public long channelId() {
+        return id;
     }
+
+    public long userRole() {
+        return userRole;
+    }
+
     public long datetime() {
         return datetime;
+    }
+
+    public String username() {
+        return username;
+    }
+
+    public String message() {
+        return message;
     }
 
     public ContentValues toContentValues() {
         ContentValues rowData = new ContentValues();
         rowData.put(MessagesTable.REF_ID, this.id);
-        rowData.put(MessagesTable.USERNAME, this.user);
-        rowData.put(MessagesTable.MESSAGE, this.message);
+        rowData.put(MessagesTable.USERID, this.userId);
+        rowData.put(MessagesTable.CHANNELID, this.channelId);
+        rowData.put(MessagesTable.USERROLE, this.userRole);
         rowData.put(MessagesTable.DATETIME, this.datetime);
-
+        rowData.put(MessagesTable.USERNAME, this.username);
+        rowData.put(MessagesTable.MESSAGE, this.message);
         return rowData;
     }
 }

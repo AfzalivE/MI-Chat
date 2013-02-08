@@ -22,17 +22,20 @@ public class Messages implements Resource {
      * @throws IllegalArgumentException
      *             - if the JSON does not contain the required keys
      */
+    // TODO Constructor takes messages node as argument
+    // separates the message nodes in it and passes them to
+    // the Message constructor
     public Messages(JSONArray messagesArray) {
         int count = messagesArray.length();
         messages = new ArrayList<Message>();
 
-        try {
-            for (int i = 0; i < count; i++) {
-                messages.add(new Message(messagesArray.getJSONObject(i)));
-            }
-        } catch (JSONException e) {
-            throw new IllegalArgumentException("Error constructing Messages. " + e.getLocalizedMessage());
-        }
+//        try {
+//            for (int i = 0; i < count; i++) {
+//                messages.add(new Message(messagesArray.getJSONObject(i)));
+//            }
+//        } catch (JSONException e) {
+//            throw new IllegalArgumentException("Error constructing Messages. " + e.getLocalizedMessage());
+//        }
     }
 
     /**

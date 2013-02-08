@@ -16,13 +16,16 @@ package com.macinsiders.chat;
  */
 
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.os.Build;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewDebug;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -34,15 +37,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-
-import android.app.Activity;
-import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.os.Build;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewDebug;
 
 /**
  * <p>This class can be used to enable the use of HierarchyViewer inside an
