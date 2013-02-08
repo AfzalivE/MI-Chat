@@ -3,7 +3,7 @@ package com.macinsiders.chat.utils;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.text.ParseException;
-import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,9 +16,13 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.macinsiders.chat.resource.Info;
+import com.macinsiders.chat.resource.Message;
+import com.macinsiders.chat.resource.User;
+
 public class XMLParser {
 
-    private static void getPage(String xml) {
+    public static void getPage(String xml) {
         NodeList nodes = getChildNodes(xml, "root", 0);
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
@@ -60,7 +64,7 @@ public class XMLParser {
         return getDocument(xml).getElementsByTagName(tagName).item(item).getChildNodes();
     }
 
-    public static void getUsers(Node node) {
+    public static List<User> getUsers(Node node) {
 
         NodeList activeUsers = node.getChildNodes();
 
@@ -86,7 +90,7 @@ public class XMLParser {
 
     }
 
-    public static void getInfo(Node node) {
+    public static Info getInfo(Node node) {
         NodeList infoNodes = node.getChildNodes();
 
         long userID = 0;
@@ -113,8 +117,10 @@ public class XMLParser {
 
     }
 
-    public static void getMessages(Node node) {
+    public static List<Message> getMessages(Node node) {
         NodeList incomingMessages = node.getChildNodes();
+
+        SimpleDateFormat dateParser = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
 
         List<Message> messages = new LinkedList<Message>();
 
@@ -128,19 +134,21 @@ public class XMLParser {
             long userID = Integer.parseInt(userAttributes.getNamedItem("userID").getTextContent());
             int userRole = Integer.parseInt(userAttributes.getNamedItem("userRole").getTextContent());
             int channelID = Integer.parseInt(userAttributes.getNamedItem("channelID").getTextContent());
-
-            Date datetime = null;
+            String datetimeStr = userAttributes.getNamedItem("dateTime").getTextContent();
+            
+            long datetime;
 
             try {
 
-                datetime = dateParser.parse(userAttributes.getNamedItem("dateTime").getTextContent());
+                datetime = dateParser.parse(datetimeStr).getTime();
 
                 String messageContent = null;
                 String userName = null;
 
                 if (node.getFirstChild().getNodeName().equals("username")) {
 
-                    messageContent = StringEscapeUtils.unescapeHtml4((node.getLastChild().getTextContent()));
+//                    messageContent = StringEscapeUtils.unescapeHtml4((node.getLastChild().getTextContent()));
+                    messageContent = node.getLastChild().getTextContent();
                     userName = node.getFirstChild().getTextContent();
                 } else {
 
@@ -148,24 +156,22 @@ public class XMLParser {
                     userName = node.getLastChild().getTextContent();
                 }
 
-                Message message = new Message(messageID, datetime, userID, userRole, channelID, messageContent, userName);
+                Message message = new Message(messageID, userID, channelID, userRole, datetime, userName, messageContent);
+                messages.add(message);
 
-                int beforeSize = messages.size();
+                
 
-                if (messageID > lastMessageID)
-                    lastMessageID = messageID;
-
-                // Insert sort the messages.
-                for (int i = 0; i < messages.size(); i++) {
-
-                    if (messageID < messages.get(i).getId()) {
-                        messages.add(i, message);
-                        break;
-                    }
-                }
-
-                if (beforeSize == messages.size())
-                    messages.add(message);
+//                int beforeSize = messages.size();
+//                // Insert sort the messages.
+//                for (int i = 0; i < messages.size(); i++) {
+//                    if (messageID < messages.get(i).getId()) {
+//                        messages.add(i, message);
+//                        break;
+//                    }
+//                }
+//
+//                if (beforeSize == messages.size())
+//                    messages.add(message);
 
             } catch (DOMException e) {
                 e.printStackTrace();

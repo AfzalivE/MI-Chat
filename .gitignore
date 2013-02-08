@@ -1,0 +1,25 @@
+# built application files
+android/*.apk
+android/*.ap_
+
+# files for the dex VM
+android/*.dex
+
+# Java class files
+android/*.class
+
+# generated files
+android/bin/
+android/gen/
+
+# Local configuration file (sdk path, etc)
+android/local.properties
+
+# Eclipse project files
+android/.classpath
+android/.project
+
+# IDEA project files
+.idea/
+out/
+android/.externalToolBuilders/
