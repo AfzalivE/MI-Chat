@@ -3,8 +3,8 @@ package com.macinsiders.chat.resource;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import android.net.Uri;
 
@@ -16,26 +16,20 @@ public class Messages implements Resource {
     List<Message> messages;
 
     /**
-     * Construct Messages from its JSON representation
+     * Construct Messages from its xml Node representation
      *
      * @param MessagesArray
      * @throws IllegalArgumentException
-     *             - if the JSON does not contain the required keys
+     *             - if the node does not contain the required keys
      */
-    // TODO Constructor takes messages node as argument
-    // separates the message nodes in it and passes them to
-    // the Message constructor
-    public Messages(JSONArray messagesArray) {
-        int count = messagesArray.length();
+
+    public Messages(NodeList messagesNodes) {
         messages = new ArrayList<Message>();
 
-//        try {
-//            for (int i = 0; i < count; i++) {
-//                messages.add(new Message(messagesArray.getJSONObject(i)));
-//            }
-//        } catch (JSONException e) {
-//            throw new IllegalArgumentException("Error constructing Messages. " + e.getLocalizedMessage());
-//        }
+        for (int i = 0; i < messagesNodes.getLength(); i++) {
+            Node node = messagesNodes.item(i);
+            messages.add(new Message(node));
+        }
     }
 
     /**

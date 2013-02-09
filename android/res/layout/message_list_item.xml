@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="5dp" >
+
+    <TextView
+        android:id="@+id/id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:textColor="@android:color/black"
+        android:paddingTop="5dp"
+        android:textSize="11dip"
+        android:text="id" />
+
+    <TextView
+        android:id="@+id/userid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/id"
+        android:textColor="@android:color/black"
+        android:paddingTop="5dp"
+        android:textSize="11dip"
+        android:text="userid" />
+
+    <TextView
+        android:id="@+id/channelid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/userid"
+        android:textColor="@android:color/black"
+        android:paddingTop="5dp"
+        android:textSize="11dip"
+        android:text="channelid" />
+
+    <TextView
+        android:id="@+id/userrole"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/channelid"
+        android:textColor="@android:color/black"
+        android:paddingTop="5dp"
+        android:textSize="11dip"
+        android:text="userrole" />
+
+    <TextView
+        android:id="@+id/datetime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/userrole"
+        android:textColor="@android:color/black"
+        android:paddingTop="5dp"
+        android:textSize="11dip"
+        android:text="datetime" />
+
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/datetime"
+        android:paddingTop="5dp"
+        android:textSize="11dip"
+        android:text="username" />
+
+    <TextView
+        android:id="@+id/message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/username"
+        android:paddingTop="5dp"
+        android:textSize="11dip"
+        android:text="message" />
+
+</RelativeLayout>

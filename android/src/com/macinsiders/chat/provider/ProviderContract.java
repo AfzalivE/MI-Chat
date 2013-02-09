@@ -44,7 +44,7 @@ public class ProviderContract {
                     MessagesTable.USERID,
                     MessagesTable.CHANNELID,
                     MessagesTable.USERROLE,
-                    MessagesTable.DATETIME, 
+                    MessagesTable.DATETIME,
                     MessagesTable.USERNAME,
                     MessagesTable.MESSAGE };
 
@@ -54,7 +54,7 @@ public class ProviderContract {
                     MessagesTable.USERID,
                     MessagesTable.CHANNELID,
                     MessagesTable.USERROLE,
-                    MessagesTable.DATETIME, 
+                    MessagesTable.DATETIME,
                     MessagesTable.USERNAME,
                     MessagesTable.MESSAGE };
         }

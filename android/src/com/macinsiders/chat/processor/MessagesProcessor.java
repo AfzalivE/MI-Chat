@@ -41,7 +41,7 @@ public class MessagesProcessor implements ResourceProcessor {
 //            Log.e(TAG, "Internet error: " + e.getLocalizedMessage());
 //        }
 
-//        updateContentProvider(result);
+        updateContentProvider(result);
 
         callback.send(result.getStatusCode(), null);
     }
@@ -116,6 +116,7 @@ public class MessagesProcessor implements ResourceProcessor {
         } catch (NullPointerException e) {
             Log.d(TAG, "couldn't get messages");
         }
+
         ContentResolver cr = this.mContext.getContentResolver();
 
         // insert/update row for each cat picture in the list

@@ -1,5 +1,11 @@
 package com.macinsiders.chat.resource;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,7 +24,32 @@ public class Message implements Resource {
     private String username;
     private String message;
 
-    // TODO Constructor to take messages node as argument
+    public Message(Node node) {
+        NamedNodeMap userAttrs = node.getAttributes();
+
+        id = Long.parseLong(userAttrs.getNamedItem("id").getTextContent());
+        userId = Long.parseLong(userAttrs.getNamedItem("userID").getTextContent());
+        channelId = Integer.parseInt(userAttrs.getNamedItem("channelId").getTextContent());
+        userRole = Integer.parseInt(userAttrs.getNamedItem("userRole").getTextContent());
+
+        SimpleDateFormat dateParser = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
+
+        String datetimeStr = userAttrs.getNamedItem("dateTime").getTextContent();
+
+        try {
+            datetime = dateParser.parse(datetimeStr).getTime();
+        } catch (ParseException e) {
+            datetime = 0; // initialize to 0 if failed to parse
+            e.printStackTrace();
+        }
+
+        // assume username is always the first node
+        // and message is always the second/last node
+        username = node.getFirstChild().getTextContent();
+        message = node.getLastChild().getTextContent();
+
+    }
+
     public Message(long id, long userId, int channelId, int userRole, long datetime, String username, String message) {
         try {
             this.id = id;
