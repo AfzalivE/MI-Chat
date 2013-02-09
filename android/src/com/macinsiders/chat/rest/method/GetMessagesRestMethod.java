@@ -4,14 +4,14 @@ import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
-import org.json.JSONArray;
+import org.w3c.dom.NodeList;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.macinsiders.chat.resource.Messages;
 import com.macinsiders.chat.rest.Request;
 import com.macinsiders.chat.rest.method.RestMethodFactory.Method;
+import com.macinsiders.chat.utils.XMLParser;
 
 public class GetMessagesRestMethod extends AbstractRestMethod<Messages> {
 
@@ -48,11 +48,11 @@ public class GetMessagesRestMethod extends AbstractRestMethod<Messages> {
 
     @Override
     protected Messages parseResponseBody(String responseBody) throws Exception {
-        Log.d(TAG, responseBody);
-        // TODO Separate the messages parent node and send that to Messages constructor
-        JSONArray messagesArray = new JSONArray(responseBody);
+//        Log.d(TAG, responseBody);
+        XMLParser parser = new XMLParser(responseBody);
+        NodeList messagesList = parser.getMessagesNode();
 
-        return new Messages(messagesArray);
+        return new Messages(messagesList);
     }
 
     @Override

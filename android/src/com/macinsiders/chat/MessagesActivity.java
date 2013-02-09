@@ -19,12 +19,10 @@ import android.view.Window;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.macinsiders.chat.LoginActivity.LoginTask;
 import com.macinsiders.chat.LoginActivity.OnLoginTaskCompleteListener;
 import com.macinsiders.chat.provider.ProviderContract.MessagesTable;
 import com.macinsiders.chat.resource.Login;
 import com.macinsiders.chat.resource.Messages;
-import com.macinsiders.chat.rest.method.PostLoginRestMethod;
 import com.macinsiders.chat.rest.method.PostLogoutRestMethod;
 import com.macinsiders.chat.rest.method.RestMethod;
 import com.macinsiders.chat.rest.method.RestMethodResult;
@@ -34,6 +32,7 @@ import com.macinsiders.chat.service.ServiceHelper;
 public class MessagesActivity extends ListActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int LOGIN_LOGOUT_MENU_OPTION_ID = 1;
+    private static final int REFRESH_MENU_OPTION_ID = 2;
     private static final int LOGIN_REQUEST_CODE = 10;
 
     private static final String TAG = MessagesActivity.class.getSimpleName();
@@ -49,7 +48,7 @@ public class MessagesActivity extends ListActivity implements LoaderManager.Load
 
     // The adapter that binds our data to the ListView
     // TODO
-    // private EventsCursorAdapter mAdapter;
+    private MessagesCursorAdapter mAdapter;
 
     private ServiceHelper mServiceHelper;
 
@@ -65,15 +64,14 @@ public class MessagesActivity extends ListActivity implements LoaderManager.Load
         this.requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setProgressBarIndeterminateVisibility(false);
         // TODO
-        // setContentView(R.layout.activity_events);
+        setContentView(R.layout.activity_messages);
         getWindow().setBackgroundDrawable(null);
 
         mLoginManager = new LoginManager(this);
 
         this.requestReceiver = new Receiver();
-        // TODO
-        // mAdapter = new EventsCursorAdapter(this, null, 0);
-        // setListAdapter(mAdapter);
+        mAdapter = new MessagesCursorAdapter(this, null, 0);
+        setListAdapter(mAdapter);
 
         // The Activity (which implements the LoaderCallbacks<Cursor>
         // interface) is the callbacks object through which we will interact
@@ -125,24 +123,24 @@ public class MessagesActivity extends ListActivity implements LoaderManager.Load
         ViewServer.get(this).setFocusedWindow(this);
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == LOGIN_REQUEST_CODE) {
-//            if (resultCode == RESULT_OK) {
-//                if (requestId == null) {
-//                    requestId = mServiceHelper.getMessages();
-//                    // requestId = mServiceHelper.postEvent();
-//                    // show progress
-//                    setProgressBarIndeterminateVisibility(true);
-//                } else if (mServiceHelper.isRequestPending(requestId)) {
-//                    // show progress
-//                    setProgressBarVisibility(true);
-//                } else {
-//                    setProgressBarVisibility(false);
-//                }
-//            }
-//        }
-//    }
+    //    @Override
+    //    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    //        if (requestCode == LOGIN_REQUEST_CODE) {
+    //            if (resultCode == RESULT_OK) {
+    //                if (requestId == null) {
+    //                    requestId = mServiceHelper.getMessages();
+    //                    // requestId = mServiceHelper.postEvent();
+    //                    // show progress
+    //                    setProgressBarIndeterminateVisibility(true);
+    //                } else if (mServiceHelper.isRequestPending(requestId)) {
+    //                    // show progress
+    //                    setProgressBarVisibility(true);
+    //                } else {
+    //                    setProgressBarVisibility(false);
+    //                }
+    //            }
+    //        }
+    //    }
 
     @Override
     protected void onPause() {
@@ -205,6 +203,8 @@ public class MessagesActivity extends ListActivity implements LoaderManager.Load
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         menu.add(Menu.NONE, LOGIN_LOGOUT_MENU_OPTION_ID, Menu.NONE, "Login");
+        // TODO migrate to menu xml
+        menu.add(Menu.NONE, REFRESH_MENU_OPTION_ID, Menu.NONE, "Refresh");
         return true;
     }
 
@@ -229,35 +229,38 @@ public class MessagesActivity extends ListActivity implements LoaderManager.Load
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case LOGIN_LOGOUT_MENU_OPTION_ID:
-
                 if (item.getTitle().toString().equalsIgnoreCase("Login")) {
                     Intent login = new Intent(this, LoginActivity.class);
                     startActivityForResult(login, LOGIN_REQUEST_CODE);
                 } else {
                     mLoginManager.logout();
                     new LogoutTask(new OnLoginTaskCompleteListener() {
-                        
+
                         @Override
                         public void onSuccess(Login login) {
                             // TODO Auto-generated method stub
-                            
+
                         }
-                        
+
                         @Override
                         public void onError(String message, Exception e) {
                             // TODO Auto-generated method stub
-                            
+
                         }
                     }).execute();
                     Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
                     finish();
                 }
                 return true;
+            case REFRESH_MENU_OPTION_ID:
+                requestId = mServiceHelper.getMessages();
+                setProgressBarIndeterminateVisibility(true);
+                return true;
             default:
                 return false;
         }
     }
-    
+
     public class LogoutTask extends AsyncTask<Void, Void, RestMethodResult<Login>> {
 
         private final String TAG = LogoutTask.class.getSimpleName();
@@ -271,7 +274,7 @@ public class MessagesActivity extends ListActivity implements LoaderManager.Load
         @Override
         protected RestMethodResult<Login> doInBackground(Void... params) {
 
-//            Login login = new Login(params[0], params[1]);
+            //            Login login = new Login(params[0], params[1]);
             RestMethod<Login> postLogoutRestMethod = new PostLogoutRestMethod(getApplicationContext());
             return postLogoutRestMethod.execute();
 
@@ -294,28 +297,6 @@ public class MessagesActivity extends ListActivity implements LoaderManager.Load
 
     }
 
-    // @Override
-    // public boolean onCreateOptionsMenu(Menu menu) {
-    // Inflate the menu; this adds items to the action bar if it is present.
-    // getMenuInflater().inflate(R.menu.activity_events, menu);
-    // return true;
-    // }
-    //
-    // @Override
-    // public boolean onOptionsItemSelected(MenuItem item) {
-    // return false;
-    // switch (item.getItemId()) {
-    // case R.id.menu_refresh:
-    // // Get events
-    // requestId = mServiceHelper.getEvents();
-    // // show progress
-    // setProgressBarIndeterminateVisibility(true);
-    // return true;
-    // default:
-    // return false;
-    // }
-    // }
-
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new CursorLoader(MessagesActivity.this, Messages.CONTENT_URI, MessagesTable.DISPLAY_COLUMNS, null, null, null);
@@ -328,8 +309,7 @@ public class MessagesActivity extends ListActivity implements LoaderManager.Load
                 // The asynchronous load is complete and the data
                 // is now available for use. Only now can we associate
                 // the queried Cursor with the SimpleCursorAdapter.
-                // TODO
-                // mAdapter.swapCursor(cursor);
+                mAdapter.swapCursor(cursor);
                 break;
         }
 
@@ -340,8 +320,7 @@ public class MessagesActivity extends ListActivity implements LoaderManager.Load
         // For whatever reason, the Loader's data is now unavailable.
         // Remove any references to the old data by replacing it with
         // a null Cursor.
-        // TODO
-        // mAdapter.swapCursor(null);
+         mAdapter.swapCursor(null);
     }
 
 }
