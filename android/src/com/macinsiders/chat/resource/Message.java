@@ -25,11 +25,11 @@ public class Message implements Resource {
     private String message;
 
     public Message(Node node) {
+        // TODO do something if any of the attrs are not found
         NamedNodeMap userAttrs = node.getAttributes();
-
         id = Long.parseLong(userAttrs.getNamedItem("id").getTextContent());
         userId = Long.parseLong(userAttrs.getNamedItem("userID").getTextContent());
-        channelId = Integer.parseInt(userAttrs.getNamedItem("channelId").getTextContent());
+        channelId = Integer.parseInt(userAttrs.getNamedItem("channelID").getTextContent());
         userRole = Integer.parseInt(userAttrs.getNamedItem("userRole").getTextContent());
 
         SimpleDateFormat dateParser = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
