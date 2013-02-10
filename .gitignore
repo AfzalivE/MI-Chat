@@ -23,3 +23,5 @@ android/.project
 .idea/
 out/
 android/.externalToolBuilders/
+android/.settings/*
+android/lint.xml
