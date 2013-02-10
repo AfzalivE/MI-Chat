@@ -113,4 +113,20 @@ public class ServiceHelper {
         }
     }
 
+    public Long deleteMessages() {
+        long requestId = generateRequestId();
+        synchronized (pendingRequestsLock) {
+            pendingRequests.add(requestId);
+        }
+        Intent intent = new Intent(this.mContext, mServiceClass);
+        intent.putExtra(ServiceContract.METHOD_EXTRA, ServiceContract.METHOD_DELETE);
+        intent.putExtra(ServiceContract.RESOURCE_TYPE_EXTRA, ServiceContract.RESOURCE_TYPE_MESSAGES);
+        intent.putExtra(ServiceContract.SERVICE_CALLBACK_EXTRA, serviceCallback);
+        intent.putExtra(EXTRA_REQUEST_ID, requestId);
+
+        this.mContext.startService(intent);
+
+        return requestId;
+    }
+
 }

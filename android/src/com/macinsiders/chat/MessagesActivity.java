@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -31,8 +32,6 @@ import com.macinsiders.chat.service.ServiceHelper;
 
 public class MessagesActivity extends ListActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final int LOGIN_LOGOUT_MENU_OPTION_ID = 1;
-    private static final int REFRESH_MENU_OPTION_ID = 2;
     private static final int LOGIN_REQUEST_CODE = 10;
 
     private static final String TAG = MessagesActivity.class.getSimpleName();
@@ -60,6 +59,8 @@ public class MessagesActivity extends ListActivity implements LoaderManager.Load
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+//        requestId = mServiceHelper.deleteMessages();
 
         this.requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setProgressBarIndeterminateVisibility(false);
@@ -108,6 +109,7 @@ public class MessagesActivity extends ListActivity implements LoaderManager.Load
                 // show progress
                 setProgressBarIndeterminateVisibility(true);
             } else {
+                Log.d(TAG, "not logged in, getting LoginActivity");
                 Intent login = new Intent(this, LoginActivity.class);
                 startActivityForResult(login, LOGIN_REQUEST_CODE);
             }
@@ -202,16 +204,15 @@ public class MessagesActivity extends ListActivity implements LoaderManager.Load
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        menu.add(Menu.NONE, LOGIN_LOGOUT_MENU_OPTION_ID, Menu.NONE, "Login");
-        // TODO migrate to menu xml
-        menu.add(Menu.NONE, REFRESH_MENU_OPTION_ID, Menu.NONE, "Refresh");
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.activity_messages, menu);
         return true;
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
 
-        MenuItem item = menu.getItem(0);
+        MenuItem item = menu.findItem(R.id.menu_login);
 
         if (mLoginManager.isLoggedIn()) {
             item.setTitle("Logout");
@@ -228,7 +229,7 @@ public class MessagesActivity extends ListActivity implements LoaderManager.Load
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case LOGIN_LOGOUT_MENU_OPTION_ID:
+            case R.id.menu_login:
                 if (item.getTitle().toString().equalsIgnoreCase("Login")) {
                     Intent login = new Intent(this, LoginActivity.class);
                     startActivityForResult(login, LOGIN_REQUEST_CODE);
@@ -252,10 +253,13 @@ public class MessagesActivity extends ListActivity implements LoaderManager.Load
                     finish();
                 }
                 return true;
-            case REFRESH_MENU_OPTION_ID:
+            case R.id.menu_refresh:
                 requestId = mServiceHelper.getMessages();
                 setProgressBarIndeterminateVisibility(true);
                 return true;
+            case R.id.menu_clear:
+                requestId = mServiceHelper.deleteMessages();
+                setProgressBarIndeterminateVisibility(true);
             default:
                 return false;
         }
