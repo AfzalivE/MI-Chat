@@ -10,7 +10,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import android.util.Log;
+
 public class XMLParser {
+    private static final String TAG = XMLParser.class.getSimpleName();
 
     private static NodeList mInfoNodes;
     private static NodeList mUsersNodes;
@@ -18,15 +21,19 @@ public class XMLParser {
 
     public XMLParser(String xml) {
         NodeList nodes = getChildNodes(xml, "root", 0);
+        Log.d(TAG, "populating nodes");
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
-            if (node.getNodeName() == "infos") {
+            if (node.getNodeName().equals("infos")) {
+                Log.d(TAG, "Populating info nodes");
                 mInfoNodes = node.getChildNodes();
             }
-            if (node.getNodeName() == "users") {
+            if (node.getNodeName().equals("users")) {
+                Log.d(TAG, "Populating users nodes");
                 mUsersNodes = node.getChildNodes();
             }
-            if (node.getNodeName() == "messages") {
+            if (node.getNodeName().equals("messages")) {
+                Log.d(TAG, "Populating message nodes");
                 mMessagesNodes = node.getChildNodes();
             }
         }

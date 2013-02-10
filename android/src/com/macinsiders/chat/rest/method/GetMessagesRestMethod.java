@@ -7,6 +7,7 @@ import java.util.Map;
 import org.w3c.dom.NodeList;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.macinsiders.chat.resource.Messages;
 import com.macinsiders.chat.rest.Request;
@@ -48,7 +49,7 @@ public class GetMessagesRestMethod extends AbstractRestMethod<Messages> {
 
     @Override
     protected Messages parseResponseBody(String responseBody) throws Exception {
-//        Log.d(TAG, responseBody);
+        Log.d(TAG, responseBody);
         XMLParser parser = new XMLParser(responseBody);
         NodeList messagesList = parser.getMessagesNode();
 

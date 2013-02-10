@@ -7,10 +7,14 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import android.net.Uri;
+import android.util.Log;
 
 import com.macinsiders.chat.provider.ProviderContract.MessagesTable;
 
 public class Messages implements Resource {
+
+    private static final String TAG = Messages.class.getSimpleName();
+
     public static final Uri CONTENT_URI = MessagesTable.CONTENT_URI;
 
     List<Message> messages;

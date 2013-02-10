@@ -51,6 +51,7 @@ public class ProviderContract {
             DISPLAY_COLUMNS = new String[] {
                     MessagesTable._ID,
                     MessagesTable._STATUS,
+                    MessagesTable.REF_ID,
                     MessagesTable.USERID,
                     MessagesTable.CHANNELID,
                     MessagesTable.USERROLE,
