@@ -28,7 +28,7 @@ public class LoginManager {
         if (username != null) {
             Log.d(TAG, username);
         }
-        
+
         String cookies = mSharedPreferences.getString(Login.KEY_COOKIE, null);
         // Deserialize the cookies from String to List<String> to use it
 
@@ -77,6 +77,6 @@ public class LoginManager {
 
     public void logout() {
         // remove login details in SharedPreferences
-        save(null);        
+        save(null);
     }
 }

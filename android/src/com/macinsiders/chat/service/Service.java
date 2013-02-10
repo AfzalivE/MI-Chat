@@ -48,6 +48,8 @@ public class Service extends IntentService implements ServiceContract {
             }
         } else if (method.equalsIgnoreCase(METHOD_POST)) {
             processor.postResource(processorCallback, params);
+        } else if (method.equals(METHOD_DELETE)) {
+            processor.deleteResource(processorCallback, params);
         } else if (serviceHelperCallback != null) {
             serviceHelperCallback.send(REQUEST_INVALID, bundleOriginalIntent(requestIntent));
         }

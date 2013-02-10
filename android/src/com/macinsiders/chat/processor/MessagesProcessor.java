@@ -131,9 +131,11 @@ public class MessagesProcessor implements ResourceProcessor {
 
     }
 
+    // We'll use this to clear the database before
     @Override
     public void deleteResource(ResourceProcessorCallback callback, Bundle params) {
-        // TODO Auto-generated method stub
-
+        ContentResolver cr = this.mContext.getContentResolver();
+        cr.delete(Messages.CONTENT_URI, null, null);
+        callback.send(200, null);
     }
 }
