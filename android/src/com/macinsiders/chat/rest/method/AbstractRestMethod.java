@@ -54,7 +54,7 @@ public abstract class AbstractRestMethod<T extends Resource> implements RestMeth
     /**
      * Subclasses can overwrite for full control, eg. need to do special
      * inspection of response headers, etc.
-     * 
+     *
      * @param response
      * @return
      */
@@ -106,21 +106,21 @@ public abstract class AbstractRestMethod<T extends Resource> implements RestMeth
 
     /**
      * Returns the log tag for the class extending AbstractRestMethod
-     * 
+     *
      * @return log tag
      */
     protected abstract String getLogTag();
 
     /**
      * Build the {@link Request}.
-     * 
+     *
      * @return Request for this REST method
      */
     protected abstract Request buildRequest();
 
     /**
      * Determines whether the REST method requires authentication
-     * 
+     *
      * @return <code>true</code> if authentication is required,
      *         <code>false</code> otherwise
      */
