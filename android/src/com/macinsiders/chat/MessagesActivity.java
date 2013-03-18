@@ -250,7 +250,8 @@ public class MessagesActivity extends ListActivity implements LoaderManager.Load
                         }
                     }).execute();
                     Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
-                    finish();
+                    Intent login = new Intent(this, LoginActivity.class);
+                    startActivityForResult(login, LOGIN_REQUEST_CODE);
                 }
                 return true;
             case R.id.menu_refresh:

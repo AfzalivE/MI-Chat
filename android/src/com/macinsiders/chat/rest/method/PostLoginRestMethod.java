@@ -22,8 +22,8 @@ public class PostLoginRestMethod extends AbstractRestMethod<Login> {
 
     private static final String PARAM_KEY_USERNAME = "vb_login_username";
     private static final String PARAM_KEY_PASSWORD = "vb_login_password";
-    private static final String PARAM_KEY_COOKIEUSER = "cookieuser";
-    private static final String PARAM_VALUE_COOKIEUSER = "1";
+//    private static final String PARAM_KEY_COOKIEUSER = "cookieuser";
+//    private static final String PARAM_VALUE_COOKIEUSER = "1";
     private static final String PARAM_KEY_DO = "do";
     private static final String PARAM_VALUE_DO = "login";
 
@@ -42,7 +42,7 @@ public class PostLoginRestMethod extends AbstractRestMethod<Login> {
         Map<String, String> params = new HashMap<String, String>();
         params.put(PARAM_KEY_USERNAME, mLogin.getUsername());
         params.put(PARAM_KEY_PASSWORD, mLogin.getPassword());
-        params.put(PARAM_KEY_COOKIEUSER, PARAM_VALUE_COOKIEUSER);
+//        params.put(PARAM_KEY_COOKIEUSER, PARAM_VALUE_COOKIEUSER);
         params.put(PARAM_KEY_DO, PARAM_VALUE_DO);
 
         String body = buildQueryString(params);
@@ -73,12 +73,12 @@ public class PostLoginRestMethod extends AbstractRestMethod<Login> {
                 loginSuccess = true;
             }
         }
-        
+
 //        Log.d(TAG, cookies.toString());
         if (loginSuccess) {
             mLogin.setCookie(cookies);
         }
-        
+
         return mLogin;
 
     }

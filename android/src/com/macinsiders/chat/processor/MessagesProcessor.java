@@ -100,6 +100,7 @@ public class MessagesProcessor implements ResourceProcessor {
 
         if (cursor.moveToNext()) {
             String id = cursor.getString(0);
+            Log.d(TAG, "newestId:" + id);
 //            cursor.close();
             return id;
         } else {
