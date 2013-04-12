@@ -1,23 +1,32 @@
 # built application files
 android/*.apk
 android/*.ap_
+new-app/*.apk
+new-app/*.ap_
 
 # files for the dex VM
 android/*.dex
+new-app/*.dex
 
 # Java class files
 android/*.class
+new-app/*.class
 
 # generated files
 android/bin/
 android/gen/
+new-app/bin/
+new-app/gen/
 
 # Local configuration file (sdk path, etc)
 android/local.properties
+new-app/local.properties
 
 # Eclipse project files
 android/.classpath
 android/.project
+new-app/.classpath
+new-app/.project
 
 # IDEA project files
 .idea/
