@@ -22,16 +22,16 @@
         <EditText
             android:id="@+id/username"
             android:layout_width="260dp"
-            android:paddingLeft="12dp"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/miLogo"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="56dp"
             android:background="@android:color/white"
             android:ems="10"
-            android:hint="@string/login_username_hint" >
+            android:hint="@string/login_username_hint"
+            android:paddingBottom="12dp"
+            android:paddingLeft="12dp"
+            android:paddingTop="12dp" >
 
             <requestFocus />
         </EditText>
@@ -39,9 +39,6 @@
         <EditText
             android:id="@+id/password"
             android:layout_width="260dp"
-            android:paddingLeft="12dp"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/username"
             android:layout_below="@+id/username"
@@ -49,7 +46,10 @@
             android:background="@android:color/white"
             android:ems="10"
             android:hint="@string/login_password_hint"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:paddingBottom="12dp"
+            android:paddingLeft="12dp"
+            android:paddingTop="12dp" />
 
         <Button
             android:id="@+id/login"

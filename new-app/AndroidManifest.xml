@@ -15,7 +15,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.afzal.mi_chat.LoginActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
