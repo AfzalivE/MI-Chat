@@ -23,6 +23,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.afzal.mi_chat.MessagesActivity" >
+        </activity>
     </application>
 
 </manifest>
