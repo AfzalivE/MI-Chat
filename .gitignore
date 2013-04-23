@@ -22,12 +22,6 @@ new-app/gen/
 android/local.properties
 new-app/local.properties
 
-# Eclipse project files
-android/.classpath
-android/.project
-new-app/.classpath
-new-app/.project
-
 # IDEA project files
 .idea/
 out/
