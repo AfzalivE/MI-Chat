@@ -6,5 +6,6 @@
     <dimen name="slidingmenu_offset">160dp</dimen>
     <dimen name="shadow_width">16dp</dimen>
     <dimen name="list_padding">12dp</dimen>
+    <dimen name="userlist_padding">6dp</dimen>
 
 </resources>

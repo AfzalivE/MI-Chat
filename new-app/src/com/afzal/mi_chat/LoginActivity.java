@@ -1,17 +1,23 @@
 package com.afzal.mi_chat;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class LoginActivity extends Activity {
+
+    private EditText mUsernameField;
+    private EditText mPasswordField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,29 +25,29 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.login);
         getWindow().setBackgroundDrawable(null);
 
-        EditText password = (EditText) findViewById(R.id.password);
-        password.setTypeface(Typeface.DEFAULT);
-        password.setTransformationMethod(new PasswordTransformationMethod());
+        mUsernameField = (EditText) findViewById(R.id.username);
+
+        mPasswordField = (EditText) findViewById(R.id.password);
+        mPasswordField.setTypeface(Typeface.DEFAULT);
+        mPasswordField.setTransformationMethod(new PasswordTransformationMethod());
 
         Button login = (Button) findViewById(R.id.login);
         login.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
+                hideKeyboard();
+                String username = mUsernameField.getText().toString();
+                String password = mPasswordField.getText().toString();
                 Intent i = new Intent(LoginActivity.this, MessagesActivity.class);
                 startActivity(i);
-
-
             }
         });
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+    protected void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mPasswordField.getWindowToken(), 0);
     }
-
 }

@@ -1,15 +1,15 @@
 package com.afzal.mi_chat;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ListFragment;
 
 import com.actionbarsherlock.view.MenuItem;
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.app.SlidingFragmentActivity;
 
 public class BaseActivity extends SlidingFragmentActivity {
-    protected ListFragment mFrag;
+    protected Fragment mFrag;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -24,7 +24,7 @@ public class BaseActivity extends SlidingFragmentActivity {
             t.replace(R.id.menu_frame, mFrag);
             t.commit();
         } else {
-            mFrag = (ListFragment) this.getSupportFragmentManager().findFragmentById(R.id.menu_frame);
+            mFrag = (Fragment) this.getSupportFragmentManager().findFragmentById(R.id.menu_frame);
         }
 
         SlidingMenu sm = getSlidingMenu();
@@ -33,7 +33,7 @@ public class BaseActivity extends SlidingFragmentActivity {
         sm.setShadowDrawable(R.drawable.shadow);
         sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
         sm.setFadeDegree(0.45f);
-        sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+        sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }

@@ -1,56 +1,46 @@
 package com.afzal.mi_chat;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.ListView;
 
-public class UserListFragment extends ListFragment {
+public class UserListFragment extends Fragment {
+
+    private View mUserListView;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.list, null);
+        mUserListView = inflater.inflate(R.layout.user_list, null);
+        return mUserListView;
     }
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        UserListAdapter adapter = new UserListAdapter(getActivity());
-        for (int i = 0; i < 20; i++) {
-            adapter.add(new UserItem("User " + (i + 1), android.R.drawable.ic_menu_search));
-        }
-        setListAdapter(adapter);
-    }
+        ListView list = (ListView) mUserListView.findViewById(R.id.list);
+        String[] array = new String[] {
+                "Afzal",
+                "AndrewS",
+                "Defroster",
+                "Differential",
+                "Entropy",
+                "Freija",
+                "Grover",
+                "Jester",
+                "Jimbojones",
+                "Ponyo",
+                "SilentHero-_-",
+                "Tailsnake",
+                "Toast",
+                "goodnews.inc",
+                "justinftw",
+                "romita_sur",
+                "sarahsullz",
+                "Defroster" };
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.user_list_item, R.id.user_row, array);
 
-    private class UserItem {
-        public String tag;
-        public int iconRes;
-        public UserItem(String tag, int iconRes) {
-            this.tag = tag;
-            this.iconRes = iconRes;
-        }
-    }
-
-    public class UserListAdapter extends ArrayAdapter<UserItem> {
-
-        public UserListAdapter(Context context) {
-            super(context, 0);
-        }
-
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.row, null);
-            }
-            ImageView icon = (ImageView) convertView.findViewById(R.id.row_icon);
-            icon.setImageResource(getItem(position).iconRes);
-            TextView title = (TextView) convertView.findViewById(R.id.row_title);
-            title.setText(getItem(position).tag);
-
-            return convertView;
-        }
-
+        list.setAdapter(adapter);
     }
 }
