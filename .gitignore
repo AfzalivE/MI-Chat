@@ -7,24 +7,21 @@ new-app/*.ap_
 # files for the dex VM
 android/*.dex
 new-app/*.dex
-
 # Java class files
 android/*.class
 new-app/*.class
-
 # generated files
 android/bin/
 android/gen/
 new-app/bin/
 new-app/gen/
-
 # Local configuration file (sdk path, etc)
 android/local.properties
 new-app/local.properties
-
 # IDEA project files
 .idea/
 out/
 android/.externalToolBuilders/
 android/.settings/*
 android/lint.xml
+/libs/
