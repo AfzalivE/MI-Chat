@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
@@ -12,9 +11,10 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 public class LoginActivity extends Activity {
+
+    private static final String TAG = LoginActivity.class.getSimpleName();
 
     private EditText mUsernameField;
     private EditText mPasswordField;
@@ -32,6 +32,7 @@ public class LoginActivity extends Activity {
         mPasswordField.setTransformationMethod(new PasswordTransformationMethod());
 
         Button login = (Button) findViewById(R.id.login);
+
         login.setOnClickListener(new OnClickListener() {
 
             @Override
