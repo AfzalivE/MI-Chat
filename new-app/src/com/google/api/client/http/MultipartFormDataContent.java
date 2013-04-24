@@ -1,4 +1,18 @@
-package com.afzal.mi_chat.Utils;
+/*
+ * Copyright (c) 2013 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
+package com.google.api.client.http;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -15,19 +29,6 @@ import com.google.api.client.http.HttpMediaType;
 import com.google.api.client.util.Preconditions;
 import com.google.api.client.util.StreamingContent;
 
-/*
- * Copyright (c) 2013 Google Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
- */
 /**
  * This is a modification of com.google.api.client.http.MultipartContent from
  * Google HTTP Client library to support multipart/form-data requests.
@@ -37,17 +38,12 @@ import com.google.api.client.util.StreamingContent;
 public class MultipartFormDataContent extends AbstractHttpContent {
     private static final String NEWLINE = "\r\n";
     private static final String TWO_DASHES = "--";
+
+    /** Parts of the HTTP multipart request. */
     private ArrayList<Part> parts = new ArrayList<Part>();
 
     public MultipartFormDataContent() {
         super(new HttpMediaType("multipart/form-data").setParameter("boundary", "__END_OF_PART__"));
-    }
-
-    /**
-     * Returns the boundary string to use.
-     */
-    public String getBoundary() {
-            return getMediaType().getParameter("boundary");
     }
 
     @Override
@@ -130,6 +126,11 @@ public class MultipartFormDataContent extends AbstractHttpContent {
         return this;
     }
 
+    /** Returns the boundary string to use. */
+    public final String getBoundary() {
+      return getMediaType().getParameter("boundary");
+    }
+
     /**
      * Sets the boundary string to use.
      *
@@ -138,13 +139,13 @@ public class MultipartFormDataContent extends AbstractHttpContent {
      * </p>
      *
      * <p>
-     * Overriding is only supported for the purpose of calling the super
-     * implementation and changing the return type, but nothing else.
+     * Overriding is only supported for the purpose of calling the super implementation and changing
+     * the return type, but nothing else.
      * </p>
      */
     public MultipartFormDataContent setBoundary(String boundary) {
-        getMediaType().setParameter("boundary", Preconditions.checkNotNull(boundary));
-        return this;
+      getMediaType().setParameter("boundary", Preconditions.checkNotNull(boundary));
+      return this;
     }
 
     /**
@@ -187,3 +188,4 @@ public class MultipartFormDataContent extends AbstractHttpContent {
         }
     }
 }
+
