@@ -3,11 +3,11 @@ package com.afzal.mi_chat;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,8 +19,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.afzal.mi_chat.Utils.MultipartFormDataContent;
-import com.afzal.mi_chat.Utils.MultipartFormDataContent.Part;
 import com.afzal.mi_chat.Utils.NetUtils;
 import com.google.api.client.http.ByteArrayContent;
 import com.google.api.client.http.GenericUrl;
@@ -28,8 +26,9 @@ import com.google.api.client.http.HttpHeaders;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpResponse;
 import com.google.api.client.http.HttpTransport;
-import com.google.api.client.http.InputStreamContent;
-import com.google.common.io.CharStreams;
+import com.google.api.client.http.MultipartFormDataContent;
+import com.google.api.client.http.MultipartFormDataContent.Part;
+import com.google.api.client.http.javanet.NetHttpTransport;
 
 public class LoginActivity extends Activity {
 
@@ -60,32 +59,28 @@ public class LoginActivity extends Activity {
                 String username = mUsernameField.getText().toString();
                 String password = mPasswordField.getText().toString();
                 new LoginTask().execute(username, password);
-                //                Intent i = new Intent(LoginActivity.this, MessagesActivity.class);
-                //                startActivity(i);
             }
         });
 
     }
 
-    public class LoginTask extends AsyncTask<String, Void, String> {
+    public class LoginTask extends AsyncTask<String, Void, ArrayList<String>> {
 
         private final String TAG = LoginTask.class.getSimpleName();
 
         @SuppressWarnings("unchecked")
         @Override
-        protected String doInBackground(String... params) {
+        protected ArrayList<String> doInBackground(String... params) {
             Map<String, String> paramsMap = new HashMap<String, String>();
             paramsMap.put("vb_login_username", params[0]);
             paramsMap.put("vb_login_password", params[1]);
             paramsMap.put("do", "login");
             paramsMap.put("cookieuser", "1");
 
-            String body = buildQueryString(paramsMap);
-
             HttpTransport transport = NetUtils.getTransport();
             HttpRequest request;
             HttpResponse response;
-            String result = new String();
+            ArrayList<String> result = new ArrayList<String>();
             try {
 
                 MultipartFormDataContent content = new MultipartFormDataContent();
@@ -96,18 +91,11 @@ public class LoginActivity extends Activity {
                 content.addPart(new Part().setName("cookieuser").setContent(ByteArrayContent.fromString("text/plain", "1")));
 
                 request = transport.createRequestFactory().buildPostRequest(new GenericUrl("http://www.macinsiders.com/login.php"), content);
-                //                request = transport.createRequestFactory().buildGetRequest(new GenericUrl("http://www.macinsiders.com/chat/?ajax=true"));
                 response = request.execute();
-
-                //                String content = CharStreams.toString(new InputStreamReader(response.getContent()));
-                //                Log.d(TAG, content);
 
                 HttpHeaders headers = response.getHeaders();
 
-                ArrayList<String> cookies = (ArrayList<String>) headers.get("set-cookie");
-                for (String cookie : cookies) {
-                    Log.d(TAG, cookie);
-                }
+                result = (ArrayList<String>) headers.get("set-cookie");
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -118,32 +106,18 @@ public class LoginActivity extends Activity {
         }
 
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(ArrayList<String> result) {
             super.onPostExecute(result);
-            Log.d(TAG, result);
+
+            for (String cookie : result) {
+                if (cookie.contains("bbpassword")) {
+                    Log.d(TAG, cookie);
+                    Intent i = new Intent(LoginActivity.this, MessagesActivity.class);
+                    startActivity(i);
+                }
+            }
         }
 
-    }
-
-    protected String buildQueryString(Map<String, String> params) {
-
-        StringBuilder queryStringBuilder = new StringBuilder();
-
-        Iterator<String> paramKeyIter = params.keySet().iterator();
-
-        if (paramKeyIter.hasNext()) {
-            queryStringBuilder.append(getKeyValuePair(params, paramKeyIter.next()));
-        }
-
-        while (paramKeyIter.hasNext()) {
-            queryStringBuilder.append("&" + getKeyValuePair(params, paramKeyIter.next()));
-        }
-
-        return queryStringBuilder.toString();
-    }
-
-    private String getKeyValuePair(Map<String, String> params, String key) {
-        return key + "=" + params.get(key);
     }
 
     protected void hideKeyboard() {
