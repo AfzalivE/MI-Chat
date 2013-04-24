@@ -3,6 +3,7 @@ package com.afzal.mi_chat;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import android.app.Activity;
@@ -18,13 +19,17 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.afzal.mi_chat.Utils.MultipartFormDataContent;
+import com.afzal.mi_chat.Utils.MultipartFormDataContent.Part;
 import com.afzal.mi_chat.Utils.NetUtils;
+import com.google.api.client.http.ByteArrayContent;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpHeaders;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpResponse;
 import com.google.api.client.http.HttpTransport;
-import com.google.api.client.http.UrlEncodedContent;
+import com.google.api.client.http.InputStreamContent;
+import com.google.common.io.CharStreams;
 
 public class LoginActivity extends Activity {
 
@@ -73,6 +78,9 @@ public class LoginActivity extends Activity {
             paramsMap.put("vb_login_username", params[0]);
             paramsMap.put("vb_login_password", params[1]);
             paramsMap.put("do", "login");
+            paramsMap.put("cookieuser", "1");
+
+            String body = buildQueryString(paramsMap);
 
             HttpTransport transport = NetUtils.getTransport();
             HttpRequest request;
@@ -80,15 +88,22 @@ public class LoginActivity extends Activity {
             String result = new String();
             try {
 
-                // TODO fix login not working, bbpassword cookie is not returned by the server
-                request = transport.createRequestFactory().buildPostRequest(new GenericUrl("http://www.macinsiders.com/login.php"), new UrlEncodedContent(params));
-//                request = transport.createRequestFactory().buildGetRequest(new GenericUrl("http://www.macinsiders.com/chat/?ajax=true"));
+                MultipartFormDataContent content = new MultipartFormDataContent();
+
+                content.addPart(new Part().setName("vb_login_username").setContent(ByteArrayContent.fromString("text/plain", params[0])));
+                content.addPart(new Part().setName("vb_login_password").setContent(ByteArrayContent.fromString("text/plain", params[1])));
+                content.addPart(new Part().setName("do").setContent(ByteArrayContent.fromString("text/plain", "login")));
+                content.addPart(new Part().setName("cookieuser").setContent(ByteArrayContent.fromString("text/plain", "1")));
+
+                request = transport.createRequestFactory().buildPostRequest(new GenericUrl("http://www.macinsiders.com/login.php"), content);
+                //                request = transport.createRequestFactory().buildGetRequest(new GenericUrl("http://www.macinsiders.com/chat/?ajax=true"));
                 response = request.execute();
 
-//                String content = CharStreams.toString(new InputStreamReader(response.getContent()));
-//                Log.d(TAG, content);
+                //                String content = CharStreams.toString(new InputStreamReader(response.getContent()));
+                //                Log.d(TAG, content);
 
                 HttpHeaders headers = response.getHeaders();
+
                 ArrayList<String> cookies = (ArrayList<String>) headers.get("set-cookie");
                 for (String cookie : cookies) {
                     Log.d(TAG, cookie);
@@ -108,6 +123,27 @@ public class LoginActivity extends Activity {
             Log.d(TAG, result);
         }
 
+    }
+
+    protected String buildQueryString(Map<String, String> params) {
+
+        StringBuilder queryStringBuilder = new StringBuilder();
+
+        Iterator<String> paramKeyIter = params.keySet().iterator();
+
+        if (paramKeyIter.hasNext()) {
+            queryStringBuilder.append(getKeyValuePair(params, paramKeyIter.next()));
+        }
+
+        while (paramKeyIter.hasNext()) {
+            queryStringBuilder.append("&" + getKeyValuePair(params, paramKeyIter.next()));
+        }
+
+        return queryStringBuilder.toString();
+    }
+
+    private String getKeyValuePair(Map<String, String> params, String key) {
+        return key + "=" + params.get(key);
     }
 
     protected void hideKeyboard() {
