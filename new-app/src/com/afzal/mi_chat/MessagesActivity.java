@@ -1,11 +1,8 @@
 package com.afzal.mi_chat;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
@@ -13,15 +10,13 @@ import android.widget.SimpleAdapter;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.afzal.mi_chat.LoginActivity.LoginTask;
 import com.afzal.mi_chat.Utils.NetUtils;
-import com.google.api.client.http.GenericUrl;
-import com.google.api.client.http.HttpRequest;
-import com.google.api.client.http.HttpResponse;
-import com.google.api.client.http.HttpTransport;
-import com.google.common.io.CharStreams;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 
 public class MessagesActivity extends BaseActivity {
+
+    private static final String TAG = MessagesActivity.class.getSimpleName();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,45 +88,31 @@ public class MessagesActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                // Doesn't maintain session
-                new GetMessagesTask().execute();
+                NetUtils.client.get("http://www.macinsiders.com/chat/?ajax=true", new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onStart() {
+                        Log.d(TAG, "TEST");
+                    }
+
+                    @Override
+                    public void onSuccess(String response) {
+                        Log.d(TAG, response);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable e, String response) {
+                        Log.d(TAG, "FAILED");
+                        // Response failed :(
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        Log.d(TAG, "TEST");
+                        // Completed the request (either success or failure)
+                    }
+                });
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
-
-    public class GetMessagesTask extends AsyncTask<Void, Void, String> {
-
-        private final String TAG = LoginTask.class.getSimpleName();
-
-        @Override
-        protected String doInBackground(Void... params) {
-
-            HttpTransport transport = NetUtils.getTransport();
-            HttpRequest request;
-            HttpResponse response;
-            String result = new String();
-
-            try {
-
-                request = transport.createRequestFactory().buildGetRequest(new GenericUrl("http://www.macinsiders.com/chat/?ajax=true"));
-                response = request.execute();
-
-                result = CharStreams.toString(new InputStreamReader(response.getContent()));
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return result;
-
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            Log.d(TAG, result);
-        }
-    }
-
 }
