@@ -10,7 +10,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.http.Header;
 import org.apache.http.HttpStatus;
-import org.json.XmlException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -74,7 +73,7 @@ public class XmlHttpResponseHandler extends AsyncHttpResponseHandler {
         if (xmlResponse instanceof Document) {
             onSuccess(statusCode, headers, (Document) xmlResponse);
         } else {
-            onFailure(new XmlException("Unexpected type " + xmlResponse.getClass().getName()), (Document) null);
+            onFailure(new XmlParserException("Unexpected type " + xmlResponse.getClass().getName()), (Document) null);
         }
     }
 
