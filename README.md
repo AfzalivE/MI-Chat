@@ -9,7 +9,7 @@ The new app workflow (in progress)
 -----------------------------------
 
 - User enters credentials and clicks the login button. Login form is posted and PersistentCookieStore is used to save the cookies in a SharedPreference (not sure of security at the moment)
-- A ServiceHelper is used to GET the chat web page and the result is saved in a local database using updateContentProvider and ContentResolver.
+- A ServiceHelper is used to GET the chat web page and and parse it. The result is saved in a local database using updateContentProvider and ContentResolver.
 - Using the MessagesAdapter, the messages information is retrieved and the list in MessagesActivity is populated
 - Using the UserListAdapter, the user list information is retrieved and the list in UserListFragment is populated
 - This GET is called very, very frequently....but maybe the frequency should change depending on if the user is in the app or not
