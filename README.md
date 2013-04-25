@@ -14,6 +14,7 @@ Requirements
 - ActionBarSherlock (needs Android support v4 library, latest version from source): https://github.com/JakeWharton/ActionBarSherlock
 
 **Make sure the version of android-support-v4 is the same for all libraries**
+
 Maybe one day I'll recursively include these libraries in this repo
 
 
