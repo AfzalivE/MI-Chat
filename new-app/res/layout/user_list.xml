@@ -8,7 +8,7 @@
     android:background="#242424" >
 
     <TextView
-        android:id="@+id/userlist"
+        android:id="@+id/userlabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/user_list"
@@ -20,12 +20,12 @@
         android:id="@+id/separator"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_below="@id/userlist"
+        android:layout_below="@id/userlabel"
         android:layout_centerVertical="true"
         android:background="#54c0cb" />
 
     <ListView
-        android:id="@+id/list"
+        android:id="@+id/userlist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/separator"

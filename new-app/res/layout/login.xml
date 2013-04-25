@@ -19,48 +19,86 @@
             android:contentDescription="@string/macinsiders_logo"
             android:src="@drawable/ic_milogo" />
 
-        <EditText
-            android:id="@+id/username"
-            android:layout_width="260dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/miLogo"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="56dp"
-            android:background="@android:color/white"
-            android:ems="10"
-            android:hint="@string/login_username_hint"
-            android:paddingBottom="12dp"
-            android:paddingLeft="12dp"
-            android:paddingTop="12dp" >
+        <ViewFlipper
+            android:id="@+id/loginflipper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/miLogo" >
 
-            <requestFocus />
-        </EditText>
+            <RelativeLayout
+                android:id="@+id/loginform"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
 
-        <EditText
-            android:id="@+id/password"
-            android:layout_width="260dp"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/username"
-            android:layout_below="@+id/username"
-            android:layout_marginTop="24dp"
-            android:background="@android:color/white"
-            android:ems="10"
-            android:hint="@string/login_password_hint"
-            android:inputType="textPassword"
-            android:paddingBottom="12dp"
-            android:paddingLeft="12dp"
-            android:paddingTop="12dp" />
+                <EditText
+                    android:id="@+id/username"
+                    android:layout_width="260dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="56dp"
+                    android:background="@android:color/white"
+                    android:ems="10"
+                    android:hint="@string/login_username_hint"
+                    android:paddingBottom="12dp"
+                    android:paddingLeft="12dp"
+                    android:paddingTop="12dp" >
 
-        <Button
-            android:id="@+id/login"
-            android:layout_width="260dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/password"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="42dp"
-            android:background="@color/mi_maroon"
-            android:text="@string/login"
-            android:textColor="@android:color/white" />
+                    <requestFocus />
+                </EditText>
+
+                <EditText
+                    android:id="@+id/password"
+                    android:layout_width="260dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/username"
+                    android:layout_below="@+id/username"
+                    android:layout_marginTop="24dp"
+                    android:background="@android:color/white"
+                    android:ems="10"
+                    android:hint="@string/login_password_hint"
+                    android:inputType="textPassword"
+                    android:paddingBottom="12dp"
+                    android:paddingLeft="12dp"
+                    android:paddingTop="12dp" />
+
+                <Button
+                    android:id="@+id/login"
+                    android:layout_width="260dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/password"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="42dp"
+                    android:background="@color/mi_maroon"
+                    android:text="@string/login"
+                    android:textColor="@android:color/white" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/progress"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="96dp"
+                android:orientation="vertical"
+                android:visibility="gone" >
+
+                <ProgressBar
+                    android:id="@+id/progressbar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/password"
+                    android:layout_centerHorizontal="true"
+                    android:paddingTop="64dp"
+                    android:text="Signing in..."
+                    android:textColor="#aaadb6"
+                    android:textStyle="italic" />
+            </RelativeLayout>
+        </ViewFlipper>
     </RelativeLayout>
 
 </ScrollView>

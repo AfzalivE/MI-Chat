@@ -3,6 +3,12 @@
     <item
         android:id="@+id/action_refresh"
         android:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="@string/action_refresh"/>
+
+    <item
+        android:id="@+id/action_clearprefs"
+        android:showAsAction="never"
         android:icon="@android:drawable/ic_menu_revert"
         android:title="@string/action_refresh"/>
 
