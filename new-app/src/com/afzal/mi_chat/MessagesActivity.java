@@ -1,7 +1,18 @@
 package com.afzal.mi_chat;
 
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -11,11 +22,35 @@ import android.widget.SimpleAdapter;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.afzal.mi_chat.Utils.NetUtils;
-import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.XmlHttpResponseHandler;
 
 public class MessagesActivity extends BaseActivity {
 
     private static final String TAG = MessagesActivity.class.getSimpleName();
+    private XmlHttpResponseHandler myResponseHandler = new XmlHttpResponseHandler() {
+        @Override
+        public void onStart() {
+            Log.d(TAG, "onStart");
+        }
+
+        @Override
+        public void onSuccess(Document response) {
+            Log.d(TAG, "onSuccess");
+        }
+
+        @Override
+        public void onFailure(Throwable e, Document response) {
+            Log.d(TAG, "onFailure");
+            e.printStackTrace();
+            // Response failed :(
+        }
+
+        @Override
+        public void onFinish() {
+            Log.d(TAG, "onFinish");
+            // Completed the request (either success or failure)
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -25,7 +60,7 @@ public class MessagesActivity extends BaseActivity {
 
         setSlidingActionBarEnabled(true);
 
-        ListView list = (ListView) findViewById(R.id.list);
+        ListView list = (ListView) findViewById(R.id.messagelist);
 
         ArrayList<HashMap<String, String>> arrayList = populateArray();
 
@@ -88,30 +123,10 @@ public class MessagesActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                NetUtils.client.get("http://www.macinsiders.com/chat/?ajax=true", new AsyncHttpResponseHandler() {
-                    @Override
-                    public void onStart() {
-                        Log.d(TAG, "TEST");
-                    }
-
-                    @Override
-                    public void onSuccess(String response) {
-                        Log.d(TAG, response);
-                    }
-
-                    @Override
-                    public void onFailure(Throwable e, String response) {
-                        Log.d(TAG, "FAILED");
-                        // Response failed :(
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        Log.d(TAG, "TEST");
-                        // Completed the request (either success or failure)
-                    }
-                });
+                NetUtils.client.get("http://www.macinsiders.com/chat/?ajax=true", myResponseHandler);
                 return true;
+            case R.id.action_clearprefs:
+                NetUtils.getCookieStoreInstance(MessagesActivity.this).clear();
         }
         return super.onOptionsItemSelected(item);
     }

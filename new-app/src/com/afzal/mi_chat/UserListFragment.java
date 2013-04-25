@@ -19,7 +19,7 @@ public class UserListFragment extends Fragment {
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ListView list = (ListView) mUserListView.findViewById(R.id.list);
+        ListView list = (ListView) mUserListView.findViewById(R.id.userlist);
         String[] array = new String[] {
                 "Afzal",
                 "AndrewS",
