@@ -10,7 +10,7 @@ Requirements
 - Android-async-http (latest version from source): https://github.com/loopj/android-async-http
 - Crouton (needs Android support v4 library, latest version from source): https://github.com/keyboardsurfer/Crouton
 - SlidingMenu (needs Android support v4 library, latest version from source): https://github.com/jfeinstein10/SlidingMenu
--- We will use ActionBarSherlock with this so in SlidingFragmentActivity.java, extend SherlockFragmentActivity instead of FragmentActivity
+- We use ActionBarSherlock with this so in SlidingFragmentActivity.java, extend SherlockFragmentActivity instead of FragmentActivity
 - ActionBarSherlock (needs Android support v4 library, latest version from source): https://github.com/JakeWharton/ActionBarSherlock
 
 **Make sure the version of android-support-v4 is the same for all libraries**
