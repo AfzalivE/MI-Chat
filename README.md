@@ -5,7 +5,19 @@ The Android app uses the Apache v2 license. License text to be added later.
 
 Macinsiders native Android chat app
 
-The Android app (workflow)
+The new app workflow (in progress)
+-----------------------------------
+
+- User enters credentials and clicks the login button. Login form is posted and PersistentCookieStore is used to save the cookies in a SharedPreference (not sure of security at the moment)
+- A ServiceHelper is used to GET the chat web page and the result is saved in a local database using updateContentProvider and ContentResolver.
+- Using the MessagesAdapter, the messages information is retrieved and the list in MessagesActivity is populated
+- Using the UserListAdapter, the user list information is retrieved and the list in UserListFragment is populated
+- This GET is called very, very frequently....but maybe the frequency should change depending on if the user is in the app or not
+
+- A ServiceHelper is used to POST a message to the chat web page and the response determines if the message was posted or not
+- GET is called on the chat web page to refresh the contents after posting
+
+The Old app (workflow)
 ---------------
 
 - MessagesActivity calls ServiceHelper to getMessages onResume (onResume is called after launch)
