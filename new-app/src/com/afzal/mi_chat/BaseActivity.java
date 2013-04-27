@@ -29,11 +29,20 @@ public class BaseActivity extends SlidingFragmentActivity {
 
         SlidingMenu sm = getSlidingMenu();
 
+        sm.setMode(SlidingMenu.LEFT_RIGHT);
         sm.setShadowWidthRes(R.dimen.shadow_width);
         sm.setShadowDrawable(R.drawable.shadow);
         sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
         sm.setFadeDegree(0.45f);
         sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+
+        sm.setSecondaryMenu(R.layout.menu_frame_two);
+        sm.setSecondaryShadowDrawable(R.drawable.shadowright);
+        getSupportFragmentManager()
+        .beginTransaction()
+        .replace(R.id.menu_frame_two, new OptionsListFragment())
+        .commit();
+
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }

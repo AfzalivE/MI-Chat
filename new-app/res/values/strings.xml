@@ -20,5 +20,9 @@
     </string-array>
 
     <string name="user_list">USERS</string>
+    <string name="options_list">OPTIONS</string>
+    <string name="underline"><u>Underline</u></string>
+    <string name="italic">Italic</string>
+    <string name="bold">Bold</string>
 
 </resources>
