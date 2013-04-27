@@ -36,7 +36,9 @@ public class LoginActivity extends Activity {
     private AsyncHttpResponseHandler loginResponseHandler = new AsyncHttpResponseHandler() {
         @Override
         public void onStart() {
-            mLoginFlipper.showNext();
+            if (mRetryLogin) {
+                mLoginFlipper.showNext();
+            }
             Log.d(TAG, "onStart");
         }
 
@@ -57,6 +59,7 @@ public class LoginActivity extends Activity {
             // TODO deal with
             Log.d(TAG, "onFailure");
             if (authCookieExists() && mRetryLogin) {
+                mRetryLogin = false;
                 login(null);
             } else {
                 mLoginFlipper.showPrevious();
