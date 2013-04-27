@@ -1,7 +1,18 @@
 package com.afzal.mi_chat;
 
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 
@@ -13,6 +24,7 @@ import android.widget.SimpleAdapter;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.afzal.mi_chat.Utils.NetUtils;
+import com.afzal.mi_chat.service.ServiceHelper;
 import com.loopj.android.http.XmlHttpResponseHandler;
 
 public class MessagesActivity extends BaseActivity {
@@ -27,6 +39,17 @@ public class MessagesActivity extends BaseActivity {
         @Override
         public void onSuccess(Document response) {
             Log.d(TAG, "onSuccess");
+            try {
+                TransformerFactory tf = TransformerFactory.newInstance();
+                Transformer t;
+                t = tf.newTransformer();
+                Source src = new DOMSource(response);
+                OutputStream out = new ByteArrayOutputStream();
+                Result res = new StreamResult(out);
+                t.transform(src, res);
+                Log.d(TAG, out.toString());
+            } catch (TransformerConfigurationException e1) {
+            } catch (TransformerException e) {}
         }
 
         @Override
@@ -62,6 +85,12 @@ public class MessagesActivity extends BaseActivity {
                 R.id.message });
 
         list.setAdapter(adapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ServiceHelper.getPage(myResponseHandler);
     }
 
     /*
@@ -114,7 +143,7 @@ public class MessagesActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                NetUtils.client.get("http://www.macinsiders.com/chat/?ajax=true", myResponseHandler);
+                ServiceHelper.getPage(myResponseHandler);
                 return true;
             case R.id.action_clearprefs:
                 NetUtils.getCookieStoreInstance(MessagesActivity.this).clear();
