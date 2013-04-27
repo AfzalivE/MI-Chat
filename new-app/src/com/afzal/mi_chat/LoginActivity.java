@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ViewFlipper;
 
 import com.afzal.mi_chat.Utils.NetUtils;
+import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -114,11 +115,12 @@ public class LoginActivity extends Activity {
     }
 
     protected void login(RequestParams params) {
-        NetUtils.client.setCookieStore(NetUtils.getCookieStoreInstance(LoginActivity.this));
+        AsyncHttpClient client = NetUtils.getClientInstance();
+        client.setCookieStore(NetUtils.getCookieStoreInstance(LoginActivity.this));
         if (params != null) {
-            NetUtils.client.post("http://www.macinsiders.com/login.php", params, loginResponseHandler);
+            client.post("http://www.macinsiders.com/login.php", params, loginResponseHandler);
         } else {
-            NetUtils.client.post("http://www.macinsiders.com/login.php", loginResponseHandler);
+            client.post("http://www.macinsiders.com/login.php", loginResponseHandler);
         }
     }
 

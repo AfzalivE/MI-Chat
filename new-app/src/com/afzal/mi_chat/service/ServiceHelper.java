@@ -8,6 +8,6 @@ public class ServiceHelper {
     private static final String TAG = ServiceHelper.class.getSimpleName();
 
     public static void getPage(XmlHttpResponseHandler myResponseHandler) {
-        NetUtils.client.get("http://www.macinsiders.com/chat/?ajax=true", myResponseHandler);
+        NetUtils.getClientInstance().get("http://www.macinsiders.com/chat/?ajax=true", myResponseHandler);
     }
 }
