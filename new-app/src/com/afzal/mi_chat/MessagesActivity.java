@@ -1,21 +1,13 @@
 package com.afzal.mi_chat;
 
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.ServiceConfigurationError;
 
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
-import org.w3c.dom.Document;
-
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
@@ -24,52 +16,28 @@ import android.widget.SimpleAdapter;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.afzal.mi_chat.Utils.NetUtils;
-import com.loopj.android.http.XmlHttpResponseHandler;
+import com.afzal.mi_chat.processor.ProcessorFactory;
+import com.afzal.mi_chat.processor.ResourceProcessor;
+import com.afzal.mi_chat.service.ServiceContract;
+import com.afzal.mi_chat.service.ServiceHelper;
 
 public class MessagesActivity extends BaseActivity {
 
     private static final String TAG = MessagesActivity.class.getSimpleName();
-    private XmlHttpResponseHandler myResponseHandler = new XmlHttpResponseHandler() {
-        @Override
-        public void onStart() {
-            Log.d(TAG, "onStart");
-        }
 
-        @Override
-        public void onSuccess(Document response) {
-            Log.d(TAG, "onSuccess");
-            try {
-                TransformerFactory tf = TransformerFactory.newInstance();
-                Transformer t;
-                t = tf.newTransformer();
-                Source src = new DOMSource(response);
-                OutputStream out = new ByteArrayOutputStream();
-                Result res = new StreamResult(out);
-                t.transform(src, res);
-                Log.d(TAG, out.toString());
-            } catch (TransformerConfigurationException e1) {
-            } catch (TransformerException e) {}
-        }
+    private Long requestId;
+    private ServiceHelper mServiceHelper;
 
-        @Override
-        public void onFailure(Throwable e, Document response) {
-            Log.d(TAG, "onFailure");
-            e.printStackTrace();
-            // Response failed :(
-        }
-
-        @Override
-        public void onFinish() {
-            Log.d(TAG, "onFinish");
-            // Completed the request (either success or failure)
-        }
-    };
+    private BroadcastReceiver requestReceiver;
+    private IntentFilter filter = new IntentFilter(ServiceHelper.ACTION_REQUEST_RESULT);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.messages);
         getWindow().setBackgroundDrawable(null);
+
+        //        this.requestReceiver = new Receiver();
 
         setSlidingActionBarEnabled(true);
 
@@ -89,8 +57,67 @@ public class MessagesActivity extends BaseActivity {
     @Override
     public void onResume() {
         super.onResume();
-        NetUtils.getPage(myResponseHandler);
+
+        this.registerReceiver(this.requestReceiver, this.filter);
+
+        ResourceProcessor processor = ProcessorFactory.getInstance(this).getProcessor(ServiceContract.RESOURCE_TYPE_PAGE);
+
+        processor.getResource(null);
+
+        //        mServiceHelper = new ServiceHelper(this);
+        //
+        //        if (requestId == null) {
+        //            requestId = mServiceHelper.getPage();
+        //            setProgressBarIndeterminateVisibility(true);
+        //        } else if (mServiceHelper.isRequestPending(requestId)) {
+        //            Log.d(TAG, "request is pending");
+        //            setProgressBarIndeterminateVisibility(true);
+        //        } else {
+        //            Log.d(TAG, "requestId is not null and not in progress");
+        //            setProgressBarIndeterminateVisibility(false);
+        //        }
     }
+
+    //    @Override
+    //    public void onPause() {
+    //        super.onPause();
+    //
+    //        try {
+    //            this.unregisterReceiver(requestReceiver);
+    //        } catch (IllegalArgumentException e) {
+    //            Log.w(TAG, "Likely the receiver wasn't registered, ok to ignore");
+    //        }
+    //    }
+
+    //    class Receiver extends BroadcastReceiver {
+    //
+    //        @Override
+    //        public void onReceive(Context context, Intent intent) {
+    //            long resultRequestId = intent.getLongExtra(ServiceHelper.EXTRA_REQUEST_ID, 0);
+    //
+    //            Log.d(TAG, "Received intent " + intent.getAction() + ", request ID: " + resultRequestId);
+    //
+    //            if (resultRequestId == requestId) {
+    //                MessagesActivity.this.setProgressBarIndeterminateVisibility(false);
+    //                Log.d(TAG, "Result is for our request ID");
+    //
+    //                int resultCode = intent.getIntExtra(ServiceHelper.EXTRA_RESULT_CODE, 0);
+    //
+    //                Log.d(TAG, "Result code = " + resultCode);
+    //
+    //                if (resultCode == 200) {
+    //                    Log.d(TAG, "Request successful");
+    //                } else {
+    //                    Log.w(TAG, "Request failed" + resultCode);
+    //                }
+    //            } else {
+    //                // not the request we need, but the request we deserved. :(
+    //                Log.d(TAG, "Result is NOT for our request ID");
+    //
+    //            }
+    //
+    //        }
+    //    }
 
     /*
      * To be removed later
@@ -142,7 +169,11 @@ public class MessagesActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                NetUtils.getPage(myResponseHandler);
+                ResourceProcessor processor = ProcessorFactory.getInstance(this).getProcessor(ServiceContract.RESOURCE_TYPE_PAGE);
+
+                processor.getResource(null);
+                //                requestId = mServiceHelper.getPage();
+                setProgressBarIndeterminateVisibility(true);
                 return true;
             case R.id.action_clearprefs:
                 NetUtils.getCookieStoreInstance(MessagesActivity.this).clear();
