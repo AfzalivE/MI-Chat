@@ -43,7 +43,6 @@ public class BaseActivity extends SlidingFragmentActivity {
         .replace(R.id.menu_frame_two, new OptionsListFragment())
         .commit();
 
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 

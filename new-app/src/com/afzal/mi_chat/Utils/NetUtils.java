@@ -6,6 +6,7 @@ import android.content.Context;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.PersistentCookieStore;
+import com.loopj.android.http.XmlHttpResponseHandler;
 
 public class NetUtils {
 
@@ -26,5 +27,9 @@ public class NetUtils {
             myCookieStore = new PersistentCookieStore(context);
         }
         return myCookieStore;
+    }
+
+    public static void getPage(XmlHttpResponseHandler myResponseHandler) {
+        NetUtils.getClientInstance().get("http://www.macinsiders.com/chat/?ajax=true", myResponseHandler);
     }
 }
