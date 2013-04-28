@@ -121,8 +121,8 @@ public class MessagesProcessor implements ResourceProcessor {
         ContentResolver cr = this.mContext.getContentResolver();
 
         // insert/update row for each cat picture in the list
-        for (Message Message : messageList) {
-            cr.insert(Messages.CONTENT_URI, Message.toContentValues());
+        for (Message message : messageList) {
+            cr.insert(Messages.CONTENT_URI, message.toContentValues());
         }
     }
 

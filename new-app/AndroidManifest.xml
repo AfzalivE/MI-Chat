@@ -8,7 +8,7 @@
         android:minSdkVersion="17"
         android:targetSdkVersion="17" />
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -18,8 +18,8 @@
         <activity
             android:name="com.afzal.mi_chat.LoginActivity"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar"
-            android:noHistory="true" >
+            android:noHistory="true"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,6 +28,14 @@
         </activity>
         <activity android:name="com.afzal.mi_chat.MessagesActivity" >
         </activity>
+
+        <service android:name=".service.Service" />
+
+        <provider
+            android:name=".provider.Provider"
+            android:authorities="com.afzal.mi_chat.provider"
+            android:exported="false" >
+        </provider>
     </application>
 
 </manifest>

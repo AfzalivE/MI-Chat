@@ -10,6 +10,8 @@ import com.loopj.android.http.XmlHttpResponseHandler;
 
 public class NetUtils {
 
+    private static final String BASE_URI = "http://www.macinsiders.com/chat/?ajax=true";
+
     public static AsyncHttpClient client;
     private static PersistentCookieStore myCookieStore;
 
@@ -29,7 +31,11 @@ public class NetUtils {
         return myCookieStore;
     }
 
-    public static void getPage(XmlHttpResponseHandler myResponseHandler) {
-        NetUtils.getClientInstance().get("http://www.macinsiders.com/chat/?ajax=true", myResponseHandler);
+    public static void getPage(XmlHttpResponseHandler myResponseHandler, long lastId) {
+        String uri = BASE_URI;
+        if (lastId != -1) {
+            uri = uri + "&lastID=" + lastId;
+        }
+        NetUtils.getClientInstance().get(uri, myResponseHandler);
     }
 }
