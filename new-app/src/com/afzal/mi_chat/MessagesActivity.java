@@ -24,7 +24,6 @@ import android.widget.SimpleAdapter;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.afzal.mi_chat.Utils.NetUtils;
-import com.afzal.mi_chat.service.ServiceHelper;
 import com.loopj.android.http.XmlHttpResponseHandler;
 
 public class MessagesActivity extends BaseActivity {
@@ -90,7 +89,7 @@ public class MessagesActivity extends BaseActivity {
     @Override
     public void onResume() {
         super.onResume();
-        ServiceHelper.getPage(myResponseHandler);
+        NetUtils.getPage(myResponseHandler);
     }
 
     /*
@@ -143,7 +142,7 @@ public class MessagesActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                ServiceHelper.getPage(myResponseHandler);
+                NetUtils.getPage(myResponseHandler);
                 return true;
             case R.id.action_clearprefs:
                 NetUtils.getCookieStoreInstance(MessagesActivity.this).clear();
