@@ -3,6 +3,8 @@
 
     <string name="app_name">Macinsiders Chat</string>
     <string name="action_refresh">Refresh</string>
+    <string name="action_clearsession">Session clear</string>
+    <string name="action_cleardata">Data clear</string>
     <string name="hello_world">Hello world!</string>
     <string name="macinsiders_logo">Macinsiders Logo</string>
     <string name="login_username_hint">Enter your username</string>

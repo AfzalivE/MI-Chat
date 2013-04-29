@@ -10,6 +10,7 @@ import android.widget.ListView;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.Window;
 import com.afzal.mi_chat.processor.ProcessorFactory;
 import com.afzal.mi_chat.processor.ResourceProcessor;
 import com.afzal.mi_chat.provider.ProviderContract.MessagesTable;
@@ -22,13 +23,17 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
 
     MessagesCursorAdapter mAdapter;
 
+    int itemCount;
+
     private ListView mListView;
 
     private static final String TAG = MessagesActivity.class.getSimpleName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.messages);
         getWindow().setBackgroundDrawable(null);
 
@@ -38,6 +43,8 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
 
         mListView = (ListView) findViewById(R.id.messagelist);
 
+        itemCount = 0;
+
         mAdapter = new MessagesCursorAdapter(this, null, 0);
 
         mListView.setAdapter(mAdapter);
@@ -46,9 +53,8 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     @Override
     public void onResume() {
         super.onResume();
-
+        setProgressBarIndeterminateVisibility(true);
         ResourceProcessor processor = ProcessorFactory.getInstance(this).getProcessor(ServiceContract.RESOURCE_TYPE_PAGE);
-
         processor.getResource();
     }
 
@@ -60,23 +66,28 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        ResourceProcessor processor = ProcessorFactory.getInstance(this).getProcessor(ServiceContract.RESOURCE_TYPE_PAGE);
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                ResourceProcessor processor = ProcessorFactory.getInstance(this).getProcessor(ServiceContract.RESOURCE_TYPE_PAGE);
                 processor.getResource();
                 setProgressBarIndeterminateVisibility(true);
                 return true;
-            case R.id.action_clearprefs:
+            case R.id.action_cleardata:
+                processor.deleteResource();
+                setProgressBarIndeterminateVisibility(true);
+                break;
+            case R.id.action_clearsession:
                 NetUtils.getCookieStoreInstance(MessagesActivity.this).clear();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int loaderId, Bundle bundle) {
+        Log.d(TAG, "Loading messages");
         switch (loaderId) {
             case MESSAGE_LOADER:
-                Log.d(TAG, "Loading messages");
                 return new CursorLoader(this, MessagesTable.CONTENT_URI, new String[] {
                         MessagesTable._ID,
                         MessagesTable.DATETIME,
@@ -93,6 +104,17 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         mAdapter.changeCursor(cursor);
+        setProgressBarIndeterminateVisibility(false);
+        // animate scrolling to bottom if less than 10 new items added
+        // otherwise jump
+        // not sure if the best idea but it works for now I guess
+        int newCount = mAdapter.getCount();
+        if (newCount - itemCount > 10) {
+            mListView.setSelection(newCount - 1);
+        } else {
+            mListView.smoothScrollToPosition(newCount - 1);
+        }
+        itemCount = newCount;
     }
 
     /*
@@ -101,6 +123,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
      */
     @Override
     public void onLoaderReset(Loader<Cursor> cusror) {
+        setProgressBarIndeterminateVisibility(false);
         mAdapter.changeCursor(null);
     }
 }
