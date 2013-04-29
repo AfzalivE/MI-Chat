@@ -2,9 +2,6 @@ package com.afzal.mi_chat.provider;
 
 import java.util.HashMap;
 
-import com.afzal.mi_chat.provider.ProviderContract.InfoTable;
-import com.afzal.mi_chat.provider.ProviderContract.UsersTable;
-
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -15,10 +12,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 
+import com.afzal.mi_chat.provider.ProviderContract.InfoTable;
+import com.afzal.mi_chat.provider.ProviderContract.MessagesTable;
+import com.afzal.mi_chat.provider.ProviderContract.UsersTable;
+
 public class Provider extends ContentProvider {
 
     private static HashMap<String, String> infoProjectionMap;
     private static HashMap<String, String> userProjectionMap;
+    private static HashMap<String, String> messageProjectionMap;
     private static final UriMatcher uriMatcher;
 
     private static final int MATCHER_INFO = 1;
@@ -37,7 +39,8 @@ public class Provider extends ContentProvider {
         uriMatcher.addURI(ProviderContract.AUTHORITY, InfoTable.TABLE_NAME + "/#", MATCHER_INFO_ID);
         uriMatcher.addURI(ProviderContract.AUTHORITY, UsersTable.TABLE_NAME, MATCHER_USER);
         uriMatcher.addURI(ProviderContract.AUTHORITY, UsersTable.TABLE_NAME + "/#", MATCHER_USER_ID);
-        // TODO for messages
+        uriMatcher.addURI(ProviderContract.AUTHORITY, MessagesTable.TABLE_NAME, MATCHER_MESSAGE);
+        uriMatcher.addURI(ProviderContract.AUTHORITY, MessagesTable.TABLE_NAME + "/#", MATCHER_MESSAGE_ID);
 
         infoProjectionMap = new HashMap<String, String>();
         for (String column : InfoTable.COLUMNS) {
@@ -46,6 +49,11 @@ public class Provider extends ContentProvider {
         userProjectionMap = new HashMap<String, String>();
         for (String column : UsersTable.COLUMNS) {
             userProjectionMap.put(column, column);
+        }
+
+        messageProjectionMap = new HashMap<String, String>();
+        for (String column : MessagesTable.COLUMNS) {
+            messageProjectionMap.put(column, column);
         }
     }
 
@@ -82,9 +90,20 @@ public class Provider extends ContentProvider {
             case MATCHER_USER_ID:
                 qb.setTables(UsersTable.TABLE_NAME);
                 qb.setProjectionMap(userProjectionMap);
-                // Find the message ID itself in the incoming URI
+                // Find the user ID itself in the incoming URI
                 String userId = uri.getPathSegments().get(UsersTable.USER_ID_PATH_POSITION);
                 qb.appendWhere(UsersTable._ID + "=" + userId);
+                break;
+            case MATCHER_MESSAGE:
+                qb.setTables(MessagesTable.TABLE_NAME);
+                qb.setProjectionMap(messageProjectionMap);
+                break;
+            case MATCHER_MESSAGE_ID:
+                qb.setTables(MessagesTable.TABLE_NAME);
+                qb.setProjectionMap(messageProjectionMap);
+                // Find the message ID itself in the incoming URI
+                String messageId = uri.getPathSegments().get(MessagesTable.MESSAGE_ID_PATH_POSITION);
+                qb.appendWhere(MessagesTable._ID + "=" + messageId);
                 break;
             default:
                 // If the URI doesn't match any of the known patterns, throw an
@@ -114,6 +133,10 @@ public class Provider extends ContentProvider {
                 return "vnd.android.cursor.dir/vnd.chat.user";
             case MATCHER_USER_ID:
                 return "vnd.android.cursor.item/vnd.chat.user";
+            case MATCHER_MESSAGE:
+                return "vnd.android.cursor.dir/vnd.chat.message";
+            case MATCHER_MESSAGE_ID:
+                return "vnd.android.cursor.item/vnd.chat.message";
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);
         }
@@ -144,6 +167,10 @@ public class Provider extends ContentProvider {
                 case MATCHER_USER:
                     insertTable = UsersTable.TABLE_NAME;
                     baseUri = UsersTable.CONTENT_ID_URI_BASE;
+                    break;
+                case MATCHER_MESSAGE:
+                    insertTable = MessagesTable.TABLE_NAME;
+                    baseUri = MessagesTable.CONTENT_ID_URI_BASE;
                     break;
                 default:
                     throw new IllegalArgumentException("Unknown URI " + uri);
@@ -213,6 +240,23 @@ public class Provider extends ContentProvider {
                     }
                     break;
 
+                case MATCHER_MESSAGE:
+                    tableName = MessagesTable.TABLE_NAME;
+                    break;
+
+                case MATCHER_MESSAGE_ID:
+                    tableName = MessagesTable.TABLE_NAME;
+                    String messageId = uri.getPathSegments().get(MessagesTable.MESSAGE_ID_PATH_POSITION);
+                    finalWhere = MessagesTable._ID + " = " + messageId;
+
+                    // if we were passed a 'where' arg, add that to our 'finalWhere'
+                    if (whereClause != null) {
+                        finalWhere = finalWhere + " AND " + whereClause;
+                    } else {
+                        whereClause = finalWhere;
+                    }
+                    break;
+
                 default:
                     throw new IllegalArgumentException("Unknown URI " + uri);
             }
@@ -232,14 +276,13 @@ public class Provider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-
         return 0;
     }
 
     // Default bulkInsert is terrible. Make it better!
     @Override
     public int bulkInsert(Uri uri, ContentValues[] values) {
-        if (uriMatcher.match(uri) != MATCHER_USER) {
+        if (uriMatcher.match(uri) != MATCHER_USER || uriMatcher.match(uri) != MATCHER_MESSAGE) {
             throw new IllegalArgumentException("Unknown URI " + uri);
         }
 
@@ -255,7 +298,18 @@ public class Provider extends ContentProvider {
             db.setTransactionSuccessful();
             // Build a new Node URI appended with the row ID of the last node to
             // get inserted in the batch
-            Uri nodeUri = ContentUris.withAppendedId(UsersTable.CONTENT_ID_URI_BASE, newRowId);
+            Uri nodeUri = null;
+
+            switch (uriMatcher.match(uri)) {
+                case MATCHER_USER:
+                    nodeUri = ContentUris.withAppendedId(UsersTable.CONTENT_ID_URI_BASE, newRowId);
+                    break;
+                case MATCHER_MESSAGE:
+                    nodeUri = ContentUris.withAppendedId(MessagesTable.CONTENT_ID_URI_BASE, newRowId);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unknown URI " + uri);
+            }
             // Notify observers that our data changed.
             getContext().getContentResolver().notifyChange(nodeUri, null);
             return insertedCount;
@@ -276,14 +330,19 @@ public class Provider extends ContentProvider {
             throw new SQLException("ContentValues arg for .insert() is null, cannot insert row.");
         }
 
-        long newRowId = writableDb.insert(UsersTable.TABLE_NAME, null, values);
+        long newRowId = -1;
+        switch (uriMatcher.match(uri)) {
+            case MATCHER_USER:
+                newRowId = writableDb.insert(UsersTable.TABLE_NAME, null, values);
+                break;
+            case MATCHER_MESSAGE:
+                newRowId = writableDb.insert(MessagesTable.TABLE_NAME, null, values);
+                break;
+            }
+
         if (newRowId == -1) { // if rowID is -1, it means the insert failed
             throw new SQLException("Failed to insert row into " + uri); // Insert
-            // failed:
-            // halt
-            // and
-            // catch
-            // fire.
+            // failed: halt and catch fire.
         }
         return newRowId;
     }
