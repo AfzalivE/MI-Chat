@@ -1,6 +1,9 @@
 package com.afzal.mi_chat.resource;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.w3c.dom.Document;
@@ -21,14 +24,23 @@ public class Page implements Resource {
         return this.userList;
     }
 
+    public List<Message> getMessageList() {
+        return this.messageList;
+    }
+
     public Page(Document document) {
         NodeList mainNodes = document.getElementsByTagName("root").item(0).getChildNodes();
 
         for (int i = 0; i < mainNodes.getLength(); i++) {
             Node node = mainNodes.item(i);
 
-            if (node.getNodeName().equals("users")) {
+            String nodeName = node.getNodeName();
+            if (nodeName.equals("users")) {
                 this.userList = processUsers(node);
+            } else if (nodeName.equals("messages")) {
+                this.messageList = processMessages(node);
+            } else if (nodeName.equals("infos")) {
+
             }
         }
 
@@ -57,4 +69,53 @@ public class Page implements Resource {
         return userList;
     }
 
+    private List<Message> processMessages(Node node) {
+        NodeList messages = node.getChildNodes();
+
+        List<Message> messageList = new ArrayList<Message>();
+
+        for (int i= 0; i < messages.getLength(); i++) {
+            Node messageNode = messages.item(i);
+
+            NamedNodeMap messageAttrs = messageNode.getAttributes();
+
+            long messageId = Long.parseLong(messageAttrs.getNamedItem("id").getTextContent());
+            long dateTime = parseDate(messageAttrs.getNamedItem("dateTime").getTextContent());
+            long userId = Long.parseLong(messageAttrs.getNamedItem("userID").getTextContent());
+            int userRole = Integer.parseInt(messageAttrs.getNamedItem("userRole").getTextContent());
+            int channelId = Integer.parseInt(messageAttrs.getNamedItem("channelID").getTextContent());
+            NodeList childNodes = messageNode.getChildNodes();
+            String userName = new String();
+            String messageText = new String();
+
+            for (int j = 0; j < childNodes.getLength(); j++) {
+                Node childNode = childNodes.item(j);
+                if (childNode.getNodeName().equals("username")) {
+                    userName = childNode.getTextContent();
+                }
+                if (childNode.getNodeName().equals("text")) {
+                    messageText = childNode.getTextContent();
+                }
+            }
+
+            Message message = new Message(messageId, dateTime, userId, userRole, channelId, userName, messageText);
+
+            messageList.add(message);
+
+        }
+        return messageList;
+    }
+
+    private long parseDate(String dateString) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
+        try {
+            Date date = dateFormat.parse(dateString);
+            long dateMillis = date.getTime();
+            return dateMillis;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
 }

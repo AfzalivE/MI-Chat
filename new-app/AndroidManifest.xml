@@ -29,8 +29,6 @@
         <activity android:name="com.afzal.mi_chat.MessagesActivity" >
         </activity>
 
-        <service android:name=".service.Service" />
-
         <provider
             android:name=".provider.Provider"
             android:authorities="com.afzal.mi_chat.provider"

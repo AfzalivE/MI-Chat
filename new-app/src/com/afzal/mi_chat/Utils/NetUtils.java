@@ -1,4 +1,4 @@
-package com.afzal.mi_chat.Utils;
+package com.afzal.mi_chat.utils;
 
 import org.apache.http.client.params.ClientPNames;
 
@@ -34,7 +34,7 @@ public class NetUtils {
     public static void getPage(XmlHttpResponseHandler myResponseHandler, long lastId) {
         String uri = BASE_URI;
         if (lastId != -1) {
-            uri = uri + "&lastID=" + lastId;
+            uri = uri + "&lastID=" + Long.toString(lastId);
         }
         NetUtils.getClientInstance().get(uri, myResponseHandler);
     }

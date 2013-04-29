@@ -1,5 +1,8 @@
 package com.afzal.mi_chat;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
@@ -8,10 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class MessagesAdapter extends CursorAdapter {
+import com.afzal.mi_chat.provider.ProviderContract.MessagesTable;
 
-    public MessagesAdapter(Context context, Cursor c, int flags) {
+public class MessagesCursorAdapter extends CursorAdapter {
+
+    private Context mContext;
+
+    public MessagesCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
+        mContext = context;
     }
 
     @Override
@@ -31,14 +39,20 @@ public class MessagesAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         // Get username, timestamp and message from cursor
-        String username = "username";
-        String timestamp = "22:22:00";
-        String message = "message";
+        String username = cursor.getString(cursor.getColumnIndex(MessagesTable.USERNAME));
+        long timestamp = cursor.getLong(cursor.getColumnIndex(MessagesTable.DATETIME));
+        String message = cursor.getString(cursor.getColumnIndex(MessagesTable.MESSAGE));
 
         ViewHolder holder = (ViewHolder) view.getTag();
         holder.usernameView.setText(username);
-        holder.timestampView.setText(timestamp);
+        holder.timestampView.setText(getDate(timestamp));
         holder.messageView.setText(message);
+    }
+
+    private String getDate(long timestamp) {
+        Date date = new Date(timestamp);
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+        return format.format(date).toString();
     }
 
     static class ViewHolder {

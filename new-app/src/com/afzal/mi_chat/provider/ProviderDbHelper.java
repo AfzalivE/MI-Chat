@@ -1,11 +1,12 @@
 package com.afzal.mi_chat.provider;
 
-import com.afzal.mi_chat.provider.ProviderContract.InfoTable;
-import com.afzal.mi_chat.provider.ProviderContract.UsersTable;
-
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.afzal.mi_chat.provider.ProviderContract.InfoTable;
+import com.afzal.mi_chat.provider.ProviderContract.MessagesTable;
+import com.afzal.mi_chat.provider.ProviderContract.UsersTable;
 
 public class ProviderDbHelper extends SQLiteOpenHelper {
     public final String TAG = getClass().getSimpleName();
@@ -24,9 +25,9 @@ public class ProviderDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-//        db.execSQL("DROP TABLE IF EXISTS " + InfoTable.TABLE_NAME + ";");
+        db.execSQL("DROP TABLE IF EXISTS " + InfoTable.TABLE_NAME + ";");
         db.execSQL("DROP TABLE IF EXISTS " + UsersTable.TABLE_NAME + ";");
-//        db.execSQL("DROP TABLE IF EXISTS " + MessagesTable.TABLE_NAME + ";");
+        db.execSQL("DROP TABLE IF EXISTS " + MessagesTable.TABLE_NAME + ";");
         createTables(db);
     }
 
@@ -52,14 +53,24 @@ public class ProviderDbHelper extends SQLiteOpenHelper {
                 UsersTable.USERNAME + " TEXT" +
                 ");");
 
+        messagesTableBuilder.append("CREATE TABLE " + MessagesTable.TABLE_NAME + " ( " +
+                MessagesTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                MessagesTable.MESSAGEID + " LONG, " +
+                MessagesTable.DATETIME + " LONG, " +
+                MessagesTable.USERID + " LONG, " +
+                MessagesTable.USERROLE + " INTEGER, " +
+                MessagesTable.CHANNELID + " INTEGER, " +
+                MessagesTable.USERNAME + " TEXT, " +
+                MessagesTable.MESSAGE + " TEXT" +
+                ");");
+
         String sqlInfo = infoTableBuilder.toString();
         String sqlUsers = usersTableBuilder.toString();
+        String sqlMessages = messagesTableBuilder.toString();
 
         db.execSQL(sqlInfo);
         db.execSQL(sqlUsers);
-
-        // TODO other tables
-
+        db.execSQL(sqlMessages);
     }
 
 }

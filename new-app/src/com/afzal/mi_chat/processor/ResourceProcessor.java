@@ -3,7 +3,7 @@ import android.os.Bundle;
 
 public interface ResourceProcessor {
 
-        void getResource(Bundle params);
+        void getResource();
         void postResource(ResourceProcessorCallback callback, Bundle params);
         void putResource(ResourceProcessorCallback callback, Bundle params);
         void deleteResource(ResourceProcessorCallback callback, Bundle params);
