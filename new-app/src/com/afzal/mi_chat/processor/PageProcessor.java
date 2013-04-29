@@ -1,17 +1,6 @@
 package com.afzal.mi_chat.processor;
 
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
 import java.util.List;
-
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 
@@ -40,22 +29,7 @@ public class PageProcessor implements ResourceProcessor {
         @Override
         public void onSuccess(Document response) {
             Log.d(TAG, "onSuccess");
-            try {
-                TransformerFactory tf = TransformerFactory.newInstance();
-                Transformer t;
-                t = tf.newTransformer();
-                Source src = new DOMSource(response);
-                OutputStream out = new ByteArrayOutputStream();
-                Result res = new StreamResult(out);
-                t.transform(src, res);
-                Log.d(TAG, out.toString());
-
-                updateContentProvider(response);
-
-//                mCallback.send(200, null);
-
-            } catch (TransformerConfigurationException e1) {
-            } catch (TransformerException e) {}
+            updateContentProvider(response);
         }
 
         @Override
@@ -89,7 +63,7 @@ public class PageProcessor implements ResourceProcessor {
 
     private long getLastMessageId() {
         ContentResolver contentResolver = mContext.getContentResolver();
-        Cursor cursor = contentResolver.query(MessagesTable.CONTENT_URI, new String[] { MessagesTable.MESSAGEID } , null, null, MessagesTable.DATETIME + " DESC LIMIT 1");
+        Cursor cursor = contentResolver.query(MessagesTable.CONTENT_URI, new String[] { MessagesTable.MESSAGEID }, null, null, MessagesTable.MESSAGEID + " DESC LIMIT 1");
 
         if (cursor.moveToNext()) {
             Log.d(TAG, Long.toString(cursor.getLong(0)));
@@ -127,12 +101,17 @@ public class PageProcessor implements ResourceProcessor {
     }
 
     @Override
-    public void postResource(ResourceProcessorCallback callback, Bundle params) {}
+    public void postResource(ResourceProcessorCallback callback, Bundle params) {
+    }
 
     @Override
-    public void putResource(ResourceProcessorCallback callback, Bundle params) {}
+    public void putResource(ResourceProcessorCallback callback, Bundle params) {
+    }
 
     @Override
-    public void deleteResource(ResourceProcessorCallback callback, Bundle params) {}
+    public void deleteResource() {
+        ContentResolver cr = this.mContext.getContentResolver();
+        cr.delete(MessagesTable.CONTENT_URI, null, null);
+    }
 
 }
