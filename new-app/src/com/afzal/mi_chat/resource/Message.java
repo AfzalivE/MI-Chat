@@ -24,7 +24,16 @@ public class Message {
         this.userRole = userRole;
         this.channelId = channelId;
         this.userName = userName;
-        this.message = messageText;
+        this.message = parseMessage(messageText);;
+    }
+
+    private String parseMessage(String messageText) {
+        if (messageText.contains("/login")) {
+            return messageText.substring(7) + " logs into the Chat.";
+        } else if (messageText.contains("/logout")) {
+            return messageText.substring(8) + " has been logged out.";
+        }
+        return messageText;
     }
 
     public ContentValues toContentValues() {
