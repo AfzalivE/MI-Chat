@@ -5,6 +5,7 @@ import java.util.Date;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,17 @@ public class MessagesCursorAdapter extends CursorAdapter {
 
         listItemView.setTag(holder);
         return listItemView;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View view = super.getView(position, convertView, parent);
+        if (position % 2 == 1) {
+            view.setBackgroundColor(mContext.getResources().getColor(R.color.alt_bg));
+        } else {
+            view.setBackgroundColor(Color.WHITE);
+        }
+        return view;
     }
 
     @Override
