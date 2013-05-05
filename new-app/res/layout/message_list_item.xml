@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="?android:attr/listPreferredItemHeightSmall"
-    android:paddingEnd="8dp"
-    android:paddingStart="8dp"
+    android:paddingEnd="18dp"
+    android:paddingStart="18dp"
     android:paddingTop="8dp" >
 
     <TextView
