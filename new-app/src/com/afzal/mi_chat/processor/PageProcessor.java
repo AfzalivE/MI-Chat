@@ -1,15 +1,10 @@
 package com.afzal.mi_chat.processor;
 
-import java.util.List;
-
-import org.w3c.dom.Document;
-
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
-
 import com.afzal.mi_chat.provider.ProviderContract.MessagesTable;
 import com.afzal.mi_chat.provider.ProviderContract.UsersTable;
 import com.afzal.mi_chat.resource.Message;
@@ -17,6 +12,9 @@ import com.afzal.mi_chat.resource.Page;
 import com.afzal.mi_chat.resource.User;
 import com.afzal.mi_chat.utils.NetUtils;
 import com.loopj.android.http.XmlHttpResponseHandler;
+import org.w3c.dom.Document;
+
+import java.util.List;
 
 public class PageProcessor implements ResourceProcessor {
 
@@ -101,7 +99,7 @@ public class PageProcessor implements ResourceProcessor {
     }
 
     @Override
-    public void postResource(ResourceProcessorCallback callback, Bundle params) {
+    public void postResource(Bundle params) {
     }
 
     @Override
