@@ -6,11 +6,15 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
-
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
+import com.afzal.mi_chat.R.id;
 import com.afzal.mi_chat.processor.ProcessorFactory;
 import com.afzal.mi_chat.processor.ResourceProcessor;
 import com.afzal.mi_chat.provider.ProviderContract.MessagesTable;
@@ -26,6 +30,8 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     int itemCount;
 
     private ListView mListView;
+    private EditText mEditText;
+    private Button mSubmitButton;
 
     private static final String TAG = MessagesActivity.class.getSimpleName();
 
@@ -38,16 +44,25 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         getWindow().setBackgroundDrawable(null);
 
         getSupportLoaderManager().initLoader(MESSAGE_LOADER, null, this);
+        mListView = (ListView) findViewById(R.id.messagelist);
+        itemCount = 0;
+        mAdapter = new MessagesCursorAdapter(this, null, 0);
+        mListView.setAdapter(mAdapter);
+
+        mEditText = (EditText) findViewById(id.textbox);
+        mSubmitButton = (Button) findViewById(id.submitmsg);
+
+        mSubmitButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ResourceProcessor processor = ProcessorFactory.getInstance(getApplicationContext()).getProcessor(ServiceContract.RESOURCE_TYPE_MESSAGE);
+                Bundle bundle = new Bundle();
+                bundle.putString("message", mEditText.getText().toString());
+                processor.postResource(bundle);
+            }
+        });
 
         setSlidingActionBarEnabled(true);
-
-        mListView = (ListView) findViewById(R.id.messagelist);
-
-        itemCount = 0;
-
-        mAdapter = new MessagesCursorAdapter(this, null, 0);
-
-        mListView.setAdapter(mAdapter);
     }
 
     @Override

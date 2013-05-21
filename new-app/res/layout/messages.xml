@@ -1,8 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/messagelist"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fastScrollEnabled="true">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-</ListView>
+    <ListView
+            android:id="@+id/messagelist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fastScrollEnabled="true"
+            android:layout_marginBottom="40dp"/>
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true">
+
+        <EditText
+                android:id="@+id/textbox"
+                android:layout_width="320dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"/>
+
+        <Button
+                android:id="@+id/submitmsg"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="OK"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/textbox"/>
+    </RelativeLayout>
+
+</RelativeLayout>
