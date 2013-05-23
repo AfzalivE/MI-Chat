@@ -27,7 +27,7 @@ public class User {
         rowData.put(UsersTable.USERROLE, this.userRole);
         rowData.put(UsersTable.CHANNELID, this.channelId);
         rowData.put(UsersTable.USERNAME, this.userName);
-        Log.d(TAG, "converting to ContentValues, user: " + this.userName);
+//        Log.d(TAG, "converting to ContentValues, user: " + this.userName);
         return rowData;
     }
 }

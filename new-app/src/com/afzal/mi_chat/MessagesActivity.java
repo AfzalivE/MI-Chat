@@ -58,9 +58,10 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
                 Bundle bundle = new Bundle();
                 bundle.putString("message", mEditText.getText().toString());
 
-                ResourceProcessor processor = ProcessorFactory.getInstance(getApplicationContext()).getProcessor(ServiceContract.RESOURCE_TYPE_MESSAGE);
+                ResourceProcessor processor = ProcessorFactory.getInstance(MessagesActivity.this).getProcessor(ServiceContract.RESOURCE_TYPE_MESSAGE);
                 processor.postResource(bundle);
 
+                setProgressBarIndeterminateVisibility(true);
                 mEditText.setText("");
             }
         });
