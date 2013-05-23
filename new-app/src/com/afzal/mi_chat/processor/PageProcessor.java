@@ -5,8 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import com.afzal.mi_chat.provider.ProviderContract.InfoTable;
 import com.afzal.mi_chat.provider.ProviderContract.MessagesTable;
 import com.afzal.mi_chat.provider.ProviderContract.UsersTable;
+import com.afzal.mi_chat.resource.Info;
 import com.afzal.mi_chat.resource.Message;
 import com.afzal.mi_chat.resource.Page;
 import com.afzal.mi_chat.resource.User;
@@ -17,6 +19,9 @@ import org.w3c.dom.Document;
 import java.util.List;
 
 public class PageProcessor implements ResourceProcessor {
+
+    protected static final String TAG = PageProcessor.class.getSimpleName();
+    private Context mContext;
 
     private XmlHttpResponseHandler myResponseHandler = new XmlHttpResponseHandler() {
         @Override
@@ -43,9 +48,6 @@ public class PageProcessor implements ResourceProcessor {
             // Completed the request (either success or failure)
         }
     };
-
-    protected static final String TAG = PageProcessor.class.getSimpleName();
-    private Context mContext;
 
     public PageProcessor(Context context) {
         mContext = context;
@@ -77,29 +79,45 @@ public class PageProcessor implements ResourceProcessor {
         Page page = new Page(result);
         List<User> userList = null;
         List<Message> messageList = null;
+        Info info = null;
+
+        ContentResolver cr = this.mContext.getContentResolver();
 
         try {
             userList = page.getUserList();
-            messageList = page.getMessageList();
+            cr.delete(UsersTable.CONTENT_URI, null, null);
         } catch (NullPointerException e) {
             Log.d(TAG, "couldn't get user list");
         }
 
-        ContentResolver cr = this.mContext.getContentResolver();
-
-        cr.delete(UsersTable.CONTENT_URI, null, null);
         for (User user : userList) {
             cr.insert(UsersTable.CONTENT_URI, user.toContentValues());
         }
 
-        for (Message message : messageList) {
-            cr.insert(MessagesTable.CONTENT_URI, message.toContentValues());
+        try {
+            messageList = page.getMessageList();
+            for (Message message : messageList) {
+                cr.insert(MessagesTable.CONTENT_URI, message.toContentValues());
+            }
+        } catch (NullPointerException e) {
+            Log.d(TAG, "couldn't get message list");
+        }
+
+        try {
+            info = page.getInfo();
+            if (info != null) {
+                cr.delete(InfoTable.CONTENT_URI, null, null);
+                cr.insert(InfoTable.CONTENT_URI, info.toContentValues());
+            }
+        } catch (NullPointerException e) {
+            Log.d(TAG, "couldn't get user info");
         }
 
     }
 
     @Override
     public void postResource(Bundle params) {
+
     }
 
     @Override

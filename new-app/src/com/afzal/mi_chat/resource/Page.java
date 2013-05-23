@@ -1,15 +1,15 @@
 package com.afzal.mi_chat.resource;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 public class Page implements Resource {
     Info info;
@@ -28,6 +28,10 @@ public class Page implements Resource {
         return this.messageList;
     }
 
+    public Info getInfo() {
+        return this.info;
+    }
+
     public Page(Document document) {
         NodeList mainNodes = document.getElementsByTagName("root").item(0).getChildNodes();
 
@@ -40,10 +44,38 @@ public class Page implements Resource {
             } else if (nodeName.equals("messages")) {
                 this.messageList = processMessages(node);
             } else if (nodeName.equals("infos")) {
-
+                this.info = processInfo(node);
             }
         }
 
+    }
+
+    private Info processInfo(Node node) {
+        NodeList infos = node.getChildNodes();
+
+        long userId = 0;
+        String userName = null;
+        int userRole = 0;
+        int channelId = 0;
+        String channelName = null;
+
+        if (infos.getLength() < 1) return null;
+
+        for (int i = 0; i < infos.getLength(); i++) {
+            Node infoNode = infos.item(i);
+
+            String typeAttrs = infoNode.getAttributes().getNamedItem("type").getNodeValue();
+            String textContent = infoNode.getTextContent();
+
+            userId = (!typeAttrs.equals("userID"))? userId : Long.parseLong(textContent);
+            userRole = (!typeAttrs.equals("userRole"))? userRole : Integer.parseInt(textContent);
+            channelId = (!typeAttrs.equals("channelID"))? userRole : Integer.parseInt(textContent);
+            userName = (!typeAttrs.equals("userName"))? userName : infoNode.getTextContent();
+            channelName = (!typeAttrs.equals("channelName"))? userName : infoNode.getTextContent();
+
+        }
+
+        return new Info(userId, userRole, channelId, userName, channelName);
     }
 
     private List<User> processUsers(Node node) {

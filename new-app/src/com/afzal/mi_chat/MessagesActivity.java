@@ -55,20 +55,26 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         mSubmitButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                ResourceProcessor processor = ProcessorFactory.getInstance(getApplicationContext()).getProcessor(ServiceContract.RESOURCE_TYPE_MESSAGE);
                 Bundle bundle = new Bundle();
                 bundle.putString("message", mEditText.getText().toString());
+
+                ResourceProcessor processor = ProcessorFactory.getInstance(getApplicationContext()).getProcessor(ServiceContract.RESOURCE_TYPE_MESSAGE);
                 processor.postResource(bundle);
+
+                mEditText.setText("");
             }
         });
 
-        setSlidingActionBarEnabled(true);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         setProgressBarIndeterminateVisibility(true);
+
+        // TODO use the Service for this
+        // IntentService doesn't work with async-http client because you can't run AsyncTask from it
+        // Use normal Service class maybe
         ResourceProcessor processor = ProcessorFactory.getInstance(this).getProcessor(ServiceContract.RESOURCE_TYPE_PAGE);
         processor.getResource();
     }

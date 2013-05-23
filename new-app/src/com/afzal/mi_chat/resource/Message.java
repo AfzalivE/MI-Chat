@@ -27,6 +27,7 @@ public class Message {
         this.message = parseMessage(messageText);;
     }
 
+    // TODO colour and bbcode stuff
     private String parseMessage(String messageText) {
         if (messageText.contains("/login")) {
             return messageText.substring(7) + " logs into the Chat.";

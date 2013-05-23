@@ -17,6 +17,8 @@ public class ProcessorFactory {
         switch (resourceType) {
             case ServiceContract.RESOURCE_TYPE_PAGE:
                 return new PageProcessor(mContext);
+            case ServiceContract.RESOURCE_TYPE_MESSAGE:
+                return new MessageProcessor(mContext);
             default:
                 return null;
         }

@@ -44,6 +44,8 @@ public class BaseActivity extends SlidingFragmentActivity {
         .commit();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setSlidingActionBarEnabled(false);
+
     }
 
     @Override
