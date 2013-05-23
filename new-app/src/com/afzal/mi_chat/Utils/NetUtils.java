@@ -1,5 +1,6 @@
 package com.afzal.mi_chat.utils;
 
+import com.loopj.android.http.RequestParams;
 import org.apache.http.client.params.ClientPNames;
 
 import android.content.Context;
@@ -37,5 +38,12 @@ public class NetUtils {
             uri = uri + "&lastID=" + Long.toString(lastId);
         }
         NetUtils.getClientInstance().get(uri, myResponseHandler);
+    }
+
+    public static void postMessage(XmlHttpResponseHandler myResponseHandler, String message) {
+        String uri = BASE_URI;
+        RequestParams params = new RequestParams();
+        params.put("text", message);
+        NetUtils.getClientInstance().post(uri, params, myResponseHandler);
     }
 }
