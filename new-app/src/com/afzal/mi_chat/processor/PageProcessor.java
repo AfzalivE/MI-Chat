@@ -86,7 +86,6 @@ public class PageProcessor implements ResourceProcessor {
 
         try {
             userList = page.getUserList();
-            cr.insert(UsersTable.CONTENT_URI, userList.get(0).toContentValues());
             cr.delete(UsersTable.CONTENT_URI, null, null);
             ContentValues[] crValues = new ContentValues[userList.size()];
             for (int i = 0; i < userList.size(); i++) {
@@ -99,7 +98,6 @@ public class PageProcessor implements ResourceProcessor {
 
         try {
             messageList = page.getMessageList();
-            cr.insert(MessagesTable.CONTENT_URI, messageList.get(0).toContentValues());
             ContentValues[] crValues = new ContentValues[messageList.size()];
             for (int i = 0; i < messageList.size(); i++) {
                 crValues[i] = messageList.get(i).toContentValues();
