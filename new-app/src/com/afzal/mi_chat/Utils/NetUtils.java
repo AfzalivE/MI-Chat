@@ -19,9 +19,9 @@ public class NetUtils {
     public static synchronized AsyncHttpClient getClientInstance() {
         if (client == null) {
             client = new AsyncHttpClient();
+            client.getHttpClient().getParams().setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);
         }
 
-        client.getHttpClient().getParams().setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);
         return client;
     }
 

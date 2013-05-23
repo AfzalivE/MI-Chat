@@ -1,9 +1,7 @@
 package com.afzal.mi_chat.resource;
 
-import com.afzal.mi_chat.provider.ProviderContract.MessagesTable;
-
 import android.content.ContentValues;
-import android.util.Log;
+import com.afzal.mi_chat.provider.ProviderContract.MessagesTable;
 
 public class Message {
 
@@ -46,7 +44,7 @@ public class Message {
         rowData.put(MessagesTable.CHANNELID, this.channelId);
         rowData.put(MessagesTable.USERNAME, this.userName);
         rowData.put(MessagesTable.MESSAGE, this.message);
-        Log.d(TAG, "converting to ContentValues, message: " + this.messageId.toString());
+//        Log.d(TAG, "converting to ContentValues, message: " + this.messageId.toString());
         return rowData;
     }
 }

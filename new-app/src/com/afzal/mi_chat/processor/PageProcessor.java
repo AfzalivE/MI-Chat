@@ -1,6 +1,7 @@
 package com.afzal.mi_chat.processor;
 
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -85,20 +86,25 @@ public class PageProcessor implements ResourceProcessor {
 
         try {
             userList = page.getUserList();
+            cr.insert(UsersTable.CONTENT_URI, userList.get(0).toContentValues());
             cr.delete(UsersTable.CONTENT_URI, null, null);
+            ContentValues[] crValues = new ContentValues[userList.size()];
+            for (int i = 0; i < userList.size(); i++) {
+                crValues[i] = userList.get(i).toContentValues();
+            }
+            cr.bulkInsert(UsersTable.CONTENT_URI, crValues);
         } catch (NullPointerException e) {
             Log.d(TAG, "couldn't get user list");
         }
 
-        for (User user : userList) {
-            cr.insert(UsersTable.CONTENT_URI, user.toContentValues());
-        }
-
         try {
             messageList = page.getMessageList();
-            for (Message message : messageList) {
-                cr.insert(MessagesTable.CONTENT_URI, message.toContentValues());
+            cr.insert(MessagesTable.CONTENT_URI, messageList.get(0).toContentValues());
+            ContentValues[] crValues = new ContentValues[messageList.size()];
+            for (int i = 0; i < messageList.size(); i++) {
+                crValues[i] = messageList.get(i).toContentValues();
             }
+            cr.bulkInsert(MessagesTable.CONTENT_URI, crValues);
         } catch (NullPointerException e) {
             Log.d(TAG, "couldn't get message list");
         }

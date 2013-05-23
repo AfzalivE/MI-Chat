@@ -27,7 +27,7 @@ public class Info {
         rowData.put(InfoTable.CHANNELID, this.channelId);
         rowData.put(InfoTable.USERNAME, this.userName);
         rowData.put(InfoTable.CHANNELNAME, this.channelName);
-        Log.d(TAG, "converting to ContentValues, info: " + this.userName.toString());
+//        Log.d(TAG, "converting to ContentValues, info: " + this.userName.toString());
         return rowData;
     }
 }

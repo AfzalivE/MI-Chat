@@ -1,7 +1,5 @@
 package com.afzal.mi_chat.provider;
 
-import java.util.HashMap;
-
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -11,10 +9,11 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-
 import com.afzal.mi_chat.provider.ProviderContract.InfoTable;
 import com.afzal.mi_chat.provider.ProviderContract.MessagesTable;
 import com.afzal.mi_chat.provider.ProviderContract.UsersTable;
+
+import java.util.HashMap;
 
 public class Provider extends ContentProvider {
 
@@ -282,8 +281,8 @@ public class Provider extends ContentProvider {
     // Default bulkInsert is terrible. Make it better!
     @Override
     public int bulkInsert(Uri uri, ContentValues[] values) {
-        if (uriMatcher.match(uri) != MATCHER_USER || uriMatcher.match(uri) != MATCHER_MESSAGE) {
-            throw new IllegalArgumentException("Unknown URI " + uri);
+        if (uriMatcher.match(uri) != MATCHER_USER && uriMatcher.match(uri) != MATCHER_MESSAGE) {
+            throw new IllegalArgumentException("Unknown URI " + uri + ". Matcher returned: " + uriMatcher.match(uri));
         }
 
         SQLiteDatabase db = this.dbHelper.getWritableDatabase();
