@@ -26,6 +26,7 @@
     <orderEntry type="module" module-name="android-async-http" />
     <orderEntry type="module" module-name="Crouton" />
     <orderEntry type="module" module-name="slidingmenu" />
+    <orderEntry type="library" name="mi-chat-libs" level="project" />
   </component>
 </module>
 
