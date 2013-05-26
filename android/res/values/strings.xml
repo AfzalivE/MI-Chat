@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <string name="app_name">MI Chat</string>
-    <string name="menu_login">Login</string>
-    <string name="menu_refresh">Refresh</string>
-    <string name="menu_clear">Clear</string>
-
-</resources>
