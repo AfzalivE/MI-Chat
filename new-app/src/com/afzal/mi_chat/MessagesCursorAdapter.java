@@ -1,21 +1,22 @@
 package com.afzal.mi_chat;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.support.v4.widget.CursorAdapter;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.afzal.mi_chat.provider.ProviderContract.MessagesTable;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MessagesCursorAdapter extends CursorAdapter {
 
+    private static final String TAG = MessagesCursorAdapter.class.getSimpleName();
     private Context mContext;
 
     public MessagesCursorAdapter(Context context, Cursor c, int flags) {
@@ -55,10 +56,12 @@ public class MessagesCursorAdapter extends CursorAdapter {
         long timestamp = cursor.getLong(cursor.getColumnIndex(MessagesTable.DATETIME));
         String message = cursor.getString(cursor.getColumnIndex(MessagesTable.MESSAGE));
 
+//        Log.d(TAG, message);
+
         ViewHolder holder = (ViewHolder) view.getTag();
         holder.usernameView.setText(username);
         holder.timestampView.setText(getDate(timestamp));
-        holder.messageView.setText(message);
+        holder.messageView.setText(Html.fromHtml(message));
     }
 
     private String getDate(long timestamp) {

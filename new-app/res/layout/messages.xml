@@ -19,6 +19,7 @@
                 android:id="@+id/textbox"
                 android:layout_width="320dp"
                 android:layout_height="match_parent"
+                android:hint="Write a message"
                 android:layout_alignParentLeft="true"/>
 
         <Button
@@ -27,7 +28,8 @@
                 android:layout_height="match_parent"
                 android:text="OK"
                 android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/textbox"/>
+                android:layout_toRightOf="@+id/textbox"
+                android:enabled="false"/>
     </RelativeLayout>
 
 </RelativeLayout>

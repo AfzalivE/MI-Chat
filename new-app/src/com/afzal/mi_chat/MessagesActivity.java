@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,13 +27,12 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
 
     private static final int MESSAGE_LOADER = 0;
 
-    MessagesCursorAdapter mAdapter;
-
-    int itemCount;
-
+    private MessagesCursorAdapter mAdapter;
+    private int itemCount;
     private ListView mListView;
     private EditText mEditText;
     private Button mSubmitButton;
+    private Menu mMenu;
 
     private static final String TAG = MessagesActivity.class.getSimpleName();
 
@@ -52,6 +53,23 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         mEditText = (EditText) findViewById(id.textbox);
         mSubmitButton = (Button) findViewById(id.submitmsg);
 
+        mEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().equals("")) {
+                    mSubmitButton.setEnabled(false);
+                } else {
+                    mSubmitButton.setEnabled(true);
+                }
+            }
+        });
+
         mSubmitButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,7 +80,10 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
                 processor.postResource(bundle);
 
                 setProgressBarIndeterminateVisibility(true);
+                mMenu.findItem(id.action_refresh).setVisible(false);
+
                 mEditText.setText("");
+                mSubmitButton.setEnabled(false);
             }
         });
 
@@ -83,6 +104,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getSupportMenuInflater().inflate(R.menu.main, menu);
+        mMenu = menu;
         return true;
     }
 
@@ -93,6 +115,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
             case R.id.action_refresh:
                 processor.getResource();
                 setProgressBarIndeterminateVisibility(true);
+                item.setVisible(false);
                 return true;
             case R.id.action_cleardata:
                 processor.deleteResource();
@@ -115,7 +138,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
                         MessagesTable.DATETIME,
                         MessagesTable.USERROLE,
                         MessagesTable.USERNAME,
-                        MessagesTable.MESSAGE }, null, null, null);
+                        MessagesTable.MESSAGE}, null, null, null);
             default:
                 // invalid id was passed
                 return null;
@@ -127,16 +150,22 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         mAdapter.changeCursor(cursor);
         setProgressBarIndeterminateVisibility(false);
+        if (mMenu != null) {
+            mMenu.findItem(id.action_refresh).setVisible(true);
+        }
+
         // animate scrolling to bottom if less than 10 new items added
         // otherwise jump
         // not sure if the best idea but it works for now I guess
         int newCount = mAdapter.getCount();
-        if (newCount - itemCount > 10) {
-            mListView.setSelection(newCount - 1);
-        } else {
-            mListView.smoothScrollToPosition(newCount - 1);
+        if (newCount - itemCount > 0) {
+            if (newCount - itemCount > 10) {
+                mListView.setSelection(newCount - 1);
+            } else {
+                mListView.smoothScrollToPosition(newCount - 1);
+            }
+            itemCount = newCount;
         }
-        itemCount = newCount;
     }
 
     /*

@@ -2,6 +2,7 @@ package com.afzal.mi_chat.resource;
 
 import android.content.ContentValues;
 import com.afzal.mi_chat.provider.ProviderContract.MessagesTable;
+import com.afzal.mi_chat.utils.BbToHtml;
 
 public class Message {
 
@@ -25,13 +26,8 @@ public class Message {
         this.message = parseMessage(messageText);;
     }
 
-    // TODO colour and bbcode stuff
     private String parseMessage(String messageText) {
-        if (messageText.contains("/login")) {
-            return messageText.substring(7) + " logs into the Chat.";
-        } else if (messageText.contains("/logout")) {
-            return messageText.substring(8) + " has been logged out.";
-        }
+        messageText = BbToHtml.process(messageText);
         return messageText;
     }
 
