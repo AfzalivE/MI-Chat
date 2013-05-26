@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.afzal.mi_chat"
+    package="com.afzaln.mi_chat"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="0.8" >
 
     <uses-sdk
-        android:minSdkVersion="17"
+        android:minSdkVersion="13"
         android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -17,7 +17,7 @@
         android:theme="@style/AppTheme"
         android:name=".MIChatApp">
         <activity
-            android:name="com.afzal.mi_chat.LoginActivity"
+            android:name="com.afzaln.mi_chat.LoginActivity"
             android:label="@string/app_name"
             android:noHistory="true"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
@@ -27,12 +27,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.afzal.mi_chat.MessagesActivity" >
+        <activity android:name="com.afzaln.mi_chat.MessagesActivity" >
         </activity>
 
         <provider
             android:name=".provider.Provider"
-            android:authorities="com.afzal.mi_chat.provider"
+            android:authorities="com.afzaln.mi_chat.provider"
             android:exported="false" >
         </provider>
     </application>
