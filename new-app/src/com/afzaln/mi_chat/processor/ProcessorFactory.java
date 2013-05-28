@@ -1,8 +1,8 @@
 package com.afzaln.mi_chat.processor;
 
-import com.afzaln.mi_chat.service.ServiceContract;
-
 import android.content.Context;
+
+import com.afzaln.mi_chat.service.ServiceContract;
 
 public class ProcessorFactory {
     private static ProcessorFactory mSingleton;

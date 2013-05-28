@@ -10,9 +10,12 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
+
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
@@ -28,10 +31,10 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     private static final int MESSAGE_LOADER = 0;
 
     private MessagesCursorAdapter mAdapter;
-    private int itemCount;
+    private int prevCount;
     private ListView mListView;
     private EditText mEditText;
-    private Button mSubmitButton;
+    private ImageButton mSubmitButton;
     private Menu mMenu;
 
     private static final String TAG = MessagesActivity.class.getSimpleName();
@@ -46,12 +49,20 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
 
         getSupportLoaderManager().initLoader(MESSAGE_LOADER, null, this);
         mListView = (ListView) findViewById(R.id.messagelist);
-        itemCount = 0;
+        prevCount = 0;
         mAdapter = new MessagesCursorAdapter(this, null, 0);
         mListView.setAdapter(mAdapter);
+        mListView.setOnScrollListener(new OnScrollListener() {
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                //hide keyboard when scrolling
+                hideKeyboard(view);
+            }
 
-        mEditText = (EditText) findViewById(id.textbox);
-        mSubmitButton = (Button) findViewById(id.submitmsg);
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) { }
+        });
+
+        mEditText = (EditText) findViewById(id.text_editor);
+        mSubmitButton = (ImageButton) findViewById(id.submitmsg);
 
         mEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -154,17 +165,16 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
             mMenu.findItem(id.action_refresh).setVisible(true);
         }
 
-        // animate scrolling to bottom if less than 10 new items added
-        // otherwise jump
-        // not sure if the best idea but it works for now I guess
+        // if new items added and the content new content is more than
+        // 10 rows below, jump to it, otherwise smooth scroll
         int newCount = mAdapter.getCount();
-        if (newCount - itemCount > 0) {
-            if (newCount - itemCount > 10) {
+        if (newCount - prevCount > 0) {
+            if (newCount - mListView.getLastVisiblePosition() > 10) {
                 mListView.setSelection(newCount - 1);
             } else {
                 mListView.smoothScrollToPosition(newCount - 1);
             }
-            itemCount = newCount;
+            prevCount = newCount;
         }
     }
 

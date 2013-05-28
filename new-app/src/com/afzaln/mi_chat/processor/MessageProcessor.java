@@ -1,10 +1,16 @@
 package com.afzaln.mi_chat.processor;
 
+import org.w3c.dom.Document;
+
+import java.util.List;
+
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+
 import com.afzaln.mi_chat.provider.ProviderContract.InfoTable;
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
 import com.afzaln.mi_chat.provider.ProviderContract.UsersTable;
@@ -14,9 +20,6 @@ import com.afzaln.mi_chat.resource.Page;
 import com.afzaln.mi_chat.resource.User;
 import com.afzaln.mi_chat.utils.NetUtils;
 import com.loopj.android.http.XmlHttpResponseHandler;
-import org.w3c.dom.Document;
-
-import java.util.List;
 
 /**
  * Created by afzaln on 2013-05-21.
@@ -25,7 +28,6 @@ public class MessageProcessor implements ResourceProcessor {
 
     protected static final String TAG = PageProcessor.class.getSimpleName();
     private Context mContext;
-
     private XmlHttpResponseHandler myResponseHandler = new XmlHttpResponseHandler() {
         @Override
         public void onStart() {
@@ -64,14 +66,17 @@ public class MessageProcessor implements ResourceProcessor {
     @Override
     public void postResource(Bundle params) {
         String message = params.getString("message");
-        NetUtils.postMessage(myResponseHandler, message);
+        // get the last id
+        long lastId = getLastMessageId();
+
+        NetUtils.postMessage(myResponseHandler, message, lastId);
     }
 
     private void updateContentProvider(Document result) {
         Page page = new Page(result);
-        List<User> userList = null;
-        List<Message> messageList = null;
-        Info info = null;
+        List<User> userList;
+        List<Message> messageList;
+        Info info;
 
         ContentResolver cr = this.mContext.getContentResolver();
 
@@ -108,6 +113,20 @@ public class MessageProcessor implements ResourceProcessor {
             Log.d(TAG, "couldn't get user info");
         }
 
+    }
+
+    private long getLastMessageId() {
+        ContentResolver contentResolver = mContext.getContentResolver();
+        Cursor cursor = contentResolver.query(MessagesTable.CONTENT_URI, new String[] {MessagesTable.MESSAGEID}, null, null, MessagesTable.MESSAGEID + " DESC LIMIT 1");
+
+        if (cursor.moveToNext()) {
+            Log.d(TAG, Long.toString(cursor.getLong(0)));
+            long lastId = cursor.getLong(0);
+            Log.d(TAG, "Last ID: " + Long.toString(lastId));
+            return lastId;
+        } else {
+            return -1;
+        }
     }
 
     @Override

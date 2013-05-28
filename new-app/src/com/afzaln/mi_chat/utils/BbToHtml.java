@@ -7,8 +7,6 @@ import org.kefirsf.bb.TextProcessor;
 import org.kefirsf.bb.conf.*;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by afzaln on 2013-05-26.
@@ -19,9 +17,6 @@ public class BbToHtml {
 
     private static Configuration getConfiguration() {
         Configuration cfg = ConfigurationFactory.getInstance().create();
-
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.putAll(cfg.getParams());
 
 // TODO fix link parsing
         Code code = new Code("colr");

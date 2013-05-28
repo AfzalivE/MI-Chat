@@ -5,26 +5,18 @@
     <string name="action_refresh">Refresh</string>
     <string name="action_clearsession">Session clear</string>
     <string name="action_cleardata">Data clear</string>
-    <string name="hello_world">Hello world!</string>
     <string name="macinsiders_logo">Macinsiders Logo</string>
     <string name="login_username_hint">Enter your username</string>
     <string name="login_password_hint">Enter your password</string>
     <string name="login">Login</string>
-
-    <string-array name="sports_array">
-        <item>Shuttle Badminton</item>
-        <item>Tennis</item>
-        <item>FootBall</item>
-        <item>Basket Ball</item>
-        <item>Table Tennis</item>
-        <item>Chess</item>
-        <item>Hockey</item>
-    </string-array>
 
     <string name="user_list">USERS</string>
     <string name="options_list">OPTIONS</string>
     <string name="underline"><u>Underline</u></string>
     <string name="italic">Italic</string>
     <string name="bold">Bold</string>
+    <string name="type_message_hint">Type message</string>
+    <string name="signing_in">Signing in&#8230;</string>
+    <string name="send_message">Send</string>
 
 </resources>

@@ -1,6 +1,7 @@
 package com.afzaln.mi_chat.resource;
 
 import android.content.ContentValues;
+
 import com.afzaln.mi_chat.provider.ProviderContract.InfoTable;
 
 public class Info {

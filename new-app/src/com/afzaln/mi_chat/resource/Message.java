@@ -1,6 +1,7 @@
 package com.afzaln.mi_chat.resource;
 
 import android.content.ContentValues;
+
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
 import com.afzaln.mi_chat.utils.BbToHtml;
 
