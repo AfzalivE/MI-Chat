@@ -1,12 +1,11 @@
 package com.loopj.android.http;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 import org.apache.http.Header;
 import org.apache.http.HttpStatus;
@@ -35,7 +34,7 @@ public class XmlHttpResponseHandler extends AsyncHttpResponseHandler {
 
     @Override
     protected void sendSuccessMessage(int statusCode, Header[] headers, String responseBody) {
-        Object xmlResponse = null;
+        Object xmlResponse;
         if (statusCode != HttpStatus.SC_NO_CONTENT) {
             try {
                 xmlResponse = parseResponse(responseBody);

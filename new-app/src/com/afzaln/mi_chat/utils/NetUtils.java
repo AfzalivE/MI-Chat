@@ -1,12 +1,12 @@
 package com.afzaln.mi_chat.utils;
 
-import com.loopj.android.http.RequestParams;
 import org.apache.http.client.params.ClientPNames;
 
 import android.content.Context;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.PersistentCookieStore;
+import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.XmlHttpResponseHandler;
 
 public class NetUtils {
@@ -40,10 +40,11 @@ public class NetUtils {
         NetUtils.getClientInstance().get(uri, myResponseHandler);
     }
 
-    public static void postMessage(XmlHttpResponseHandler myResponseHandler, String message) {
+    public static void postMessage(XmlHttpResponseHandler myResponseHandler, String message, long lastId) {
         String uri = BASE_URI;
         RequestParams params = new RequestParams();
         params.put("text", message);
+        params.put("lastID", Long.toString(lastId));
         NetUtils.getClientInstance().post(uri, params, myResponseHandler);
     }
 }

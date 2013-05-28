@@ -117,8 +117,8 @@ public class Page implements Resource {
             int userRole = Integer.parseInt(messageAttrs.getNamedItem("userRole").getTextContent());
             int channelId = Integer.parseInt(messageAttrs.getNamedItem("channelID").getTextContent());
             NodeList childNodes = messageNode.getChildNodes();
-            String userName = new String();
-            String messageText = new String();
+            String userName = "";
+            String messageText = "";
 
             for (int j = 0; j < childNodes.getLength(); j++) {
                 Node childNode = childNodes.item(j);

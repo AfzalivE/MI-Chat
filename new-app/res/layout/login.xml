@@ -91,10 +91,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/password"
                     android:layout_centerHorizontal="true"
                     android:paddingTop="64dp"
-                    android:text="Signing in..."
+                    android:text="@string/signing_in"
                     android:textColor="#aaadb6"
                     android:textStyle="italic" />
             </RelativeLayout>

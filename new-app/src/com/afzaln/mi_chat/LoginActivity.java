@@ -1,8 +1,8 @@
 package com.afzaln.mi_chat;
 
-import java.util.List;
-
 import org.apache.http.cookie.Cookie;
+
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
@@ -22,7 +22,6 @@ import com.afzaln.mi_chat.utils.NetUtils;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 

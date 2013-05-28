@@ -1,11 +1,16 @@
 package com.afzaln.mi_chat.processor;
 
+import org.w3c.dom.Document;
+
+import java.util.List;
+
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+
 import com.afzaln.mi_chat.provider.ProviderContract.InfoTable;
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
 import com.afzaln.mi_chat.provider.ProviderContract.UsersTable;
@@ -15,9 +20,6 @@ import com.afzaln.mi_chat.resource.Page;
 import com.afzaln.mi_chat.resource.User;
 import com.afzaln.mi_chat.utils.NetUtils;
 import com.loopj.android.http.XmlHttpResponseHandler;
-import org.w3c.dom.Document;
-
-import java.util.List;
 
 public class PageProcessor implements ResourceProcessor {
 
@@ -78,9 +80,9 @@ public class PageProcessor implements ResourceProcessor {
 
     private void updateContentProvider(Document result) {
         Page page = new Page(result);
-        List<User> userList = null;
-        List<Message> messageList = null;
-        Info info = null;
+        List<User> userList;
+        List<Message> messageList;
+        Info info;
 
         ContentResolver cr = this.mContext.getContentResolver();
 

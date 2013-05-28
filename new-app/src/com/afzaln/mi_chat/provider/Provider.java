@@ -1,5 +1,7 @@
 package com.afzaln.mi_chat.provider;
 
+import java.util.HashMap;
+
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -9,11 +11,10 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+
 import com.afzaln.mi_chat.provider.ProviderContract.InfoTable;
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
 import com.afzaln.mi_chat.provider.ProviderContract.UsersTable;
-
-import java.util.HashMap;
 
 public class Provider extends ContentProvider {
 
@@ -154,8 +155,8 @@ public class Provider extends ContentProvider {
 
         db.beginTransaction();
 
-        String insertTable = null;
-        Uri baseUri = null;
+        String insertTable;
+        Uri baseUri;
 
         try {
             switch (uriMatcher.match(uri)) {
@@ -199,7 +200,7 @@ public class Provider extends ContentProvider {
         SQLiteDatabase db = this.dbHelper.getWritableDatabase();
         int deletedRowsCount;
         String finalWhere;
-        String tableName = null;
+        String tableName;
 
         db.beginTransaction();
 
@@ -216,7 +217,7 @@ public class Provider extends ContentProvider {
 
                     // if we were passed a 'where' arg, add that to our 'finalWhere'
                     if (whereClause != null) {
-                        finalWhere = finalWhere + " AND " + whereClause;
+                        whereClause = finalWhere + " AND " + whereClause;
                     } else {
                         whereClause = finalWhere;
                     }
@@ -233,7 +234,7 @@ public class Provider extends ContentProvider {
 
                     // if we were passed a 'where' arg, add that to our 'finalWhere'
                     if (whereClause != null) {
-                        finalWhere = finalWhere + " AND " + whereClause;
+                        whereClause = finalWhere + " AND " + whereClause;
                     } else {
                         whereClause = finalWhere;
                     }
@@ -250,7 +251,7 @@ public class Provider extends ContentProvider {
 
                     // if we were passed a 'where' arg, add that to our 'finalWhere'
                     if (whereClause != null) {
-                        finalWhere = finalWhere + " AND " + whereClause;
+                        whereClause = finalWhere + " AND " + whereClause;
                     } else {
                         whereClause = finalWhere;
                     }

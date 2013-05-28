@@ -1,8 +1,8 @@
 package com.afzaln.mi_chat.resource;
 
-import com.afzaln.mi_chat.provider.ProviderContract.UsersTable;
-
 import android.content.ContentValues;
+
+import com.afzaln.mi_chat.provider.ProviderContract.UsersTable;
 
 public class User {
 

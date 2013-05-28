@@ -2,9 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="?android:attr/listPreferredItemHeightSmall"
-                android:paddingEnd="18dp"
-                android:paddingStart="18dp"
+                android:minHeight="@dimen/listPreferredItemHeightSmall"
+                android:paddingRight="18dp"
+                android:paddingLeft="18dp"
                 android:paddingTop="8dp">
 
     <TextView
@@ -13,7 +13,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:text="Username"
             android:textColor="#777777"
             android:textSize="12sp"
             android:textStyle="bold"/>
@@ -24,7 +23,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:text="00:00:00"
             android:textColor="#777777"
             android:textSize="12sp"/>
 
@@ -36,8 +34,8 @@
             android:layout_below="@id/username"
             android:paddingBottom="4dp"
             android:paddingTop="4dp"
-            android:text="Message"
             android:textColor="#333333"
-            android:textSize="14sp"/>
+            android:textSize="14sp"
+            android:autoLink="web"/>
 
 </RelativeLayout>
