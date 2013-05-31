@@ -49,7 +49,7 @@
                 android:hint="@string/type_message_hint"
                 android:minHeight="48dip"
                 android:maxLines="3"
-                android:inputType="textShortMessage|textAutoCorrect|textCapSentences|textMultiLine"
+                android:inputType="textMultiLine"
                 android:imeOptions="actionSend|flagNoEnterAction"
                 android:maxLength="2000"
                 />
