@@ -2,6 +2,7 @@
   <library name="crouton.aar">
     <CLASSES>
       <root url="file://$PROJECT_DIR$/android-app/build/exploded-bundles/crouton.aar/classes.jar" />
+      <root url="jar://$PROJECT_DIR$/android-app/build/exploded-bundles/crouton.aar/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
