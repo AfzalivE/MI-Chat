@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="slidingmenu.aar">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/android-app/build/exploded-bundles/slidingmenu.aar/classes.jar" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
