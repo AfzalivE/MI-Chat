@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="actionbarsherlock.aar">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/android-app/build/exploded-bundles/actionbarsherlock.aar/classes.jar" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
