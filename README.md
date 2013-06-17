@@ -32,4 +32,4 @@ The new app workflow (in progress)
 
 - ~~A ServiceHelper is used to POST a message to the chat web page~~. ContentProvider is used to obtain user information like user ID
 - The response determines if the message was posted or not
-- GET is called on the chat web page to refresh the contents after postinge as seen in onCreateLoader.
+- GET is called on the chat web page to refresh the contents after posting as seen in onCreateLoader.
