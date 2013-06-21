@@ -52,6 +52,7 @@
                 android:inputType="textMultiLine"
                 android:imeOptions="actionSend|flagNoEnterAction"
                 android:maxLength="2000"
+                android:background="@drawable/edit_text_holo_light"
                 />
 
         <RelativeLayout

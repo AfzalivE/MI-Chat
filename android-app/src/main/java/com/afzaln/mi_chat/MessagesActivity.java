@@ -1,5 +1,6 @@
 package com.afzaln.mi_chat;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -128,12 +129,14 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
                 setProgressBarIndeterminateVisibility(true);
                 item.setVisible(false);
                 return true;
-            case R.id.action_cleardata:
+            case R.id.action_clearmessages:
                 processor.deleteResource();
                 setProgressBarIndeterminateVisibility(true);
                 break;
-            case R.id.action_clearsession:
+            case R.id.action_logout:
                 NetUtils.getCookieStoreInstance(MessagesActivity.this).clear();
+                Intent i = new Intent(MessagesActivity.this, LoginActivity.class);
+                startActivity(i);
                 break;
         }
         return super.onOptionsItemSelected(item);

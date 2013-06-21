@@ -69,7 +69,6 @@
                     android:layout_below="@+id/password"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="42dp"
-                    android:background="@color/mi_maroon"
                     android:text="@string/login"
                     android:textColor="@android:color/white" />
             </RelativeLayout>
