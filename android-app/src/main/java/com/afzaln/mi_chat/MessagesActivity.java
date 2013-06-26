@@ -1,5 +1,7 @@
 package com.afzaln.mi_chat;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -9,17 +11,21 @@ import android.support.v4.content.Loader;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
+import android.widget.TextView;
 
+import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
+import com.afzaln.mi_chat.MessageListView.OnSizeChangedListener;
 import com.afzaln.mi_chat.R.id;
 import com.afzaln.mi_chat.processor.ProcessorFactory;
 import com.afzaln.mi_chat.processor.ResourceProcessor;
@@ -32,34 +38,37 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     private static final int MESSAGE_LOADER = 0;
 
     private MessagesCursorAdapter mAdapter;
-    private int prevCount;
-    private ListView mListView;
+    private int mPrevCount;
+    private MessageListView mListView;
     private EditText mEditText;
     private ImageButton mSubmitButton;
     private Menu mMenu;
+    private ActionMode mActionMode;
 
     private static final String TAG = MessagesActivity.class.getSimpleName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.messages);
         getWindow().setBackgroundDrawable(null);
 
         getSupportLoaderManager().initLoader(MESSAGE_LOADER, null, this);
-        mListView = (ListView) findViewById(R.id.messagelist);
-        prevCount = 0;
+        mListView = (MessageListView) findViewById(R.id.messagelist);
+        mPrevCount = 0;
         mAdapter = new MessagesCursorAdapter(this, null, 0);
         mListView.setAdapter(mAdapter);
-        mListView.setOnScrollListener(new OnScrollListener() {
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                //hide keyboard when scrolling
-                hideKeyboard(view);
-            }
+        mListView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
+        registerForContextMenu(mListView);
 
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) { }
+        mListView.setOnSizeChangedListener(new OnSizeChangedListener() {
+            public void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
+                mListView.setSelection(mAdapter.getCount() - 1);
+            }
         });
 
         mEditText = (EditText) findViewById(id.text_editor);
@@ -142,6 +151,29 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         return super.onOptionsItemSelected(item);
     }
 
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, view, menuInfo);
+        getMenuInflater().inflate(R.menu.context_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(android.view.MenuItem item) {
+        AdapterContextMenuInfo info  = (AdapterContextMenuInfo) item.getMenuInfo();
+
+        switch (item.getItemId()) {
+            case id.menu_copytext:
+                CharSequence message = ((TextView) info.targetView.findViewById(id.message)).getText();
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                ClipData data = ClipData.newPlainText("test", message);
+                clipboard.setPrimaryClip(data);
+                return true;
+            default:
+                return false;
+        }
+    }
+
     @Override
     public Loader<Cursor> onCreateLoader(int loaderId, Bundle bundle) {
         Log.d(TAG, "Loading messages");
@@ -171,13 +203,13 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         // if new items added and the content new content is more than
         // 10 rows below, jump to it, otherwise smooth scroll
         int newCount = mAdapter.getCount();
-        if (newCount - prevCount > 0) {
+        if (newCount - mPrevCount > 0) {
             if (newCount - mListView.getLastVisiblePosition() > 10) {
                 mListView.setSelection(newCount - 1);
             } else {
                 mListView.smoothScrollToPosition(newCount - 1);
             }
-            prevCount = newCount;
+            mPrevCount = newCount;
         }
     }
 
@@ -190,4 +222,5 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         setProgressBarIndeterminateVisibility(false);
         mAdapter.changeCursor(null);
     }
+
 }

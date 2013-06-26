@@ -26,7 +26,7 @@ android {
     versionProps.load(new FileInputStream(file('version.properties')))
 
     defaultConfig {
-        minSdkVersion 7
+        minSdkVersion 11
         targetSdkVersion 17
 
         versionCode versionProps['code'].toInteger()
