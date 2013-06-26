@@ -3,6 +3,7 @@
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/android-app/libs/kefirbb-1.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/android-app/libs/kefirbb-1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/android-app/libs/kefirbb-1.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

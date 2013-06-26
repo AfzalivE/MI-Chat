@@ -5,7 +5,7 @@
               android:layout_height="match_parent"
               android:gravity="bottom">
 
-    <ListView
+    <com.afzaln.mi_chat.MessageListView
             android:id="@+id/messagelist"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -18,8 +18,7 @@
             android:cacheColorHint="@android:color/white"
             android:scrollbarAlwaysDrawVerticalTrack="false"
             android:scrollbarStyle="insideOverlay"
-            android:paddingBottom="8dip"
-            android:descendantFocusability="blocksDescendants"/>
+            android:paddingBottom="8dip"/>
 
     <!-- Divider -->
     <View

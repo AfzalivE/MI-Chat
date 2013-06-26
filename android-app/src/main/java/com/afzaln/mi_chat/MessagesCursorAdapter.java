@@ -1,13 +1,11 @@
 package com.afzaln.mi_chat;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.support.v4.widget.CursorAdapter;
 import android.text.Html;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,12 +40,8 @@ public class MessagesCursorAdapter extends CursorAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        ((MessageListView) parent).setItemChecked(position, true);
         View view = super.getView(position, convertView, parent);
-        if (position % 2 == 1) {
-            view.setBackgroundColor(mContext.getResources().getColor(R.color.alt_bg));
-        } else {
-            view.setBackgroundColor(Color.WHITE);
-        }
 
         return view;
     }
@@ -71,10 +65,8 @@ public class MessagesCursorAdapter extends CursorAdapter {
         holder.messageView.setText(Html.fromHtml(message));
     }
 
-    private String getDate(long timestamp) {
-        Date date = new Date(timestamp);
-        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
-        return format.format(date);
+    private CharSequence getDate(long timestamp) {
+          return DateUtils.getRelativeTimeSpanString(timestamp, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS, DateUtils.FORMAT_ABBREV_RELATIVE);
     }
 
     static class ViewHolder {
