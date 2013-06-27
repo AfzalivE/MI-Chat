@@ -17,11 +17,11 @@ import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
 public class MessagesCursorAdapter extends CursorAdapter {
 
     private static final String TAG = MessagesCursorAdapter.class.getSimpleName();
-    private Context mContext;
+    private int mModNameColor;
 
     public MessagesCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
-        mContext = context;
+        mModNameColor = context.getResources().getColor(color.mod_name);
     }
 
     @Override
@@ -57,9 +57,9 @@ public class MessagesCursorAdapter extends CursorAdapter {
         ViewHolder holder = (ViewHolder) view.getTag();
         holder.userNameView.setText(userName);
         if (userRole == 2) {
-            holder.userNameView.setTextColor(mContext.getResources().getColor(color.mod_name));
+            holder.userNameView.setTextColor(mModNameColor);
         } else {
-            holder.userNameView.setTextColor(Color.rgb(77, 77, 77));
+            holder.userNameView.setTextColor(Color.rgb(33, 33, 33));
         }
         holder.timestampView.setText(getDate(timestamp));
         holder.messageView.setText(Html.fromHtml(message));
