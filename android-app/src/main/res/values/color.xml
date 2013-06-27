@@ -1,6 +1,10 @@
 
     <resources>
+        <color name="mi_maroon_darkest">#FF3F062A</color>
+        <color name="mi_maroon_darker">#FF650A43</color>
         <color name="mi_maroon">#FF7F0D54</color>
+        <color name="mi_maroon_lighter">#FF943C73</color>
+        <color name="mi_maroon_lightest">#FFCB529E</color>
         <color name="mod_name">#FF0BC0CB</color>
         <color name="alt_bg">#FFEDEDED</color>
     </resources>

@@ -9,15 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.afzaln.mi_chat.R.color;
 import com.afzaln.mi_chat.provider.ProviderContract.UsersTable;
 
 public class UsersCursorAdapter extends CursorAdapter {
 
-    private Context mContext;
+    private int mModNameColor;
 
     public UsersCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
-        mContext = context;
+        mModNameColor = context.getResources().getColor(color.mod_name);
     }
 
     @Override
@@ -40,7 +41,7 @@ public class UsersCursorAdapter extends CursorAdapter {
         ViewHolder holder = (ViewHolder) view.getTag();
         holder.userNameView.setText(userName);
         if (userRole == 2) {
-            holder.userNameView.setTextColor(mContext.getResources().getColor(R.color.mod_name));
+            holder.userNameView.setTextColor(mModNameColor);
         } else {
             holder.userNameView.setTextColor(Color.WHITE);
         }

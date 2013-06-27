@@ -38,6 +38,9 @@
             android:authorities="com.afzaln.mi_chat.provider"
             android:exported="false" >
         </provider>
+
+        <receiver android:name=".AlarmReceiver" />
+
     </application>
 
 </manifest>

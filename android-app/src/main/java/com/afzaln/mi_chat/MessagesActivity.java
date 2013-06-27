@@ -1,7 +1,12 @@
 package com.afzaln.mi_chat;
 
+import java.util.Calendar;
+
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -21,12 +26,12 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.afzaln.mi_chat.MessageListView.OnSizeChangedListener;
 import com.afzaln.mi_chat.R.id;
+import com.afzaln.mi_chat.R.layout;
 import com.afzaln.mi_chat.processor.ProcessorFactory;
 import com.afzaln.mi_chat.processor.ResourceProcessor;
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
@@ -36,14 +41,17 @@ import com.afzaln.mi_chat.utils.NetUtils;
 public class MessagesActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int MESSAGE_LOADER = 0;
+    private static final int REFRESH_INTERVAL = 3000;
 
     private MessagesCursorAdapter mAdapter;
-    private int mPrevCount;
     private MessageListView mListView;
     private EditText mEditText;
     private ImageButton mSubmitButton;
     private Menu mMenu;
-    private ActionMode mActionMode;
+
+    private AlarmManager mAlarmManager;
+    private PendingIntent mPendingIntent;
+    private boolean mManualRefresh = false;
 
     private static final String TAG = MessagesActivity.class.getSimpleName();
 
@@ -54,12 +62,11 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
 
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.messages);
+        setContentView(layout.messages);
         getWindow().setBackgroundDrawable(null);
 
         getSupportLoaderManager().initLoader(MESSAGE_LOADER, null, this);
         mListView = (MessageListView) findViewById(R.id.messagelist);
-        mPrevCount = 0;
         mAdapter = new MessagesCursorAdapter(this, null, 0);
         mListView.setAdapter(mAdapter);
         mListView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
@@ -108,6 +115,9 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
             }
         });
 
+        mAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        mPendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     @Override
@@ -120,6 +130,13 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         // Use normal Service class maybe
         ResourceProcessor processor = ProcessorFactory.getInstance(this).getProcessor(ServiceContract.RESOURCE_TYPE_PAGE);
         processor.getResource();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mManualRefresh = false;
+        mAlarmManager.cancel(mPendingIntent);
     }
 
     @Override
@@ -137,6 +154,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
                 processor.getResource();
                 setProgressBarIndeterminateVisibility(true);
                 item.setVisible(false);
+                mManualRefresh = true;
                 return true;
             case R.id.action_clearmessages:
                 processor.deleteResource();
@@ -194,23 +212,31 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        boolean isListAtEnd = mListView.getLastVisiblePosition() == (mAdapter.getCount() - 1);
         mAdapter.changeCursor(cursor);
         setProgressBarIndeterminateVisibility(false);
         if (mMenu != null) {
             mMenu.findItem(id.action_refresh).setVisible(true);
         }
 
-        // if new items added and the content new content is more than
+        // if refresh was manual or if list was scrolled to the
+        // bottom and the content new content is more than
         // 10 rows below, jump to it, otherwise smooth scroll
         int newCount = mAdapter.getCount();
-        if (newCount - mPrevCount > 0) {
+        if (mManualRefresh || isListAtEnd) {
             if (newCount - mListView.getLastVisiblePosition() > 10) {
                 mListView.setSelection(newCount - 1);
             } else {
                 mListView.smoothScrollToPosition(newCount - 1);
             }
-            mPrevCount = newCount;
         }
+
+        mManualRefresh = false;
+
+        // Updates on regular intervals on the idea
+        // that if the app is open, the user must be
+        // expecting responses in quick succession
+        mAlarmManager.set(AlarmManager.RTC, Calendar.getInstance().getTimeInMillis() + REFRESH_INTERVAL, mPendingIntent);
     }
 
     /*
