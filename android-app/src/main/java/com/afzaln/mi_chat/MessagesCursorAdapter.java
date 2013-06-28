@@ -2,7 +2,6 @@ package com.afzaln.mi_chat;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.support.v4.widget.CursorAdapter;
 import android.text.Html;
 import android.text.format.DateUtils;
@@ -17,11 +16,14 @@ import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
 public class MessagesCursorAdapter extends CursorAdapter {
 
     private static final String TAG = MessagesCursorAdapter.class.getSimpleName();
-    private int mModNameColor;
+    private static final int MOD_USER_ROLE = 2;
+    private final int mUserameColor;
+    private final int mModNameColor;
 
     public MessagesCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
         mModNameColor = context.getResources().getColor(color.mod_name);
+        mUserameColor = context.getResources().getColor(color.normal_text);
     }
 
     @Override
@@ -56,14 +58,19 @@ public class MessagesCursorAdapter extends CursorAdapter {
 
         ViewHolder holder = (ViewHolder) view.getTag();
         holder.userNameView.setText(userName);
-        if (userRole == 2) {
-            holder.userNameView.setTextColor(mModNameColor);
-        } else {
-            holder.userNameView.setTextColor(Color.rgb(33, 33, 33));
-        }
+        formatUsername(userRole, holder.userNameView);
         holder.timestampView.setText(getDate(timestamp));
         holder.messageView.setText(Html.fromHtml(message));
     }
+
+    private void formatUsername(int userRole, TextView userNameView) {
+        if (userRole == MOD_USER_ROLE) {
+            userNameView.setTextColor(mModNameColor);
+        } else {
+            userNameView.setTextColor(mUserameColor);
+        }
+    }
+
 
     private CharSequence getDate(long timestamp) {
           return DateUtils.getRelativeTimeSpanString(timestamp, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS, DateUtils.FORMAT_ABBREV_RELATIVE);

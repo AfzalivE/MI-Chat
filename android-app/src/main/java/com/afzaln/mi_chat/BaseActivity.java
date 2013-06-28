@@ -2,59 +2,59 @@ package com.afzaln.mi_chat;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.actionbarsherlock.view.MenuItem;
+import com.afzaln.mi_chat.R.id;
+import com.afzaln.mi_chat.R.layout;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenedListener;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
 public class BaseActivity extends SlidingFragmentActivity {
-    protected Fragment mFrag;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setTitle(R.string.app_name);
-
-        setBehindContentView(R.layout.menu_frame);
-        if (savedInstanceState == null) {
-            FragmentTransaction t = this.getSupportFragmentManager().beginTransaction();
-            mFrag = new UserListFragment();
-            t.replace(R.id.menu_frame, mFrag);
-            t.commit();
-        } else {
-            mFrag = this.getSupportFragmentManager().findFragmentById(R.id.menu_frame);
-        }
+        setContentView(layout.main_layout);
 
         SlidingMenu sm = getSlidingMenu();
 
-        sm.setOnOpenedListener(new OnOpenedListener() {
-            @Override
-            public void onOpened() {
-                hideKeyboard(getCurrentFocus());
-            }
-        });
+        // check if the layout contains the menu frame
+        if (findViewById(id.menu_frame) == null) {
+            setBehindContentView(layout.menu_frame);
+            sm.setSlidingEnabled(true);
+            sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            sm.setOnOpenedListener(new OnOpenedListener() {
+                @Override
+                public void onOpened() {
+                    hideKeyboard(getCurrentFocus());
+                }
+            });
+        } else {
+            // add a dummy view
+            View v = new View(this);
+            setBehindContentView(v);
+            sm.setSlidingEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+        }
 
-        sm.setMode(SlidingMenu.LEFT_RIGHT);
+        // set the behind view fragment
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(id.menu_frame, new UserListFragment())
+                .commit();
+
+        // customize the SlidingMenu
         sm.setShadowWidthRes(R.dimen.shadow_width);
         sm.setShadowDrawable(R.drawable.shadow);
         sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
         sm.setFadeDegree(0.45f);
-        sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 
-        sm.setSecondaryMenu(R.layout.menu_frame_two);
-        sm.setSecondaryShadowDrawable(R.drawable.shadowright);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.menu_frame_two, new OptionsListFragment())
-                .commit();
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setSlidingActionBarEnabled(false);
 
     }
