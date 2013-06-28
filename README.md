@@ -8,6 +8,10 @@ Macinsiders native Android chat app
 I have completely removed support for ant build system, using gradle instead.
 If you still want to build with ant, fork this project and import it to your IDE. From there, you're on your own.
 
+![Alt text](/design/latest/messages_activity_phone.png "Messages screen (Phone)")
+
+![Alt text](/design/latest/messages_activity_tablet.png "Messages screen (Tablet) ")
+
 Requirements
 ------------
 - Android Studio + knowledge of the gradle build system
