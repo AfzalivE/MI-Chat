@@ -73,7 +73,7 @@ public class MessagesCursorAdapter extends CursorAdapter {
 
 
     private CharSequence getDate(long timestamp) {
-          return DateUtils.getRelativeTimeSpanString(timestamp, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS, DateUtils.FORMAT_ABBREV_RELATIVE);
+        return DateUtils.getRelativeTimeSpanString(timestamp, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS, DateUtils.FORMAT_ABBREV_RELATIVE);
     }
 
     static class ViewHolder {
