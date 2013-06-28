@@ -2,7 +2,6 @@ package com.afzaln.mi_chat;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +13,13 @@ import com.afzaln.mi_chat.provider.ProviderContract.UsersTable;
 
 public class UsersCursorAdapter extends CursorAdapter {
 
-    private int mModNameColor;
+    private final int mUserameColor;
+    private final int mModNameColor;
 
     public UsersCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
         mModNameColor = context.getResources().getColor(color.mod_name);
+        mUserameColor = context.getResources().getColor(color.normal_text);
     }
 
     @Override
@@ -43,7 +44,7 @@ public class UsersCursorAdapter extends CursorAdapter {
         if (userRole == 2) {
             holder.userNameView.setTextColor(mModNameColor);
         } else {
-            holder.userNameView.setTextColor(Color.WHITE);
+            holder.userNameView.setTextColor(mUserameColor);
         }
     }
 

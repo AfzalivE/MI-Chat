@@ -31,7 +31,6 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.afzaln.mi_chat.MessageListView.OnSizeChangedListener;
 import com.afzaln.mi_chat.R.id;
-import com.afzaln.mi_chat.R.layout;
 import com.afzaln.mi_chat.processor.ProcessorFactory;
 import com.afzaln.mi_chat.processor.ResourceProcessor;
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
@@ -62,7 +61,6 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
 
         super.onCreate(savedInstanceState);
 
-        setContentView(layout.messages);
         getWindow().setBackgroundDrawable(null);
 
         getSupportLoaderManager().initLoader(MESSAGE_LOADER, null, this);
@@ -118,6 +116,8 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         mAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AlarmReceiver.class);
         mPendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+//        ViewServer.get(this).addWindow(this);
     }
 
     @Override

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="@dimen/listPreferredItemHeightSmall"
                 android:paddingRight="18dp"
                 android:paddingLeft="18dp"
-                android:paddingTop="8dp">
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp">
 
     <TextView
             android:id="@+id/username"
@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:textColor="#333"
+            android:textColor="@color/normal_text"
             android:textSize="14sp"
             android:textStyle="bold"
             android:fontFamily="sans-serif-light"
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:textColor="#777"
+            android:textColor="@color/light_text"
             android:fontFamily="sans-serif-light"
             android:textSize="12sp"
             android:text="2 min ago"/>
@@ -40,7 +40,7 @@
             android:layout_below="@id/username"
             android:paddingBottom="4dp"
             android:paddingTop="4dp"
-            android:textColor="#333"
+            android:textColor="@color/normal_text"
             android:textSize="14sp"
             android:autoLink="web"
             android:text="This is a message"/>

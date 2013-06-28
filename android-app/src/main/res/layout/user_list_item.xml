@@ -8,5 +8,6 @@
           android:paddingRight="@dimen/listPreferredItemPaddingEnd"
           android:textAppearance="?android:attr/textAppearanceMedium"
           android:fontFamily="sans-serif-light"
-          android:textColor="#FFFFFF"
-          android:singleLine="true"/>
+          android:textColor="@color/normal_text"
+          android:singleLine="true"
+          android:text="Username"/>
