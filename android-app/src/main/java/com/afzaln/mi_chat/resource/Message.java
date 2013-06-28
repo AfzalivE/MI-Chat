@@ -24,7 +24,7 @@ public class Message {
         this.userRole = userRole;
         this.channelId = channelId;
         this.userName = userName;
-        this.message = parseMessage(messageText);;
+        this.message = parseMessage(messageText);
     }
 
     private String parseMessage(String messageText) {

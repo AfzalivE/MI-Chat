@@ -6,23 +6,20 @@ public class XmlParserException extends RuntimeException {
     /**
      * Create a new exception with the given message.
      *
-     * @param message
-     *            The explanation of why the exception was thrown.
+     * @param message The explanation of why the exception was thrown.
      */
     public XmlParserException(String message) {
-            super(message);
+        super(message);
     }
 
     /**
      * Create a new exception with the given message and cause.
      *
-     * @param message
-     *            The explanation of why the exception was thrown.
-     * @param cause
-     *            The underlying exception that occurred that caused this one to
-     *            be created.
+     * @param message The explanation of why the exception was thrown.
+     * @param cause   The underlying exception that occurred that caused this one to
+     *                be created.
      */
     public XmlParserException(String message, Exception cause) {
-            super(message, cause);
+        super(message, cause);
     }
 }

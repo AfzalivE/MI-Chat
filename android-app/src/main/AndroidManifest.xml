@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.afzaln.mi_chat"
     android:versionCode="2"
-    android:versionName="See version.properties" >
+    android:versionName="See version.properties">
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -27,16 +28,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.afzaln.mi_chat.MessagesActivity"
-                  android:noHistory="true"
-                  android:windowSoftInputMode="stateHidden|adjustResize"
-                  android:theme="@style/AppTheme">
+        <activity
+            android:name="com.afzaln.mi_chat.MessagesActivity"
+            android:noHistory="true"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:theme="@style/AppTheme">
         </activity>
 
         <provider
             android:name=".provider.Provider"
             android:authorities="com.afzaln.mi_chat.provider"
-            android:exported="false" >
+            android:exported="false">
         </provider>
 
         <receiver android:name=".AlarmReceiver" />

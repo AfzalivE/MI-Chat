@@ -7,6 +7,6 @@
               android:gravity="bottom"
               tools:context=".MessagesActivity">
 
-    <include layout="@layout/messages"/>
+    <include layout="@layout/messages" />
 
 </LinearLayout>

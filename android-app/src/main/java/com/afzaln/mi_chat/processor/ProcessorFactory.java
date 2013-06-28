@@ -9,7 +9,7 @@ public class ProcessorFactory {
     private Context mContext;
     private ResourceProcessor mDefaultProcessor;
 
-    public void setDefaultProcessor (ResourceProcessor processor) {
+    public void setDefaultProcessor(ResourceProcessor processor) {
         mDefaultProcessor = processor;
     }
 

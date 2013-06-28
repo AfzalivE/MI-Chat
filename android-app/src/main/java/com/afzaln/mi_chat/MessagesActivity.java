@@ -178,7 +178,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
 
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
-        AdapterContextMenuInfo info  = (AdapterContextMenuInfo) item.getMenuInfo();
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
 
         switch (item.getItemId()) {
             case id.menu_copytext:

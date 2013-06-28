@@ -4,7 +4,14 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.kefirsf.bb.BBProcessorFactory;
 import org.kefirsf.bb.ConfigurationFactory;
 import org.kefirsf.bb.TextProcessor;
-import org.kefirsf.bb.conf.*;
+import org.kefirsf.bb.conf.Code;
+import org.kefirsf.bb.conf.Configuration;
+import org.kefirsf.bb.conf.Constant;
+import org.kefirsf.bb.conf.NamedValue;
+import org.kefirsf.bb.conf.Pattern;
+import org.kefirsf.bb.conf.Scope;
+import org.kefirsf.bb.conf.Template;
+import org.kefirsf.bb.conf.Text;
 
 import java.util.Arrays;
 

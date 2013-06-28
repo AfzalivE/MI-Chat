@@ -10,4 +10,4 @@
           android:fontFamily="sans-serif-light"
           android:textColor="@color/normal_text"
           android:singleLine="true"
-          android:text="Username"/>
+          android:text="Username" />
