@@ -77,7 +77,8 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         });
 
         mEditText = (EditText) findViewById(id.text_editor);
-        mSubmitButton = (ImageButton) findViewById(id.submitmsg);
+        mSubmitButton = (ImageButton) findViewById(id.submit_button);
+        mSubmitButton.setEnabled(false);
 
         mEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -184,7 +185,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
             case id.menu_copytext:
                 CharSequence message = ((TextView) info.targetView.findViewById(id.message)).getText();
                 ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                ClipData data = ClipData.newPlainText("test", message);
+                ClipData data = ClipData.newPlainText("message", message);
                 clipboard.setPrimaryClip(data);
                 return true;
             default:

@@ -2,7 +2,7 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.afzaln.mi_chat"
-    android:versionCode="2"
+    android:versionCode="5"
     android:versionName="See version.properties">
 
     <uses-sdk
@@ -10,6 +10,10 @@
         android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <supports-screens
+        android:largeScreens="true"
+        android:xlargeScreens="true" />
 
     <application
         android:allowBackup="true"
