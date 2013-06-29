@@ -72,8 +72,10 @@ public class PageProcessor implements ResourceProcessor {
             Log.d(TAG, Long.toString(cursor.getLong(0)));
             long lastId = cursor.getLong(0);
             Log.d(TAG, "Last ID: " + Long.toString(lastId));
+            cursor.close();
             return lastId;
         } else {
+            cursor.close();
             return -1;
         }
     }

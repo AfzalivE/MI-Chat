@@ -1,41 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="@dimen/listPreferredItemHeightSmall"
-                android:paddingRight="18dp"
-                android:paddingLeft="18dp"
-                android:paddingTop="8dp">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/listPreferredItemHeightSmall"
+    android:paddingRight="18dp"
+    android:paddingLeft="18dp"
+    android:paddingTop="6dp"
+    android:paddingBottom="6dp">
 
     <TextView
-            android:id="@+id/username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:textColor="#777777"
-            android:textSize="12sp"
-            android:textStyle="bold"/>
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:textColor="@color/normal_text"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-light"
+        android:text="username"
+        />
 
     <TextView
-            android:id="@+id/timestamp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:textColor="#777777"
-            android:textSize="12sp"/>
+        android:id="@+id/timestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:textColor="@color/light_text"
+        android:fontFamily="sans-serif-light"
+        android:textSize="12sp"
+        android:text="2 min ago" />
 
     <TextView
-            android:id="@+id/message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/username"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp"
-            android:textColor="#333333"
-            android:textSize="14sp"
-            android:autoLink="web"/>
+        android:id="@+id/message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/username"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+        android:textColor="@color/normal_text"
+        android:textSize="14sp"
+        android:autoLink="web"
+        android:text="This is a message" />
 
 </RelativeLayout>
