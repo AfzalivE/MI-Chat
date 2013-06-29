@@ -3,6 +3,8 @@
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/../../android/android-sdk-macosx/extras/android/m2repository/com/android/support/support-v4/13.0.0/support-v4-13.0.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/../../android/android-sdk-macosx/extras/android/m2repository/com/android/support/support-v4/13.0.0/support-v4-13.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../android/android-sdk-macosx/extras/android/m2repository/com/android/support/support-v4/13.0.0/support-v4-13.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../android/android-sdk-macosx/extras/android/m2repository/com/android/support/support-v4/13.0.0/support-v4-13.0.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

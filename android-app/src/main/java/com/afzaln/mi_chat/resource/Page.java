@@ -67,11 +67,11 @@ public class Page implements Resource {
             String typeAttrs = infoNode.getAttributes().getNamedItem("type").getNodeValue();
             String textContent = infoNode.getTextContent();
 
-            userId = (!typeAttrs.equals("userID"))? userId : Long.parseLong(textContent);
-            userRole = (!typeAttrs.equals("userRole"))? userRole : Integer.parseInt(textContent);
-            channelId = (!typeAttrs.equals("channelID"))? userRole : Integer.parseInt(textContent);
-            userName = (!typeAttrs.equals("userName"))? userName : infoNode.getTextContent();
-            channelName = (!typeAttrs.equals("channelName"))? userName : infoNode.getTextContent();
+            userId = (!typeAttrs.equals("userID")) ? userId : Long.parseLong(textContent);
+            userRole = (!typeAttrs.equals("userRole")) ? userRole : Integer.parseInt(textContent);
+            channelId = (!typeAttrs.equals("channelID")) ? userRole : Integer.parseInt(textContent);
+            userName = (!typeAttrs.equals("userName")) ? userName : infoNode.getTextContent();
+            channelName = (!typeAttrs.equals("channelName")) ? userName : infoNode.getTextContent();
 
         }
 
@@ -93,7 +93,7 @@ public class Page implements Resource {
             int channelId = Integer.parseInt(userAttrs.getNamedItem("channelID").getTextContent());
             String userName = userNode.getTextContent();
 
-            User user = new User (userId, userRole, channelId, userName);
+            User user = new User(userId, userRole, channelId, userName);
 
             userList.add(user);
         }
@@ -106,7 +106,7 @@ public class Page implements Resource {
 
         List<Message> messageList = new ArrayList<Message>();
 
-        for (int i= 0; i < messages.getLength(); i++) {
+        for (int i = 0; i < messages.getLength(); i++) {
             Node messageNode = messages.item(i);
 
             NamedNodeMap messageAttrs = messageNode.getAttributes();

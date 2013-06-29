@@ -42,7 +42,7 @@ public class UserListFragment extends Fragment implements LoaderManager.LoaderCa
     public Loader<Cursor> onCreateLoader(int loaderId, Bundle bundle) {
         switch (loaderId) {
             case USER_LOADER:
-                return new CursorLoader(getActivity(), UsersTable.CONTENT_URI, new String[] { UsersTable._ID, UsersTable.USERNAME, UsersTable.USERROLE }, null, null, null);
+                return new CursorLoader(getActivity(), UsersTable.CONTENT_URI, new String[] {UsersTable._ID, UsersTable.USERNAME, UsersTable.USERROLE}, null, null, null);
             default:
                 // invalid id was passed
                 return null;

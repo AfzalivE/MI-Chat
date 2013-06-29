@@ -338,7 +338,7 @@ public class Provider extends ContentProvider {
             case MATCHER_MESSAGE:
                 newRowId = writableDb.insert(MessagesTable.TABLE_NAME, null, values);
                 break;
-            }
+        }
 
         if (newRowId == -1) { // if rowID is -1, it means the insert failed
             throw new SQLException("Failed to insert row into " + uri); // Insert

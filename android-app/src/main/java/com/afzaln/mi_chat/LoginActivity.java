@@ -56,7 +56,6 @@ public class LoginActivity extends Activity {
 
         @Override
         public void onFailure(Throwable e, String response) {
-            // TODO deal with
             Log.d(TAG, "onFailure");
             if (authCookieExists() && mRetryLogin) {
                 mRetryLogin = false;
@@ -88,10 +87,11 @@ public class LoginActivity extends Activity {
         mLoginFlipper.setOutAnimation(LoginActivity.this, android.R.anim.fade_out);
         mLoginFlipper.setInAnimation(LoginActivity.this, android.R.anim.fade_in);
 
-        Button login = (Button) findViewById(R.id.login);
         if (authCookieExists()) {
             login(null);
         }
+
+        Button login = (Button) findViewById(R.id.login);
 
         login.setOnClickListener(new OnClickListener() {
 

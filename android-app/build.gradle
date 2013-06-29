@@ -1,11 +1,4 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:0.4.2'
-    }
-}
+
 apply plugin: 'android'
 
 dependencies {
@@ -26,7 +19,7 @@ android {
     versionProps.load(new FileInputStream(file('version.properties')))
 
     defaultConfig {
-        minSdkVersion 7
+        minSdkVersion 11
         targetSdkVersion 17
 
         versionCode versionProps['code'].toInteger()

@@ -18,5 +18,5 @@ public interface ServiceContract {
 
     public static enum Method {
         GET, POST, PUT, DELETE
-}
+    }
 }
