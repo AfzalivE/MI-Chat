@@ -3,22 +3,22 @@
 <!-- Generated with http://android-holo-colors.com -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-  <style name="AppTheme" parent="android:Theme.Light">
+    <style name="AppTheme" parent="android:Theme.Light">
 
-    <item name="android:editTextStyle">@style/EditTextAppTheme</item>
+        <item name="android:editTextStyle">@style/EditTextAppTheme</item>
 
-    <item name="android:buttonStyle">@style/ButtonAppTheme</item>
+        <item name="android:buttonStyle">@style/ButtonAppTheme</item>
 
-    <item name="android:imageButtonStyle">@style/ImageButtonAppTheme</item>
+        <item name="android:imageButtonStyle">@style/ImageButtonAppTheme</item>
 
-    <item name="android:progressBarStyleHorizontal">@style/ProgressBarAppTheme</item>
+        <item name="android:progressBarStyleHorizontal">@style/ProgressBarAppTheme</item>
 
-    <item name="android:listViewStyle">@style/ListViewAppTheme</item>
+        <item name="android:listViewStyle">@style/ListViewAppTheme</item>
 
-    <item name="android:listViewWhiteStyle">@style/ListViewAppTheme.White</item>
+        <item name="android:listViewWhiteStyle">@style/ListViewAppTheme.White</item>
 
-    <item name="android:spinnerItemStyle">@style/SpinnerItemAppTheme</item>
+        <item name="android:spinnerItemStyle">@style/SpinnerItemAppTheme</item>
 
-  </style>
+    </style>
 
 </resources>
