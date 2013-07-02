@@ -1,15 +1,24 @@
 MI-Chat
 =======
-
 The Android app uses the Apache v2 license. License text to be added later.
 
 Macinsiders native Android chat app
 
+Testers
+-------
+**You must be registered on Macinsiders.com to be able to test this app, hence you need to be a McMasterU student**
+
+If you would like to become a beta tester for this app:
+
+1. Join [Macinsiders Chat Testers Google + community ![](http://ssl.gstatic.com/images/icons/gplus-16.png)](https://plus.google.com/communities/111130353234641996811)
+2. Click "Become a tester" on [this page](https://play.google.com/apps/testing/com.afzaln.mi_chat/)
+3.  
+[![Macinsiders Chat](https://developer.android.com/images/brand/en_generic_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=com.afzaln.mi_chat)
+
+Note
+----
 I have completely removed support for ant build system, using gradle instead.
 If you still want to build with ant, fork this project and import it to your IDE. From there, you're on your own.
-
-<script type="text/javascript" src="https://apis.google.com/js/plusone.js"/>
-<g:community layout="landscape" href="https://plus.google.com/communities/111130353234641996811"></g:community>
 
 <p align="center">
   <img src="/design/latest/messages_activity_phone.png" alt="Messages screen (Phone)" height="30%" width="30%"/>
