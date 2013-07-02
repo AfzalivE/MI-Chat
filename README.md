@@ -8,6 +8,9 @@ Macinsiders native Android chat app
 I have completely removed support for ant build system, using gradle instead.
 If you still want to build with ant, fork this project and import it to your IDE. From there, you're on your own.
 
+<script type="text/javascript" src="https://apis.google.com/js/plusone.js"/>
+<g:community layout="landscape" href="https://plus.google.com/communities/111130353234641996811"></g:community>
+
 <p align="center">
   <img src="/design/latest/messages_activity_phone.png" alt="Messages screen (Phone)" height="30%" width="30%"/>
   <img src="/design/latest/messages_activity_tablet.png" alt="Messages screen (Tablet)" height="60%" width="60%"/>
