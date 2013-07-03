@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-       xmlns:tools="http://schemas.android.com/tools"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <com.afzaln.mi_chat.MessageListView
         tools:listitem="@layout/message_list_item"
@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dip"
                 android:contentDescription="@string/send_message"
-                android:nextFocusLeft="@id/text_editor"/>
+                android:nextFocusLeft="@id/text_editor" />
         </RelativeLayout>
 
     </LinearLayout>
