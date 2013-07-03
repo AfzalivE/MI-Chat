@@ -33,7 +33,67 @@ public class LoginActivity extends Activity {
     private EditText mUsernameField;
     private EditText mPasswordField;
     private ViewFlipper mLoginFlipper;
-    private AsyncHttpResponseHandler loginResponseHandler = new AsyncHttpResponseHandler() {
+    private AsyncHttpResponseHandler mLoginResponseHandler = new LoginResponseHandler();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.login);
+        getWindow().setBackgroundDrawable(null);
+
+        mUsernameField = (EditText) findViewById(R.id.username);
+        mPasswordField = (EditText) findViewById(R.id.password);
+        mPasswordField.setTypeface(Typeface.DEFAULT);
+        mPasswordField.setTransformationMethod(new PasswordTransformationMethod());
+        mLoginFlipper = (ViewFlipper) findViewById(R.id.loginflipper);
+        mLoginFlipper.setOutAnimation(LoginActivity.this, android.R.anim.fade_out);
+        mLoginFlipper.setInAnimation(LoginActivity.this, android.R.anim.fade_in);
+
+        if (authCookieExists()) {
+            NetUtils.login(mLoginResponseHandler, this, null, null);
+        }
+
+        Button login = (Button) findViewById(R.id.login);
+
+        login.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                hideKeyboard();
+                String username = mUsernameField.getText().toString();
+                String password = mPasswordField.getText().toString();
+                NetUtils.login(mLoginResponseHandler, LoginActivity.this, username, password);
+            }
+        });
+
+    }
+
+    protected void login(RequestParams params) {
+        AsyncHttpClient client = NetUtils.getClientInstance();
+        client.setCookieStore(NetUtils.getCookieStoreInstance(LoginActivity.this));
+        if (params != null) {
+            client.post("http://www.macinsiders.com/login.php", params, mLoginResponseHandler);
+        } else {
+            client.post("http://www.macinsiders.com/login.php", mLoginResponseHandler);
+        }
+    }
+
+    protected void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mPasswordField.getWindowToken(), 0);
+    }
+
+    protected boolean authCookieExists() {
+        List<Cookie> cookies = NetUtils.getCookieStoreInstance(LoginActivity.this).getCookies();
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("bbpassword")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private class LoginResponseHandler extends AsyncHttpResponseHandler {
         @Override
         public void onStart() {
             if (mRetryLogin) {
@@ -46,6 +106,7 @@ public class LoginActivity extends Activity {
         public void onSuccess(String response) {
             if (authCookieExists()) {
                 Intent i = new Intent(LoginActivity.this, MessagesActivity.class);
+                LoginActivity.this.finish();
                 startActivity(i);
             } else {
                 mLoginFlipper.showPrevious();
@@ -71,70 +132,5 @@ public class LoginActivity extends Activity {
         public void onFinish() {
             Log.d(TAG, "onFinish");
         }
-    };
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
-        getWindow().setBackgroundDrawable(null);
-
-        mUsernameField = (EditText) findViewById(R.id.username);
-        mPasswordField = (EditText) findViewById(R.id.password);
-        mPasswordField.setTypeface(Typeface.DEFAULT);
-        mPasswordField.setTransformationMethod(new PasswordTransformationMethod());
-        mLoginFlipper = (ViewFlipper) findViewById(R.id.loginflipper);
-        mLoginFlipper.setOutAnimation(LoginActivity.this, android.R.anim.fade_out);
-        mLoginFlipper.setInAnimation(LoginActivity.this, android.R.anim.fade_in);
-
-        if (authCookieExists()) {
-            login(null);
-        }
-
-        Button login = (Button) findViewById(R.id.login);
-
-        login.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                hideKeyboard();
-                String username = mUsernameField.getText().toString();
-                String password = mPasswordField.getText().toString();
-                RequestParams params = new RequestParams();
-                params.put("vb_login_username", username);
-                params.put("vb_login_password", password);
-                params.put("do", "login");
-                params.put("cookieuser", "1");
-
-                login(params);
-
-            }
-        });
-
-    }
-
-    protected void login(RequestParams params) {
-        AsyncHttpClient client = NetUtils.getClientInstance();
-        client.setCookieStore(NetUtils.getCookieStoreInstance(LoginActivity.this));
-        if (params != null) {
-            client.post("http://www.macinsiders.com/login.php", params, loginResponseHandler);
-        } else {
-            client.post("http://www.macinsiders.com/login.php", loginResponseHandler);
-        }
-    }
-
-    protected void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(mPasswordField.getWindowToken(), 0);
-    }
-
-    protected boolean authCookieExists() {
-        List<Cookie> cookies = NetUtils.getCookieStoreInstance(LoginActivity.this).getCookies();
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("bbpassword")) {
-                return true;
-            }
-        }
-        return false;
     }
 }

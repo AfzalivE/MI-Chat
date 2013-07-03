@@ -37,6 +37,9 @@ import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
 import com.afzaln.mi_chat.service.ServiceContract;
 import com.afzaln.mi_chat.utils.NetUtils;
 import com.google.analytics.tracking.android.EasyTracker;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class MessagesActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -52,6 +55,8 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     private AlarmManager mAlarmManager;
     private PendingIntent mPendingIntent;
     private boolean mManualRefresh = false;
+
+    private AsyncHttpResponseHandler mLogoutResponseHandler;
 
     private static final String TAG = MessagesActivity.class.getSimpleName();
 
@@ -80,6 +85,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         mListView = (MessageListView) findViewById(R.id.messagelist);
         mAdapter = new MessagesCursorAdapter(this, null, 0);
         mListView.setAdapter(mAdapter);
+        // TODO API 9 compatibility
         mListView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
         registerForContextMenu(mListView);
 
@@ -175,8 +181,11 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
                 setProgressBarIndeterminateVisibility(true);
                 break;
             case R.id.action_logout:
+                mLogoutResponseHandler = new LogoutResponseHandler();
+                NetUtils.logout(mLogoutResponseHandler);
                 NetUtils.getCookieStoreInstance(MessagesActivity.this).clear();
                 Intent i = new Intent(MessagesActivity.this, LoginActivity.class);
+                MessagesActivity.this.finish();
                 startActivity(i);
                 break;
         }
@@ -198,6 +207,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
             case id.menu_copytext:
                 CharSequence message = ((TextView) info.targetView.findViewById(id.message)).getText();
                 ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                // TODO API 9 compatibility
                 ClipData data = ClipData.newPlainText("message", message);
                 clipboard.setPrimaryClip(data);
                 return true;
@@ -261,6 +271,30 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     public void onLoaderReset(Loader<Cursor> cusror) {
         setProgressBarIndeterminateVisibility(false);
         mAdapter.changeCursor(null);
+    }
+
+    private class LogoutResponseHandler extends AsyncHttpResponseHandler {
+        @Override
+        public void onStart() {
+            Log.d(TAG, "onStart");
+        }
+
+        @Override
+        public void onSuccess(String response) {
+
+            Log.d(TAG, "onSuccess");
+        }
+
+        @Override
+        public void onFailure(Throwable e, String response) {
+            Log.d(TAG, "onFailure");
+            Crouton.makeText(MessagesActivity.this, "Couldn't sign in, please try again", Style.ALERT).show();
+        }
+
+        @Override
+        public void onFinish() {
+            Log.d(TAG, "onFinish");
+        }
     }
 
 }
