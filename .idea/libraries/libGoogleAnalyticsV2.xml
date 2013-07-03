@@ -2,8 +2,6 @@
   <library name="libGoogleAnalyticsV2">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/android-app/libs/libGoogleAnalyticsV2.jar!/" />
-      <root url="jar://$PROJECT_DIR$/android-app/libs/libGoogleAnalyticsV2.jar!/" />
-      <root url="jar://$PROJECT_DIR$/android-app/libs/libGoogleAnalyticsV2.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

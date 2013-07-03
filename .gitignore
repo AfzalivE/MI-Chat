@@ -29,3 +29,6 @@ keystore.properties
 # Sandbox stuff
 _sandbox
 /java-dillon/
+
+# Google analytics stuff
+analysis.xml

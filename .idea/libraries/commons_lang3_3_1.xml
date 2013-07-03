@@ -2,9 +2,6 @@
   <library name="commons-lang3-3.1">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/android-app/libs/commons-lang3-3.1.jar!/" />
-      <root url="jar://$PROJECT_DIR$/android-app/libs/commons-lang3-3.1.jar!/" />
-      <root url="jar://$PROJECT_DIR$/android-app/libs/commons-lang3-3.1.jar!/" />
-      <root url="jar://$PROJECT_DIR$/android-app/libs/commons-lang3-3.1.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
