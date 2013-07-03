@@ -54,7 +54,7 @@ public class NetUtils {
         String uri = LOGIN_URI;
         AsyncHttpClient client = getClientInstance();
         client.setCookieStore(getCookieStoreInstance(context));
-        if (username != null && password !=null) {
+        if (username != null && password != null) {
             RequestParams params = new RequestParams();
             params.put("vb_login_username", username);
             params.put("vb_login_password", password);
