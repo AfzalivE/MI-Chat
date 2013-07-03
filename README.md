@@ -46,3 +46,6 @@ Proposed app workflow
 - This GET is called every 3 seconds. To conserve battery, it is only done while the user is within the app and the screen is on. More backoff scenarios will be added later which will allow battery-efficient background refreshing.
 
 - MessageProcessor.postResource() is called to post a message. The response obtained is the same as PageProcessor.getResource() so it is parsed in the same way.
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/afzalive/mi-chat/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/03c00d47f90ba39a1f9cd9c7ee9b9e40 "githalytics.com")](http://githalytics.com/AfzalivE/MI-Chat)
