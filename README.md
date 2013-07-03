@@ -47,5 +47,4 @@ Proposed app workflow
 
 - MessageProcessor.postResource() is called to post a message. The response obtained is the same as PageProcessor.getResource() so it is parsed in the same way.
 
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/afzalive/mi-chat/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/03c00d47f90ba39a1f9cd9c7ee9b9e40 "githalytics.com")](http://githalytics.com/AfzalivE/MI-Chat)
