@@ -38,8 +38,6 @@ import com.afzaln.mi_chat.service.ServiceContract;
 import com.afzaln.mi_chat.utils.NetUtils;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class MessagesActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -181,8 +179,6 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
                 setProgressBarIndeterminateVisibility(true);
                 break;
             case R.id.action_logout:
-                mLogoutResponseHandler = new LogoutResponseHandler();
-                NetUtils.logout(mLogoutResponseHandler);
                 NetUtils.getCookieStoreInstance(MessagesActivity.this).clear();
                 Intent i = new Intent(MessagesActivity.this, LoginActivity.class);
                 MessagesActivity.this.finish();
@@ -272,29 +268,4 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         setProgressBarIndeterminateVisibility(false);
         mAdapter.changeCursor(null);
     }
-
-    private class LogoutResponseHandler extends AsyncHttpResponseHandler {
-        @Override
-        public void onStart() {
-            Log.d(TAG, "onStart");
-        }
-
-        @Override
-        public void onSuccess(String response) {
-
-            Log.d(TAG, "onSuccess");
-        }
-
-        @Override
-        public void onFailure(Throwable e, String response) {
-            Log.d(TAG, "onFailure");
-            Crouton.makeText(MessagesActivity.this, "Couldn't sign in, please try again", Style.ALERT).show();
-        }
-
-        @Override
-        public void onFinish() {
-            Log.d(TAG, "onFinish");
-        }
-    }
-
 }
