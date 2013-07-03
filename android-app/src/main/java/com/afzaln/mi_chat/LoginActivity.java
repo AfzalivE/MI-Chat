@@ -19,9 +19,7 @@ import android.widget.EditText;
 import android.widget.ViewFlipper;
 
 import com.afzaln.mi_chat.utils.NetUtils;
-import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -50,7 +48,7 @@ public class LoginActivity extends Activity {
         mLoginFlipper.setInAnimation(LoginActivity.this, android.R.anim.fade_in);
 
         if (authCookieExists()) {
-            NetUtils.login(mLoginResponseHandler, this, null, null);
+            NetUtils.login(mLoginResponseHandler, LoginActivity.this, null, null);
         }
 
         Button login = (Button) findViewById(R.id.login);
@@ -66,16 +64,6 @@ public class LoginActivity extends Activity {
             }
         });
 
-    }
-
-    protected void login(RequestParams params) {
-        AsyncHttpClient client = NetUtils.getClientInstance();
-        client.setCookieStore(NetUtils.getCookieStoreInstance(LoginActivity.this));
-        if (params != null) {
-            client.post("http://www.macinsiders.com/login.php", params, mLoginResponseHandler);
-        } else {
-            client.post("http://www.macinsiders.com/login.php", mLoginResponseHandler);
-        }
     }
 
     protected void hideKeyboard() {
@@ -120,7 +108,7 @@ public class LoginActivity extends Activity {
             Log.d(TAG, "onFailure");
             if (authCookieExists() && mRetryLogin) {
                 mRetryLogin = false;
-                login(null);
+                NetUtils.login(mLoginResponseHandler, LoginActivity.this, null, null);
             } else {
                 mLoginFlipper.showPrevious();
                 Crouton.makeText(LoginActivity.this, "Couldn't sign in, please try again", Style.ALERT).show();
