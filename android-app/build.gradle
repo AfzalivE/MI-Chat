@@ -9,6 +9,7 @@ dependencies {
     compile project(':crouton')
     compile files('libs/commons-lang3-3.1.jar')
     compile files('libs/kefirbb-1.0.jar')
+    compile files('libs/libGoogleAnalyticsV2.jar')
 }
 
 android {
@@ -19,7 +20,7 @@ android {
     versionProps.load(new FileInputStream(file('version.properties')))
 
     defaultConfig {
-        minSdkVersion 11
+        minSdkVersion 9
         targetSdkVersion 17
 
         versionCode versionProps['code'].toInteger()

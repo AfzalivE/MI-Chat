@@ -48,23 +48,6 @@
       <sourceFolder url="file://$MODULE_DIR$/src/instrumentTest/rs" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/instrumentTest/res" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/instrumentTest/resources" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/debug/jni" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/debug/aidl" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/build/source/buildConfig/debug" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/debug/res" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/build/source/aidl/debug" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/debug/resources" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/build/source/rs/debug" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/build/source/r/debug" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/debug/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/debug/assets" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/debug/rs" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/build/res/rs/debug" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/build/source/buildConfig/test" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/source/rs/test" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/source/r/test" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/source/aidl/test" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/res/rs/test" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/build/apk" />
       <excludeFolder url="file://$MODULE_DIR$/build/assets" />
       <excludeFolder url="file://$MODULE_DIR$/build/bundles" />
@@ -82,6 +65,7 @@
     <orderEntry type="library" name="support-v4-13.0.0" level="project" />
     <orderEntry type="library" name="commons-lang3-3.1" level="project" />
     <orderEntry type="library" name="kefirbb-1.0" level="project" />
+    <orderEntry type="library" name="libGoogleAnalyticsV2" level="project" />
     <orderEntry type="library" name="actionbarsherlock.aar" level="project" />
     <orderEntry type="library" name="slidingmenu.aar" level="project" />
     <orderEntry type="library" name="asynchttp.aar" level="project" />

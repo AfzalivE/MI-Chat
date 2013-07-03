@@ -36,6 +36,7 @@ import com.afzaln.mi_chat.processor.ResourceProcessor;
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
 import com.afzaln.mi_chat.service.ServiceContract;
 import com.afzaln.mi_chat.utils.NetUtils;
+import com.google.analytics.tracking.android.EasyTracker;
 
 public class MessagesActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -53,6 +54,18 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     private boolean mManualRefresh = false;
 
     private static final String TAG = MessagesActivity.class.getSimpleName();
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EasyTracker.getInstance().activityStart(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EasyTracker.getInstance().activityStop(this);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
