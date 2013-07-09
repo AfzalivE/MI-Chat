@@ -7,6 +7,8 @@
 
     <color name="normal_text">#FF333333</color>
     <color name="light_text">#FF777777</color>
+
+    <color name="admin_name">#FF8CB200</color>
     <color name="mod_name">#FF0BC0CB</color>
 
     <color name="alt_bg">#FFEDEDED</color>

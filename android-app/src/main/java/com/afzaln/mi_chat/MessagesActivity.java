@@ -1,7 +1,5 @@
 package com.afzaln.mi_chat;
 
-import java.util.Calendar;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.ClipData;
@@ -39,10 +37,13 @@ import com.afzaln.mi_chat.utils.NetUtils;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
+import java.util.Calendar;
+
 public class MessagesActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int MESSAGE_LOADER = 0;
-    private static final int REFRESH_INTERVAL = 3000;
+    private static final int DEFAULT_REFRESH_INTERVAL = 3000;
+    private static int mRefreshInterval = DEFAULT_REFRESH_INTERVAL;
 
     private MessagesCursorAdapter mAdapter;
     private MessageListView mListView;
@@ -251,12 +252,28 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
             }
         }
 
+        // Refresh backoff code
+        if (newCount > 0) {
+            long latestItem = mAdapter.getItemDateTime(newCount - 1);
+            if (Calendar.getInstance().getTimeInMillis() - latestItem > 60000) {
+                mRefreshInterval = 5000;
+            } else if (Calendar.getInstance().getTimeInMillis() - latestItem > 120000) {
+                mRefreshInterval = 10000;
+            } else if (Calendar.getInstance().getTimeInMillis() - latestItem > 150000) {
+                mRefreshInterval = 20000;
+            } else if (Calendar.getInstance().getTimeInMillis() - latestItem > 180000) {
+                mRefreshInterval = 40000;
+            } else {
+                mRefreshInterval = DEFAULT_REFRESH_INTERVAL;
+            }
+        }
+
         mManualRefresh = false;
 
         // Updates on regular intervals on the idea
         // that if the app is open, the user must be
         // expecting responses in quick succession
-        mAlarmManager.set(AlarmManager.RTC, Calendar.getInstance().getTimeInMillis() + REFRESH_INTERVAL, mPendingIntent);
+        mAlarmManager.set(AlarmManager.RTC, Calendar.getInstance().getTimeInMillis() + mRefreshInterval, mPendingIntent);
     }
 
     /*
