@@ -1,9 +1,5 @@
 package com.afzaln.mi_chat;
 
-import org.apache.http.cookie.Cookie;
-
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +16,11 @@ import android.widget.ViewFlipper;
 
 import com.afzaln.mi_chat.utils.NetUtils;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+
+import org.apache.http.cookie.Cookie;
+
+import java.util.List;
+
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -48,7 +49,7 @@ public class LoginActivity extends Activity {
         mLoginFlipper.setInAnimation(LoginActivity.this, android.R.anim.fade_in);
 
         if (authCookieExists()) {
-            NetUtils.login(mLoginResponseHandler, LoginActivity.this, null, null);
+            NetUtils.postLogin(mLoginResponseHandler, LoginActivity.this, null, null);
         }
 
         Button login = (Button) findViewById(R.id.login);
@@ -60,7 +61,7 @@ public class LoginActivity extends Activity {
                 hideKeyboard();
                 String username = mUsernameField.getText().toString();
                 String password = mPasswordField.getText().toString();
-                NetUtils.login(mLoginResponseHandler, LoginActivity.this, username, password);
+                NetUtils.postLogin(mLoginResponseHandler, LoginActivity.this, username, password);
             }
         });
 
@@ -108,7 +109,7 @@ public class LoginActivity extends Activity {
             Log.d(TAG, "onFailure");
             if (authCookieExists() && mRetryLogin) {
                 mRetryLogin = false;
-                NetUtils.login(mLoginResponseHandler, LoginActivity.this, null, null);
+                NetUtils.postLogin(mLoginResponseHandler, LoginActivity.this, null, null);
             } else {
                 mLoginFlipper.showPrevious();
                 Crouton.makeText(LoginActivity.this, "Couldn't sign in, please try again", Style.ALERT).show();

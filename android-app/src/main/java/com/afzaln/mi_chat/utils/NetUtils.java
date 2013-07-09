@@ -1,7 +1,5 @@
 package com.afzaln.mi_chat.utils;
 
-import org.apache.http.client.params.ClientPNames;
-
 import android.content.Context;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -9,6 +7,8 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.XmlHttpResponseHandler;
+
+import org.apache.http.client.params.ClientPNames;
 
 public class NetUtils {
 
@@ -50,7 +50,7 @@ public class NetUtils {
         getClientInstance().post(uri, params, myResponseHandler);
     }
 
-    public static void login(AsyncHttpResponseHandler myResponseHandler, Context context, String username, String password) {
+    public static void postLogin(AsyncHttpResponseHandler myResponseHandler, Context context, String username, String password) {
         String uri = LOGIN_URI;
         AsyncHttpClient client = getClientInstance();
         client.setCookieStore(getCookieStoreInstance(context));
