@@ -48,7 +48,6 @@ public class ProviderContract {
 
         // Prevent instantiation of this class
         private InfoTable() {
-
         }
 
         public static final String USERID = "userId";
@@ -102,7 +101,6 @@ public class ProviderContract {
         private UsersTable() {
         }
 
-
         public static final String USERID = "userId";
         public static final String USERROLE = "userRole";
         public static final String CHANNELID = "channelId";
@@ -135,19 +133,28 @@ public class ProviderContract {
         // content://com.afzaln.restclient.messagesprovider/messages/#
         public static final Uri CONTENT_ID_URI_PATTERN = Uri.parse(SCHEME + AUTHORITY + URI_PATH_MESSAGES + "/#");
 
-        //        public static final String[] ALL_COLUMNS;
-        //        public static final String[] DISPLAY_COLUMNS;
+        // public static final String[] ALL_COLUMNS;
         public static final String[] COLUMNS;
+        public static final String[] DISPLAY_COLUMNS;
 
         static {
             COLUMNS = new String[] {
                     // local Id
                     MessagesTable._ID,
                     MessagesTable.MESSAGEID,
+                    MessagesTable.TYPE,
                     MessagesTable.DATETIME,
                     MessagesTable.USERID,
                     MessagesTable.USERROLE,
                     MessagesTable.CHANNELID,
+                    MessagesTable.USERNAME,
+                    MessagesTable.MESSAGE};
+
+            DISPLAY_COLUMNS = new String[] {
+                    MessagesTable._ID,
+                    MessagesTable.TYPE,
+                    MessagesTable.DATETIME,
+                    MessagesTable.USERROLE,
                     MessagesTable.USERNAME,
                     MessagesTable.MESSAGE};
         }
@@ -157,6 +164,7 @@ public class ProviderContract {
         }
 
         public static final String MESSAGEID = "messageId";
+        public static final String TYPE = "type";
         public static final String DATETIME = "dateTime";
         public static final String USERID = "userId";
         public static final String USERROLE = "userRole";

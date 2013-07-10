@@ -9,7 +9,11 @@ public class Message {
 
     private static final String TAG = Message.class.getSimpleName();
 
+    public static final int NORMAL_TYPE = 0;
+    public static final int ACTION_TYPE = 1;
+
     Long messageId;
+    int type;
     Long dateTime;
     Long userId;
     int userRole;
@@ -17,24 +21,21 @@ public class Message {
     String userName;
     String message;
 
-    public Message(long messageId, long dateTime, long userId, int userRole, int channelId, String userName, String messageText) {
+    public Message(long messageId, int type, long dateTime, long userId, int userRole, int channelId, String userName, String messageText) {
         this.messageId = messageId;
+        this.type = type;
         this.dateTime = dateTime;
         this.userId = userId;
         this.userRole = userRole;
         this.channelId = channelId;
         this.userName = userName;
-        this.message = parseMessage(messageText);
-    }
-
-    private String parseMessage(String messageText) {
-        messageText = BbToHtml.process(messageText);
-        return messageText;
+        this.message = BbToHtml.process(userName, messageText);
     }
 
     public ContentValues toContentValues() {
         ContentValues rowData = new ContentValues();
         rowData.put(MessagesTable.MESSAGEID, this.messageId);
+        rowData.put(MessagesTable.TYPE, this.type);
         rowData.put(MessagesTable.DATETIME, this.dateTime);
         rowData.put(MessagesTable.USERID, this.userId);
         rowData.put(MessagesTable.USERROLE, this.userRole);
