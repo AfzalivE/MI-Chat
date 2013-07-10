@@ -71,6 +71,9 @@ public class MessagesCursorAdapter extends CursorAdapter {
         holder.timestampView = (TextView) listItemView.findViewById(R.id.timestamp);
         holder.messageView = (TextView) listItemView.findViewById(R.id.message);
 
+        ViewGroup.LayoutParams layoutParams = holder.messageView.getLayoutParams();
+        listItemView.setLayoutParams(layoutParams);
+
         listItemView.setTag(holder);
         return listItemView;
     }

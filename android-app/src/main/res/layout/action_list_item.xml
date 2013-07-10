@@ -8,7 +8,6 @@
     android:paddingLeft="18dp"
     android:paddingTop="6dp"
     android:paddingBottom="6dp"
-    android:background="@color/divider"
     android:gravity="center_vertical">
 
     <TextView

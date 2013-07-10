@@ -11,6 +11,6 @@
     <color name="admin_name">#FF8CB200</color>
     <color name="mod_name">#FF0BC0CB</color>
 
-    <color name="divider">#FFEDEDED</color>
-    <color name="alt_bg">#FFF3F3F3</color>
+    <color name="bg">#FFE5E5E5</color>
+    <color name="alt_bg">@android:color/white</color>
 </resources>
