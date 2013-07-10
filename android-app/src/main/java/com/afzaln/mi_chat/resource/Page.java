@@ -112,6 +112,7 @@ public class Page implements Resource {
             NamedNodeMap messageAttrs = messageNode.getAttributes();
 
             long messageId = Long.parseLong(messageAttrs.getNamedItem("id").getTextContent());
+            int type = Message.NORMAL_TYPE;
             long dateTime = parseDate(messageAttrs.getNamedItem("dateTime").getTextContent());
             long userId = Long.parseLong(messageAttrs.getNamedItem("userID").getTextContent());
             int userRole = Integer.parseInt(messageAttrs.getNamedItem("userRole").getTextContent());
@@ -130,7 +131,11 @@ public class Page implements Resource {
                 }
             }
 
-            Message message = new Message(messageId, dateTime, userId, userRole, channelId, userName, messageText);
+            if (messageText.startsWith("/")) {
+                type = Message.ACTION_TYPE;
+            }
+
+            Message message = new Message(messageId, type, dateTime, userId, userRole, channelId, userName, messageText);
 
             messageList.add(message);
 

@@ -12,14 +12,12 @@ import android.widget.TextView;
 
 import com.afzaln.mi_chat.R.color;
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
+import com.afzaln.mi_chat.resource.Message;
 
 public class MessagesCursorAdapter extends CursorAdapter {
 
     private static final String TAG = MessagesCursorAdapter.class.getSimpleName();
-    
-    private static final int MESSAGE_ITEM_TYPE = 0;
-    private static final int ACTION_ITEM_TYPE = 1;
-    
+
     private static final int MOD_USER_ROLE = 2;
     private static final int ADMIN_USER_ROLE = 3;
     
@@ -35,12 +33,7 @@ public class MessagesCursorAdapter extends CursorAdapter {
     }
 
     private int getItemViewType(Cursor cursor) {
-        String firstMessageChar = cursor.getString(cursor.getColumnIndex(MessagesTable.MESSAGE)).substring(0, 1);
-        if (firstMessageChar.equals("/")) {
-            return ACTION_ITEM_TYPE;
-        } else {
-            return MESSAGE_ITEM_TYPE;
-        }
+        return cursor.getInt(cursor.getColumnIndex(MessagesTable.TYPE));
     }
 
     public long getItemDateTime(int position) {
@@ -64,10 +57,10 @@ public class MessagesCursorAdapter extends CursorAdapter {
         View listItemView = null;
 
         switch (getItemViewType(cursor)) {
-            case MESSAGE_ITEM_TYPE:
+            case Message.NORMAL_TYPE:
                 listItemView = LayoutInflater.from(context).inflate(R.layout.message_list_item, parent, false);
                 break;
-            case ACTION_ITEM_TYPE:
+            case Message.ACTION_TYPE:
                 listItemView = LayoutInflater.from(context).inflate(R.layout.action_list_item, parent, false);
                 break;
         }
@@ -103,7 +96,6 @@ public class MessagesCursorAdapter extends CursorAdapter {
         holder.userNameView.setText(userName);
         formatUsername(userRole, holder.userNameView);
         holder.timestampView.setText(getDate(timestamp));
-        message = formatMessage(userName, message);
         holder.messageView.setText(Html.fromHtml(message));
 
     }
@@ -120,54 +112,6 @@ public class MessagesCursorAdapter extends CursorAdapter {
                 userNameView.setTextColor(mUserameColor);
                 break;
         }
-    }
-
-    private String formatMessage(String userName, String message) {
-        if (message.startsWith("/login")) {
-            return message.replace("/login", "").concat(" logged in");
-        }
-
-        if (message.startsWith("/logout")) {
-            if (message.contains("Timeout")) {
-                return message.replace("/logout", "").replace("Timeout", "logged out (timeout)");
-            } else {
-                return message.replace("/logout", "").concat(" logged out");
-            }
-        }
-
-        if (message.startsWith("/roll")) {
-            return message.replace("/roll", "Roll:");
-        }
-
-        if (message.startsWith("/me")) {
-            return message.replace("/me", userName);
-        }
-
-        if (message.startsWith("/privmsgto")) {
-            return message.replace("/privmsgto", "Whisper to");
-        }
-
-        if (message.startsWith("/privmsg")) {
-            return message.replace("/privmsg", "Whisper from " + userName);
-        }
-
-        if (message.startsWith("/privactionto")) {
-            return message.replace("/privactionto", "Action to");
-        }
-
-        if (message.startsWith("/privaction")) {
-            return message.replace("/privaction", "Action from " + userName);
-        }
-
-        if (message.startsWith("/queryOpen")) {
-            return message.replace("/queryOpen", "Private channel opened to");
-        }
-
-        if (message.startsWith("/queryClose")) {
-            return message.replace("/queryClose", "Private channel to ").concat(" closed");
-        }
-
-        return message;
     }
 
     private CharSequence getDate(long timestamp) {

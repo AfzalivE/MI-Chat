@@ -89,13 +89,55 @@ public class BbToHtml {
         return mProcessor;
     }
 
-    public static String process(String text) {
-// TODO do something about ChatBot messages, make them nicer
-//        if (messageText.contains("/login")) {
-//            return messageText.substring(7) + " logs into the Chat.";
-//        } else if (messageText.contains("/logout")) {
-//            return messageText.substring(8) + " has been logged out.";
-//        }
-        return getProcessorInstance().process(StringEscapeUtils.unescapeXml(text));
+    private static String processActions(String userName, String message) {
+        if (message.startsWith("/login")) {
+            return message.replace("/login", "").concat(" logged in");
+        }
+
+        if (message.startsWith("/logout")) {
+            if (message.contains("Timeout")) {
+                return message.replace("/logout", "").replace("Timeout", "logged out (timeout)");
+            } else {
+                return message.replace("/logout", "").concat(" logged out");
+            }
+        }
+
+        if (message.startsWith("/roll")) {
+            return message.replace("/roll", "Roll:");
+        }
+
+        if (message.startsWith("/me")) {
+            return message.replace("/me", userName);
+        }
+
+        if (message.startsWith("/privmsgto")) {
+            return message.replace("/privmsgto", "Whisper to");
+        }
+
+        if (message.startsWith("/privmsg")) {
+            return message.replace("/privmsg", "Whisper from " + userName);
+        }
+
+        if (message.startsWith("/privactionto")) {
+            return message.replace("/privactionto", "Action to");
+        }
+
+        if (message.startsWith("/privaction")) {
+            return message.replace("/privaction", "Action from " + userName);
+        }
+
+        if (message.startsWith("/queryOpen")) {
+            return message.replace("/queryOpen", "Private channel opened to");
+        }
+
+        if (message.startsWith("/queryClose")) {
+            return message.replace("/queryClose", "Private channel to ").concat(" closed");
+        }
+
+        return message;
+    }
+
+    public static String process(String userName, String message) {
+        return getProcessorInstance().process(StringEscapeUtils.unescapeXml(processActions(userName, message)));
     }
 }

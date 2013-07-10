@@ -218,12 +218,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         Log.d(TAG, "Loading messages");
         switch (loaderId) {
             case MESSAGE_LOADER:
-                return new CursorLoader(this, MessagesTable.CONTENT_URI, new String[] {
-                        MessagesTable._ID,
-                        MessagesTable.DATETIME,
-                        MessagesTable.USERROLE,
-                        MessagesTable.USERNAME,
-                        MessagesTable.MESSAGE}, null, null, null);
+                return new CursorLoader(this, MessagesTable.CONTENT_URI, MessagesTable.DISPLAY_COLUMNS, null, null, null);
             default:
                 // invalid id was passed
                 return null;
