@@ -8,7 +8,8 @@
     android:paddingLeft="18dp"
     android:paddingTop="6dp"
     android:paddingBottom="6dp"
-    android:background="@color/alt_bg">
+    android:background="@color/divider"
+    android:gravity="center_vertical">
 
     <TextView
         android:id="@+id/username"
@@ -21,6 +22,7 @@
         android:textStyle="bold"
         android:fontFamily="sans-serif-light"
         android:text="username"
+        android:visibility="invisible"
         />
 
     <TextView
@@ -30,6 +32,7 @@
         android:layout_below="@id/username"
         android:textColor="@color/light_text"
         android:fontFamily="sans-serif-light"
+        android:textStyle="italic"
         android:textSize="10sp"
         android:text="2 min ago" />
 
@@ -37,11 +40,12 @@
         android:id="@+id/message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:paddingBottom="4dp"
-        android:paddingTop="4dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
         android:textColor="@color/normal_text"
-        android:textSize="12sp"
+        android:textStyle="italic"
+        android:fontFamily="sans-serif-light"
+        android:textSize="14sp"
         android:autoLink="web"
         android:text="This is a message" />
 
