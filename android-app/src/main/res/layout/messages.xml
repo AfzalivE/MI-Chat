@@ -16,7 +16,7 @@
         android:fastScrollEnabled="true"
         android:layout_marginBottom="1dip"
         android:dividerHeight="1dp"
-        android:divider="@color/alt_bg"
+        android:divider="@color/divider"
         android:cacheColorHint="@android:color/white"
         android:scrollbarAlwaysDrawVerticalTrack="false"
         android:scrollbarStyle="insideOverlay"
@@ -24,7 +24,7 @@
 
     <!-- Divider -->
     <View
-        android:background="@color/alt_bg"
+        android:background="@color/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp" />
 

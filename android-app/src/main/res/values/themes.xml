@@ -10,6 +10,7 @@
     </style>
 
     <style name="AppTheme" parent="Theme.Sherlock.Light.DarkActionBar">
+        <item name="android:windowBackground">@color/alt_bg</item>
         <item name="android:editTextStyle">@style/EditTextAppTheme</item>
         <item name="android:buttonStyle">@style/ButtonAppTheme</item>
         <item name="android:imageButtonStyle">@style/ImageButtonAppTheme</item>
