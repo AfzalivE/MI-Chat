@@ -10,13 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
         android:transcriptMode="disabled"
         android:smoothScrollbar="false"
         android:stackFromBottom="true"
         android:fastScrollEnabled="true"
         android:layout_marginBottom="1dip"
-        android:dividerHeight="1dp"
-        android:divider="@color/divider"
+        android:dividerHeight="8dp"
+        android:divider="@color/bg"
         android:cacheColorHint="@android:color/white"
         android:scrollbarAlwaysDrawVerticalTrack="false"
         android:scrollbarStyle="insideOverlay"
@@ -24,7 +26,7 @@
 
     <!-- Divider -->
     <View
-        android:background="@color/divider"
+        android:background="@color/alt_bg"
         android:layout_width="match_parent"
         android:layout_height="1dp" />
 
@@ -32,7 +34,8 @@
         android:id="@+id/bottom_panel"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/alt_bg">
 
         <EditText
             android:textColor="@android:color/black"

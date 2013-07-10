@@ -4,7 +4,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-        <item name="android:windowBackground">@color/alt_bg</item>
+        <item name="android:windowBackground">@color/bg</item>
         <item name="android:editTextBackground">@drawable/edit_text_holo_light</item>
         <item name="android:buttonStyle">@style/ButtonAppTheme</item>
         <item name="android:imageButtonStyle">@style/ImageButtonAppTheme</item>
