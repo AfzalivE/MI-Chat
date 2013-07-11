@@ -18,5 +18,12 @@
     <string name="type_message_hint">Type message</string>
     <string name="signing_in">Signing in&#8230;</string>
     <string name="send_message">Send</string>
+    <string name="action_prefs">Settings</string>
+
+    <string name="pref_appearance">Appearance</string>
+    <string name="pref_var_msg_width">Variable message width</string>
+    <string name="pref_var_msg_width_summary">If checked, messages will only be as wide as their
+        content
+    </string>
 
 </resources>

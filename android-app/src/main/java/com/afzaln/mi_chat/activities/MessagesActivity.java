@@ -1,10 +1,9 @@
-package com.afzaln.mi_chat;
+package com.afzaln.mi_chat.activities;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -27,7 +26,11 @@ import android.widget.TextView;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
-import com.afzaln.mi_chat.MessageListView.OnSizeChangedListener;
+import com.afzaln.mi_chat.AlarmReceiver;
+import com.afzaln.mi_chat.view.MessageListView;
+import com.afzaln.mi_chat.view.MessageListView.OnSizeChangedListener;
+import com.afzaln.mi_chat.MessagesCursorAdapter;
+import com.afzaln.mi_chat.R;
 import com.afzaln.mi_chat.R.id;
 import com.afzaln.mi_chat.processor.ProcessorFactory;
 import com.afzaln.mi_chat.processor.ResourceProcessor;
@@ -43,6 +46,9 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
 
     private static final int MESSAGE_LOADER = 0;
     private static final int DEFAULT_REFRESH_INTERVAL = 3000;
+
+    private static final String TAG = MessagesActivity.class.getSimpleName();
+
     private static int mRefreshInterval = DEFAULT_REFRESH_INTERVAL;
 
     private MessagesCursorAdapter mAdapter;
@@ -50,14 +56,10 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     private EditText mEditText;
     private ImageButton mSubmitButton;
     private Menu mMenu;
-
     private AlarmManager mAlarmManager;
     private PendingIntent mPendingIntent;
     private boolean mManualRefresh = false;
-
     private AsyncHttpResponseHandler mLogoutResponseHandler;
-
-    private static final String TAG = MessagesActivity.class.getSimpleName();
 
     @Override
     public void onStart() {
@@ -100,10 +102,12 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
 
         mEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void afterTextChanged(Editable s) { }
+            public void afterTextChanged(Editable s) {
+            }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -132,7 +136,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
             }
         });
 
-        mAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent intent = new Intent(this, AlarmReceiver.class);
         mPendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -142,7 +146,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     @Override
     public void onResume() {
         super.onResume();
-        setProgressBarIndeterminateVisibility(true);
+        showRefreshProgressBar(true);
 
         // TODO use the Service for this
         // IntentService doesn't work with async-http client because you can't run AsyncTask from it
@@ -168,6 +172,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         ResourceProcessor processor = ProcessorFactory.getInstance(this).getProcessor(ServiceContract.RESOURCE_TYPE_PAGE);
+        Intent i = null;
         switch (item.getItemId()) {
             case R.id.action_refresh:
                 processor.getResource();
@@ -175,20 +180,23 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
                 item.setVisible(false);
                 mManualRefresh = true;
                 return true;
+            case R.id.action_prefs:
+                i = new Intent(MessagesActivity.this, PreferencesActivity.class);
+                startActivity(i);
+                break;
             case R.id.action_clearmessages:
                 processor.deleteResource();
-                setProgressBarIndeterminateVisibility(true);
+                showRefreshProgressBar(true);
                 break;
             case R.id.action_logout:
                 NetUtils.getCookieStoreInstance(MessagesActivity.this).clear();
-                Intent i = new Intent(MessagesActivity.this, LoginActivity.class);
+                i = new Intent(MessagesActivity.this, LoginActivity.class);
                 MessagesActivity.this.finish();
                 startActivity(i);
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
-
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View view, ContextMenuInfo menuInfo) {
@@ -230,10 +238,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         boolean isListAtEnd = mListView.getLastVisiblePosition() == (mAdapter.getCount() - 1);
         mAdapter.changeCursor(cursor);
-        setProgressBarIndeterminateVisibility(false);
-        if (mMenu != null) {
-            mMenu.findItem(id.action_refresh).setVisible(true);
-        }
+        showRefreshProgressBar(false);
 
         // if refresh was manual or if list was scrolled to the
         // bottom and the content new content is more than
@@ -277,7 +282,14 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
      */
     @Override
     public void onLoaderReset(Loader<Cursor> cusror) {
-        setProgressBarIndeterminateVisibility(false);
+        showRefreshProgressBar(false);
         mAdapter.changeCursor(null);
+    }
+
+    private void showRefreshProgressBar(boolean value) {
+        if (mMenu != null) {
+            mMenu.findItem(id.action_refresh).setVisible(!value);
+        }
+        setProgressBarIndeterminateVisibility(value);
     }
 }

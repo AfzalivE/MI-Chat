@@ -1,4 +1,4 @@
-package com.afzaln.mi_chat;
+package com.afzaln.mi_chat.activities;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ViewFlipper;
 
+import com.afzaln.mi_chat.R;
 import com.afzaln.mi_chat.utils.NetUtils;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 

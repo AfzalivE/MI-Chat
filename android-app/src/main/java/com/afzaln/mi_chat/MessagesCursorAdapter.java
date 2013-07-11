@@ -11,8 +11,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.afzaln.mi_chat.R.color;
-import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
 import com.afzaln.mi_chat.resource.Message;
+import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
+import com.afzaln.mi_chat.view.MessageListView;
 
 public class MessagesCursorAdapter extends CursorAdapter {
 
@@ -20,7 +21,7 @@ public class MessagesCursorAdapter extends CursorAdapter {
 
     private static final int MOD_USER_ROLE = 2;
     private static final int ADMIN_USER_ROLE = 3;
-    
+
     private final int mAdminNameColor;
     private final int mModNameColor;
     private final int mUserameColor;
@@ -70,9 +71,6 @@ public class MessagesCursorAdapter extends CursorAdapter {
         holder.userNameView = (TextView) listItemView.findViewById(R.id.username);
         holder.timestampView = (TextView) listItemView.findViewById(R.id.timestamp);
         holder.messageView = (TextView) listItemView.findViewById(R.id.message);
-
-        ViewGroup.LayoutParams layoutParams = holder.messageView.getLayoutParams();
-        listItemView.setLayoutParams(layoutParams);
 
         listItemView.setTag(holder);
         return listItemView;

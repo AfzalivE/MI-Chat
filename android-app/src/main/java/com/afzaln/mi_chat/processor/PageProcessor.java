@@ -1,9 +1,5 @@
 package com.afzaln.mi_chat.processor;
 
-import org.w3c.dom.Document;
-
-import java.util.List;
-
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -20,6 +16,10 @@ import com.afzaln.mi_chat.resource.Page;
 import com.afzaln.mi_chat.resource.User;
 import com.afzaln.mi_chat.utils.NetUtils;
 import com.loopj.android.http.XmlHttpResponseHandler;
+
+import org.w3c.dom.Document;
+
+import java.util.List;
 
 public class PageProcessor implements ResourceProcessor {
 
@@ -89,6 +89,16 @@ public class PageProcessor implements ResourceProcessor {
         ContentResolver cr = this.mContext.getContentResolver();
 
         try {
+            info = page.getInfo();
+            if (info != null) {
+                cr.delete(InfoTable.CONTENT_URI, null, null);
+                cr.insert(InfoTable.CONTENT_URI, info.toContentValues());
+            }
+        } catch (NullPointerException e) {
+            Log.d(TAG, "couldn't get user info");
+        }
+
+        try {
             userList = page.getUserList();
             cr.delete(UsersTable.CONTENT_URI, null, null);
             ContentValues[] crValues = new ContentValues[userList.size()];
@@ -109,16 +119,6 @@ public class PageProcessor implements ResourceProcessor {
             cr.bulkInsert(MessagesTable.CONTENT_URI, crValues);
         } catch (NullPointerException e) {
             Log.d(TAG, "couldn't get message list");
-        }
-
-        try {
-            info = page.getInfo();
-            if (info != null) {
-                cr.delete(InfoTable.CONTENT_URI, null, null);
-                cr.insert(InfoTable.CONTENT_URI, info.toContentValues());
-            }
-        } catch (NullPointerException e) {
-            Log.d(TAG, "couldn't get user info");
         }
 
     }

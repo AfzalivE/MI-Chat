@@ -1,4 +1,4 @@
-package com.afzaln.mi_chat;
+package com.afzaln.mi_chat.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -28,7 +28,7 @@ public class MessageListView extends ListView {
      * Set the listener which will be triggered when the size of
      * the view is changed.
      */
-    void setOnSizeChangedListener(OnSizeChangedListener l) {
+    public void setOnSizeChangedListener(OnSizeChangedListener l) {
         mOnSizeChangedListener = l;
     }
 
