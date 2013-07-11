@@ -1,4 +1,4 @@
-package com.afzaln.mi_chat.activities;
+package com.afzaln.mi_chat.activity;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
