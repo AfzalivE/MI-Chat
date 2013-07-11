@@ -13,4 +13,8 @@
         <item name="android:homeAsUpIndicator">@drawable/drawer</item>
     </style>
 
+    <style name="PrefTheme" parent="AppTheme">
+        <item name="android:homeAsUpIndicator">@drawable/ic_ab_up</item>
+    </style>
+
 </resources>
