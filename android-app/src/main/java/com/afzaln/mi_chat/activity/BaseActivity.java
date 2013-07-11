@@ -1,4 +1,4 @@
-package com.afzaln.mi_chat.activities;
+package com.afzaln.mi_chat.activity;
 
 import android.content.Context;
 import android.os.Bundle;
