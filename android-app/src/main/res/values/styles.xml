@@ -28,4 +28,9 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <style name="SpinnerAppTheme" parent="android:Widget.Holo.Light.ImageButton">
+        <item name="android:background">@drawable/spinner_background_holo_light</item>
+        <item name="android:dropDownSelector">@drawable/list_selector_holo_light</item>
+    </style>
+
 </resources>

@@ -25,17 +25,6 @@
         />
 
     <TextView
-        android:id="@+id/timestamp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/username"
-        android:textColor="@color/light_text"
-        android:fontFamily="sans-serif-light"
-        android:textStyle="italic"
-        android:textSize="10sp"
-        android:text="2 min ago" />
-
-    <TextView
         android:id="@+id/message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,5 +36,16 @@
         android:textSize="14sp"
         android:autoLink="web"
         android:text="This is a message" />
+
+    <TextView
+        android:id="@+id/timestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/message"
+        android:textColor="@color/light_text"
+        android:fontFamily="sans-serif-light"
+        android:textStyle="italic"
+        android:textSize="10sp"
+        android:text="2 min ago" />
 
 </RelativeLayout>

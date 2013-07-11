@@ -4,13 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="@dimen/listPreferredItemHeightSmall"
-    android:paddingRight="18dp"
-    android:paddingLeft="18dp"
+    android:paddingRight="8dp"
+    android:paddingLeft="8dp"
     android:paddingTop="6dp"
     android:paddingBottom="6dp"
     android:gravity="center_vertical"
-    android:background="@color/alt_bg"
-    >
+    android:background="@color/alt_bg">
 
     <TextView
         android:id="@+id/username"
@@ -24,6 +23,21 @@
         android:fontFamily="sans-serif-light"
         android:text="username"
         />
+
+    <Button
+        android:id="@+id/images"
+        android:layout_width="match_parent"
+        android:layout_below="@id/message"
+        android:layout_alignParentRight="true"
+        android:layout_height="32dp"
+        android:textSize="12sp"
+        android:fontFamily="sans-serif-light"
+        android:gravity="right"
+        android:textStyle="italic"
+        android:textColor="@color/light_text"
+        style="@style/SpinnerAppTheme"
+        android:text="0 images attached"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/timestamp"

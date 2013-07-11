@@ -29,25 +29,25 @@ public class PageProcessor implements ResourceProcessor {
     private XmlHttpResponseHandler myResponseHandler = new XmlHttpResponseHandler() {
         @Override
         public void onStart() {
-            Log.d(TAG, "onStart");
+//            Log.d(TAG, "onStart");
         }
 
         @Override
         public void onSuccess(Document response) {
-            Log.d(TAG, "onSuccess");
+//            Log.d(TAG, "onSuccess");
             updateContentProvider(response);
         }
 
         @Override
         public void onFailure(Throwable e, Document response) {
-            Log.d(TAG, "onFailure");
+//            Log.d(TAG, "onFailure");
             e.printStackTrace();
             // Response failed :(
         }
 
         @Override
         public void onFinish() {
-            Log.d(TAG, "onFinish");
+//            Log.d(TAG, "onFinish");
             // Completed the request (either success or failure)
         }
     };
@@ -69,9 +69,9 @@ public class PageProcessor implements ResourceProcessor {
         Cursor cursor = contentResolver.query(MessagesTable.CONTENT_URI, new String[] { MessagesTable.MESSAGEID }, null, null, MessagesTable.MESSAGEID + " DESC LIMIT 1");
 
         if (cursor.moveToNext()) {
-            Log.d(TAG, Long.toString(cursor.getLong(0)));
+//            Log.d(TAG, Long.toString(cursor.getLong(0)));
             long lastId = cursor.getLong(0);
-            Log.d(TAG, "Last ID: " + Long.toString(lastId));
+//            Log.d(TAG, "Last ID: " + Long.toString(lastId));
             cursor.close();
             return lastId;
         } else {
