@@ -20,8 +20,9 @@ public class Message {
     int channelId;
     String userName;
     String message;
+    String imgLinks;
 
-    public Message(long messageId, int type, long dateTime, long userId, int userRole, int channelId, String userName, String messageText) {
+    public Message(long messageId, int type, long dateTime, long userId, int userRole, int channelId, String userName, String messageText, String imgLinks) {
         this.messageId = messageId;
         this.type = type;
         this.dateTime = dateTime;
@@ -30,6 +31,7 @@ public class Message {
         this.channelId = channelId;
         this.userName = userName;
         this.message = BbToHtml.process(userName, messageText);
+        this.imgLinks = imgLinks;
     }
 
     public ContentValues toContentValues() {
@@ -42,6 +44,7 @@ public class Message {
         rowData.put(MessagesTable.CHANNELID, this.channelId);
         rowData.put(MessagesTable.USERNAME, this.userName);
         rowData.put(MessagesTable.MESSAGE, this.message);
+        rowData.put(MessagesTable.IMGLINKS, this.imgLinks);
 //        Log.d(TAG, "converting to ContentValues, message: " + this.messageId.toString());
         return rowData;
     }

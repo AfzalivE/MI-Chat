@@ -1,5 +1,6 @@
 package com.afzaln.mi_chat.resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -131,11 +132,24 @@ public class Page implements Resource {
                 }
             }
 
+            String[] imgLinkArr = StringUtils.substringsBetween(messageText, "[img]", "[/img]");
+
+            String imgLinks = StringUtils.join(imgLinkArr, "|");
+
+            // TODO optimize this mess
+            if (imgLinkArr != null) {
+                messageText = messageText.replace("[img]", "").replace("[/img]", "");
+                for (int j = 0; j < imgLinkArr.length; j++) {
+                    messageText = messageText.replace(imgLinkArr[j], "");
+                }
+                messageText = messageText.trim();
+            }
+
             if (messageText.startsWith("/")) {
                 type = Message.ACTION_TYPE;
             }
 
-            Message message = new Message(messageId, type, dateTime, userId, userRole, channelId, userName, messageText);
+            Message message = new Message(messageId, type, dateTime, userId, userRole, channelId, userName, messageText, imgLinks);
 
             messageList.add(message);
 

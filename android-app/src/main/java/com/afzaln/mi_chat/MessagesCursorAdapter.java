@@ -8,12 +8,19 @@ import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.afzaln.mi_chat.R.color;
-import com.afzaln.mi_chat.resource.Message;
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
+import com.afzaln.mi_chat.resource.Message;
 import com.afzaln.mi_chat.view.MessageListView;
+
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class MessagesCursorAdapter extends CursorAdapter {
 
@@ -57,6 +64,8 @@ public class MessagesCursorAdapter extends CursorAdapter {
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         View listItemView = null;
 
+        ViewHolder holder = new ViewHolder();
+
         switch (getItemViewType(cursor)) {
             case Message.NORMAL_TYPE:
                 listItemView = LayoutInflater.from(context).inflate(R.layout.message_list_item, parent, false);
@@ -66,11 +75,10 @@ public class MessagesCursorAdapter extends CursorAdapter {
                 break;
         }
 
-        ViewHolder holder = new ViewHolder();
-
         holder.userNameView = (TextView) listItemView.findViewById(R.id.username);
         holder.timestampView = (TextView) listItemView.findViewById(R.id.timestamp);
         holder.messageView = (TextView) listItemView.findViewById(R.id.message);
+        holder.imagesButton = (Button) listItemView.findViewById(R.id.images);
 
         listItemView.setTag(holder);
         return listItemView;
@@ -91,6 +99,7 @@ public class MessagesCursorAdapter extends CursorAdapter {
         String userName = cursor.getString(cursor.getColumnIndex(MessagesTable.USERNAME));
         int userRole = cursor.getInt(cursor.getColumnIndex(MessagesTable.USERROLE));
         String message = cursor.getString(cursor.getColumnIndex(MessagesTable.MESSAGE));
+        String imgLinks = cursor.getString(cursor.getColumnIndex(MessagesTable.IMGLINKS));
         long timestamp = cursor.getLong(cursor.getColumnIndex(MessagesTable.DATETIME));
 
         ViewHolder holder = (ViewHolder) view.getTag();
@@ -99,6 +108,18 @@ public class MessagesCursorAdapter extends CursorAdapter {
         holder.timestampView.setText(getDate(timestamp));
         holder.messageView.setText(Html.fromHtml(message));
 
+        List<String> imgLinksList = new ArrayList<String>();
+        // TODO remove this condition when ACTION_TYPE can also display images
+        if (getItemViewType(cursor) == Message.NORMAL_TYPE) {
+            if (imgLinks != null) {
+                String[] imgLinksArr = StringUtils.split(imgLinks, "|");
+                Collections.addAll(imgLinksList, imgLinksArr);
+                holder.imagesButton.setVisibility(View.VISIBLE);
+                holder.imagesButton.setText(context.getResources().getQuantityString(R.plurals.numberOfImages, imgLinksList.size(), imgLinksList.size()));
+            } else {
+                holder.imagesButton.setVisibility(View.GONE);
+            }
+        }
     }
 
     private void formatUsername(int userRole, TextView userNameView) {
@@ -123,5 +144,6 @@ public class MessagesCursorAdapter extends CursorAdapter {
         TextView userNameView;
         TextView timestampView;
         TextView messageView;
+        Button imagesButton;
     }
 }

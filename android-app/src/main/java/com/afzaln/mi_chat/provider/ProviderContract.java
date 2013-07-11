@@ -148,7 +148,8 @@ public class ProviderContract {
                     MessagesTable.USERROLE,
                     MessagesTable.CHANNELID,
                     MessagesTable.USERNAME,
-                    MessagesTable.MESSAGE};
+                    MessagesTable.MESSAGE,
+                    MessagesTable.IMGLINKS};
 
             DISPLAY_COLUMNS = new String[] {
                     MessagesTable._ID,
@@ -156,7 +157,8 @@ public class ProviderContract {
                     MessagesTable.DATETIME,
                     MessagesTable.USERROLE,
                     MessagesTable.USERNAME,
-                    MessagesTable.MESSAGE};
+                    MessagesTable.MESSAGE,
+                    MessagesTable.IMGLINKS};
         }
 
         // Prevent instantiation of this class
@@ -171,6 +173,7 @@ public class ProviderContract {
         public static final String CHANNELID = "channelId";
         public static final String USERNAME = "userName";
         public static final String MESSAGE = "message";
+        public static final String IMGLINKS = "imgLinks";
 
     }
 

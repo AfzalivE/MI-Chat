@@ -26,4 +26,9 @@
         content
     </string>
 
+    <plurals name="numberOfImages">
+        <item quantity="one">1 image attached</item>
+        <item quantity="other">%d images attached</item>
+    </plurals>
+
 </resources>

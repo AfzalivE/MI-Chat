@@ -12,7 +12,7 @@ public class ProviderDbHelper extends SQLiteOpenHelper {
     public final String TAG = getClass().getSimpleName();
 
     private static final String DATABASE_NAME = "mi_chat.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 4;
 
     public ProviderDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -62,7 +62,8 @@ public class ProviderDbHelper extends SQLiteOpenHelper {
                 MessagesTable.USERROLE + " INTEGER, " +
                 MessagesTable.CHANNELID + " INTEGER, " +
                 MessagesTable.USERNAME + " TEXT, " +
-                MessagesTable.MESSAGE + " TEXT" +
+                MessagesTable.MESSAGE + " TEXT, " +
+                MessagesTable.IMGLINKS + " TEXT" +
                 ");");
 
         String sqlInfo = infoTableBuilder.toString();
