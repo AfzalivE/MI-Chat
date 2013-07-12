@@ -1,5 +1,1 @@
-include ':android-app', ':actionbarsherlock', ':slidingmenu', ':asynchttp', ':crouton'
-project(':actionbarsherlock').projectDir = new File(settingsDir, '../../android/Libraries/ActionBarSherlock/actionbarsherlock')
-project(':slidingmenu').projectDir = new File(settingsDir, '../../android/Libraries/SlidingMenu/library')
-project(':asynchttp').projectDir = new File(settingsDir, '../../android/Libraries/android-async-http')
-project(':crouton').projectDir = new File(settingsDir, '../../android/Libraries/Crouton/library')
+include ':android-app'

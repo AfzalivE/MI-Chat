@@ -1,8 +1,7 @@
 <component name="libraryTable">
   <library name="libs">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/android-app/libs/kefirbb-1.0.jar!/" />
-      <root url="jar://$PROJECT_DIR$/android-app/libs/commons-lang3-3.1.jar!/" />
+      <root url="file://$PROJECT_DIR$/android-app/libs" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
