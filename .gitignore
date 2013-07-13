@@ -25,6 +25,7 @@ keystore.properties
 
 # Idea non-crucial project fileS
 *.iws
+.idea/libraries/
 
 # Sandbox stuff
 _sandbox

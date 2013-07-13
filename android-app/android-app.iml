@@ -75,10 +75,10 @@
     <orderEntry type="library" name="commons-lang3-3.1" level="project" />
     <orderEntry type="library" name="kefirbb-1.0" level="project" />
     <orderEntry type="library" name="libGoogleAnalyticsV2" level="project" />
-    <orderEntry type="library" name="crouton-1.8.1" level="project" />
-    <orderEntry type="library" name="ComActionbarsherlockActionbarsherlock431.aar" level="project" />
-    <orderEntry type="library" name="ComJeremyfeinsteinSlidingmenuSlidingmenu13SNAPSHOT.aar" level="project" />
-    <orderEntry type="library" name="android-async-http-1.4.3" level="project" />
+    <orderEntry type="library" name="ComActionbarsherlockActionbarsherlock432SNAPSHOT.aar" level="project" />
+    <orderEntry type="library" name="ComJeremyfeinsteinSlidingmenu13SNAPSHOT.aar" level="project" />
+    <orderEntry type="library" name="ComLoopjAndroidAsyncHttp143.aar" level="project" />
+    <orderEntry type="library" name="DeKeyboardsurferCrouton181.aar" level="project" />
   </component>
 </module>
 
