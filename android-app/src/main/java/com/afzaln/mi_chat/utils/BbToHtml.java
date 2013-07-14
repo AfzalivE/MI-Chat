@@ -25,14 +25,12 @@ public class BbToHtml {
     private static Configuration getConfiguration() {
         Configuration cfg = ConfigurationFactory.getInstance().create();
 
-// TODO fix link parsing
         Code code = new Code("colr");
         code.setPattern(new Pattern(Arrays.asList(
                 new Constant("[color="),
-                // not sure if "escapeXml" really works
                 new Text("color", new Scope("escapeXml"), false),
                 new Constant("]"),
-                new Text("text", new Scope(), false),
+                new Text("text", new Scope("escapeXml"), false),
                 new Constant("[/color]")
         )));
 
@@ -108,6 +106,10 @@ public class BbToHtml {
 
         if (message.startsWith("/me")) {
             return message.replace("/me", userName);
+        }
+
+        if (message.startsWith("/action")) {
+            return message.replace("/action", userName);
         }
 
         if (message.startsWith("/privmsgto")) {
