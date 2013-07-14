@@ -33,3 +33,7 @@ _sandbox
 
 # Google analytics stuff
 analysis.xml
+
+# SonarQube stuff
+.sonar
+sonar-project.properties
