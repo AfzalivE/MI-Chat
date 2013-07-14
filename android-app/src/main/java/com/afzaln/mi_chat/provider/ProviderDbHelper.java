@@ -32,28 +32,28 @@ public class ProviderDbHelper extends SQLiteOpenHelper {
     }
 
     private void createTables(SQLiteDatabase db) {
-        StringBuilder infoTableBuilder = new StringBuilder();
-        StringBuilder usersTableBuilder = new StringBuilder();
-        StringBuilder messagesTableBuilder = new StringBuilder();
+        String infoTableBuilder;
+        String usersTableBuilder;
+        String messagesTableBuilder;
 
-        infoTableBuilder.append("CREATE TABLE " + InfoTable.TABLE_NAME + " ( " +
+        infoTableBuilder = "CREATE TABLE " + InfoTable.TABLE_NAME + " ( " +
                 InfoTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 InfoTable.USERID + " LONG, " +
                 InfoTable.CHANNELID + " INTEGER, " +
                 InfoTable.USERROLE + " INTEGER, " +
                 InfoTable.USERNAME + " TEXT, " +
                 InfoTable.CHANNELNAME + " TEXT" +
-                ");");
+                ");";
 
-        usersTableBuilder.append("CREATE TABLE " + UsersTable.TABLE_NAME + " ( " +
+        usersTableBuilder = "CREATE TABLE " + UsersTable.TABLE_NAME + " ( " +
                 UsersTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 UsersTable.USERID + " LONG, " +
                 UsersTable.USERROLE + " INTEGER, " +
                 UsersTable.CHANNELID + " INTEGER, " +
                 UsersTable.USERNAME + " TEXT" +
-                ");");
+                ");";
 
-        messagesTableBuilder.append("CREATE TABLE " + MessagesTable.TABLE_NAME + " ( " +
+        messagesTableBuilder = "CREATE TABLE " + MessagesTable.TABLE_NAME + " ( " +
                 MessagesTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 MessagesTable.MESSAGEID + " LONG, " +
                 MessagesTable.TYPE + " INTEGER, " +
@@ -64,7 +64,7 @@ public class ProviderDbHelper extends SQLiteOpenHelper {
                 MessagesTable.USERNAME + " TEXT, " +
                 MessagesTable.MESSAGE + " TEXT, " +
                 MessagesTable.IMGLINKS + " TEXT" +
-                ");");
+                ");";
 
         String sqlInfo = infoTableBuilder.toString();
         String sqlUsers = usersTableBuilder.toString();

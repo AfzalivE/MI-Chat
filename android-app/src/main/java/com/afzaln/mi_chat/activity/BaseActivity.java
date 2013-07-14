@@ -7,8 +7,6 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.actionbarsherlock.view.MenuItem;
 import com.afzaln.mi_chat.R;
-import com.afzaln.mi_chat.R.id;
-import com.afzaln.mi_chat.R.layout;
 import com.afzaln.mi_chat.UserListFragment;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenedListener;
@@ -20,13 +18,13 @@ public class BaseActivity extends SlidingFragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle(R.string.app_name);
-        setContentView(layout.main_layout);
+        setContentView(R.layout.main_layout);
 
         SlidingMenu sm = getSlidingMenu();
 
         // check if the layout contains the menu frame
-        if (findViewById(id.menu_frame) == null) {
-            setBehindContentView(layout.menu_frame);
+        if (findViewById(R.id.menu_frame) == null) {
+            setBehindContentView(R.layout.menu_frame);
             sm.setSlidingEnabled(true);
             sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -48,7 +46,7 @@ public class BaseActivity extends SlidingFragmentActivity {
         // set the behind view fragment
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(id.menu_frame, new UserListFragment())
+                .replace(R.id.menu_frame, new UserListFragment())
                 .commit();
 
         // customize the SlidingMenu
