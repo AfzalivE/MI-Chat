@@ -32,9 +32,9 @@ Dependencies (from Maven)
 - [Crouton](https://github.com/keyboardsurfer/Crouton) by keyboardsurfer
 - [SlidingMenu](https://github.com/jfeinstein10/SlidingMenu) by Jeremy Feinstein (Modified to use ABS)
 - [ActionBarSherlock](https://github.com/JakeWharton/ActionBarSherlock) by Jake Wharton
- 
-Dependencies (included as jars)
-------------
+
+#### Included as jars
+
 - [KefirBB](https://github.com/kefirfromperm/kefirbb) by Vitalii Samolovskikh
 - [Apache Commons Lang 3](http://commons.apache.org/proper/commons-lang/)
 - Google Analytics V2
