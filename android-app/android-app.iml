@@ -74,8 +74,10 @@
     <orderEntry type="library" name="libGoogleAnalyticsV2" level="project" />
     <orderEntry type="library" name="ComActionbarsherlockActionbarsherlock432SNAPSHOT.aar" level="project" />
     <orderEntry type="library" name="ComJeremyfeinsteinSlidingmenu13SNAPSHOT.aar" level="project" />
-    <orderEntry type="library" name="ComLoopjAndroidAsyncHttp143.aar" level="project" />
     <orderEntry type="library" name="DeKeyboardsurferCrouton181.aar" level="project" />
+    <orderEntry type="library" name="androidasync-1.1.4" level="project" />
+    <orderEntry type="library" name="gson-2.2.4" level="project" />
+    <orderEntry type="library" name="ion-1.1.4" level="project" />
   </component>
 </module>
 

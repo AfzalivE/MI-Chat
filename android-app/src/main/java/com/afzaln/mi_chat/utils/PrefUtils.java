@@ -4,17 +4,21 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.koushikdutta.ion.Ion;
+
+import java.net.HttpCookie;
+import java.util.List;
+
 public class PrefUtils {
+
+    private static final String TAG = PrefUtils.class.getSimpleName();
 
     /**
      * Commits a preference in SharedPreferences.
      *
-     * @param context
-     *            the context
-     * @param stringName
-     *            the preference name
-     * @param stringValue
-     *            the value of the preference
+     * @param context     the context
+     * @param stringName  the preference name
+     * @param stringValue the value of the preference
      */
 
     public static void setPref(Context context, String stringName, String stringValue) {
@@ -27,10 +31,8 @@ public class PrefUtils {
     /**
      * Returns the value of a preference in SharedPreferences.
      *
-     * @param context
-     *            the context
-     * @param stringName
-     *            the preference name
+     * @param context    the context
+     * @param stringName the preference name
      * @return stringValue the value of the preference
      */
 
@@ -43,13 +45,28 @@ public class PrefUtils {
     /**
      * Removes all preferences from SharedPreferences
      *
-     * @param context
-     *            the context
+     * @param context the context
      */
     public static void clearPrefs(Context context) {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor prefsEditor = sharedPrefs.edit();
         prefsEditor.clear();
         prefsEditor.commit();
+    }
+
+    /**
+     * Determines if the cookie named "bbpassword"
+     * exists in the CookieStore
+     *
+     * @return true if auth cookie was found in the CookieStore
+     */
+    public static boolean authCookieExists(Context context) {
+        List<HttpCookie> cookies = Ion.getDefault(context).getCookieMiddleware().getCookieStore().getCookies();
+        for (HttpCookie cookie : cookies) {
+            if (cookie.getName().equals("bbpassword")) {
+                return true;
+            }
+        }
+        return false;
     }
 }
