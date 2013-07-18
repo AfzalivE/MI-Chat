@@ -25,16 +25,20 @@ Note
 I have completely removed support for ant build system, using gradle instead.
 If you still want to build with ant, fork this project and import it to your IDE. From there, you're on your own.
 
-Dependencies
+Dependencies (from Maven)
 ------------
 - Android Studio + knowledge of the gradle build system
-- Android-async-http (latest version from source): https://github.com/loopj/android-async-http
-- Crouton (needs Android support v4 library, latest version from source): https://github.com/keyboardsurfer/Crouton
-- SlidingMenu (needs Android support v4 library, latest version from source): https://github.com/jfeinstein10/SlidingMenu
-- We use ActionBarSherlock with this so in SlidingFragmentActivity.java, extend SherlockFragmentActivity instead of FragmentActivity
-- ActionBarSherlock (needs Android support v4 library, latest version from source): https://github.com/JakeWharton/ActionBarSherlock
+- [Ion](https://github.com/koush/ion) by Koush
+- [Crouton](https://github.com/keyboardsurfer/Crouton) by keyboardsurfer
+- [SlidingMenu](https://github.com/jfeinstein10/SlidingMenu) by Jeremy Feinstein (Modified to use ABS)
+- [ActionBarSherlock](https://github.com/JakeWharton/ActionBarSherlock) by Jake Wharton
+ 
+Dependencies (included as jars)
+------------
+- [KefirBB](https://github.com/kefirfromperm/kefirbb) by Vitalii Samolovskikh
+- [Apache Commons Lang 3](http://commons.apache.org/proper/commons-lang/)
+- Google Analytics V2
 
-Soon, dependency on Crouton and Android-async-http will be removed, the latter being replaced with Volley.
 
 Proposed app workflow
 -----------------------------------
