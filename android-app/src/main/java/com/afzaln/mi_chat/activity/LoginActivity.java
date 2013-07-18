@@ -15,12 +15,12 @@ import android.widget.EditText;
 import android.widget.ViewFlipper;
 
 import com.afzaln.mi_chat.R;
-import com.afzaln.mi_chat.utils.NetUtils;
-import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.afzaln.mi_chat.utils.MIChatApi;
+import com.afzaln.mi_chat.utils.PrefUtils;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Response;
 
-import org.apache.http.cookie.Cookie;
-
-import java.util.List;
+import org.apache.http.HttpStatus;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
@@ -29,11 +29,34 @@ public class LoginActivity extends Activity {
 
     private static final String TAG = LoginActivity.class.getSimpleName();
     private boolean mRetryLogin = true;
-
     private EditText mUsernameField;
     private EditText mPasswordField;
     private ViewFlipper mLoginFlipper;
-    private AsyncHttpResponseHandler mLoginResponseHandler = new LoginResponseHandler();
+
+    private FutureCallback<Response<String>> mLoginCallback = new FutureCallback<Response<String>>() {
+        @Override
+        public void onCompleted(Exception e, Response<String> response) {
+            if (e != null) {
+                mLoginFlipper.showPrevious();
+                Crouton.makeText(LoginActivity.this, e.getMessage(), Style.ALERT).show();
+            } else if (response.getHeaders().getResponseCode() == HttpStatus.SC_OK) {
+                Log.d(TAG, response.getHeaders().getStatusLine());
+
+                if (PrefUtils.authCookieExists(LoginActivity.this)) {
+                    Intent i = new Intent(LoginActivity.this, MessagesActivity.class);
+                    LoginActivity.this.finish();
+                    startActivity(i);
+                } else {
+                    mLoginFlipper.showPrevious();
+                    Crouton.makeText(LoginActivity.this, "Username/password incorrect", Style.ALERT).show();
+                }
+            } else {
+                mLoginFlipper.showPrevious();
+                Crouton.makeText(LoginActivity.this, response.getHeaders().getStatusLine(), Style.ALERT).show();
+//                Crouton.makeText(LoginActivity.this, "Couldn't sign in, please try again", Style.ALERT).show();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +72,8 @@ public class LoginActivity extends Activity {
         mLoginFlipper.setOutAnimation(LoginActivity.this, android.R.anim.fade_out);
         mLoginFlipper.setInAnimation(LoginActivity.this, android.R.anim.fade_in);
 
-        if (authCookieExists()) {
-            NetUtils.postLogin(mLoginResponseHandler, LoginActivity.this, null, null);
+        if (PrefUtils.authCookieExists(LoginActivity.this)) {
+            // TODO login with stored cookies
         }
 
         Button login = (Button) findViewById(R.id.login);
@@ -62,7 +85,8 @@ public class LoginActivity extends Activity {
                 hideKeyboard();
                 String username = mUsernameField.getText().toString();
                 String password = mPasswordField.getText().toString();
-                NetUtils.postLogin(mLoginResponseHandler, LoginActivity.this, username, password);
+                mLoginFlipper.showNext();
+                MIChatApi.login(LoginActivity.this, mLoginCallback, username, password);
             }
         });
 
@@ -71,56 +95,5 @@ public class LoginActivity extends Activity {
     protected void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mPasswordField.getWindowToken(), 0);
-    }
-
-    protected boolean authCookieExists() {
-        List<Cookie> cookies = NetUtils.getCookieStoreInstance(LoginActivity.this).getCookies();
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("bbpassword")) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private class LoginResponseHandler extends AsyncHttpResponseHandler {
-        @Override
-        public void onStart() {
-            if (mRetryLogin) {
-                mLoginFlipper.showNext();
-            }
-            Log.d(TAG, "onStart");
-        }
-
-        @Override
-        public void onSuccess(String response) {
-            if (authCookieExists()) {
-                Intent i = new Intent(LoginActivity.this, MessagesActivity.class);
-                LoginActivity.this.finish();
-                startActivity(i);
-            } else {
-                mLoginFlipper.showPrevious();
-                Crouton.makeText(LoginActivity.this, "Username/password incorrect", Style.ALERT).show();
-            }
-            Log.d(TAG, "onSuccess");
-        }
-
-        @Override
-        public void onFailure(Throwable e, String response) {
-            Log.d(TAG, "onFailure");
-            if (authCookieExists() && mRetryLogin) {
-                mRetryLogin = false;
-                NetUtils.postLogin(mLoginResponseHandler, LoginActivity.this, null, null);
-            } else {
-                mLoginFlipper.showPrevious();
-                Crouton.makeText(LoginActivity.this, "Couldn't sign in, please try again", Style.ALERT).show();
-            }
-
-        }
-
-        @Override
-        public void onFinish() {
-            Log.d(TAG, "onFinish");
-        }
     }
 }

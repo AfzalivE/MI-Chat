@@ -27,8 +27,6 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.afzaln.mi_chat.AlarmReceiver;
-import com.afzaln.mi_chat.view.MessageListView;
-import com.afzaln.mi_chat.view.MessageListView.OnSizeChangedListener;
 import com.afzaln.mi_chat.MessagesCursorAdapter;
 import com.afzaln.mi_chat.R;
 import com.afzaln.mi_chat.R.id;
@@ -36,9 +34,9 @@ import com.afzaln.mi_chat.processor.ProcessorFactory;
 import com.afzaln.mi_chat.processor.ResourceProcessor;
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
 import com.afzaln.mi_chat.service.ServiceContract;
-import com.afzaln.mi_chat.utils.NetUtils;
+import com.afzaln.mi_chat.view.MessageListView;
+import com.afzaln.mi_chat.view.MessageListView.OnSizeChangedListener;
 import com.google.analytics.tracking.android.EasyTracker;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import java.util.Calendar;
 
@@ -59,7 +57,6 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     private AlarmManager mAlarmManager;
     private PendingIntent mPendingIntent;
     private boolean mManualRefresh = false;
-    private AsyncHttpResponseHandler mLogoutResponseHandler;
 
     @Override
     public void onStart() {
@@ -189,7 +186,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
                 showRefreshProgressBar(true);
                 break;
             case R.id.action_logout:
-                NetUtils.getCookieStoreInstance(MessagesActivity.this).clear();
+                // TODO clear cookies
                 i = new Intent(MessagesActivity.this, LoginActivity.class);
                 MessagesActivity.this.finish();
                 startActivity(i);
