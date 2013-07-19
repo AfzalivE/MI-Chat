@@ -15,7 +15,6 @@
  */
 package com.afzaln.mi_chat.view;
 
-import android.R.drawable;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
@@ -24,6 +23,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+
+import com.afzaln.mi_chat.R;
 
 /**
  * To change clear icon, set
@@ -54,7 +55,7 @@ public class ClearableEditText extends EditText {
     private void init() {
         mBtnClear = getCompoundDrawables()[2];
         if (mBtnClear == null) {
-            mBtnClear = getResources().getDrawable(drawable.ic_menu_close_clear_cancel);
+            mBtnClear = getResources().getDrawable(R.drawable.ic_menu_close_clear_cancel);
         }
         mBtnClear.setBounds(0, 0, mBtnClear.getIntrinsicWidth(), mBtnClear.getIntrinsicHeight());
         setClearIconVisible(false);

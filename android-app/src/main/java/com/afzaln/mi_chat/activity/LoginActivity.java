@@ -53,7 +53,6 @@ public class LoginActivity extends Activity {
             } else {
                 mLoginFlipper.showPrevious();
                 Crouton.makeText(LoginActivity.this, response.getHeaders().getStatusLine(), Style.ALERT).show();
-//                Crouton.makeText(LoginActivity.this, "Couldn't sign in, please try again", Style.ALERT).show();
             }
         }
     };

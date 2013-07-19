@@ -22,6 +22,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -34,21 +35,27 @@ import com.afzaln.mi_chat.processor.ProcessorFactory;
 import com.afzaln.mi_chat.processor.ResourceProcessor;
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
 import com.afzaln.mi_chat.service.ServiceContract;
+import com.afzaln.mi_chat.utils.MIChatApi;
 import com.afzaln.mi_chat.view.MessageListView;
 import com.afzaln.mi_chat.view.MessageListView.OnSizeChangedListener;
 import com.google.analytics.tracking.android.EasyTracker;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
+import com.koushikdutta.ion.Response;
+
+import org.apache.http.HttpStatus;
 
 import java.util.Calendar;
+
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class MessagesActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int MESSAGE_LOADER = 0;
     private static final int DEFAULT_REFRESH_INTERVAL = 3000;
-
     private static final String TAG = MessagesActivity.class.getSimpleName();
-
     private static int mRefreshInterval = DEFAULT_REFRESH_INTERVAL;
-
     private MessagesCursorAdapter mAdapter;
     private MessageListView mListView;
     private EditText mEditText;
@@ -57,6 +64,25 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     private AlarmManager mAlarmManager;
     private PendingIntent mPendingIntent;
     private boolean mManualRefresh = false;
+    private FutureCallback<Response<String>> mLogoutCallback = new FutureCallback<Response<String>>() {
+        @Override
+        public void onCompleted(Exception e, Response<String> response) {
+            if (e != null) {
+                // TODO show Crouton here instead of toast
+                // Crouton is overlapped by the Action Bar right now
+                Toast.makeText(MessagesActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            } else if (response.getHeaders().getResponseCode() == HttpStatus.SC_OK) {
+                Log.d(TAG, response.getHeaders().getStatusLine());
+                // TODO clear cookies
+                Intent i = new Intent(MessagesActivity.this, LoginActivity.class);
+                MessagesActivity.this.finish();
+                startActivity(i);
+
+            } else {
+                Crouton.makeText(MessagesActivity.this, response.getHeaders().getStatusLine(), Style.ALERT).show();
+            }
+        }
+    };
 
     @Override
     public void onStart() {
@@ -186,10 +212,8 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
                 showRefreshProgressBar(true);
                 break;
             case R.id.action_logout:
-                // TODO clear cookies
-                i = new Intent(MessagesActivity.this, LoginActivity.class);
-                MessagesActivity.this.finish();
-                startActivity(i);
+                Ion.getDefault(MessagesActivity.this).cancelAll();
+                MIChatApi.logout(MessagesActivity.this, mLogoutCallback);
                 break;
         }
         return super.onOptionsItemSelected(item);
