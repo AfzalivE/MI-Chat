@@ -65,4 +65,11 @@ public class NetUtils {
             client.post(uri, myResponseHandler);
         }
     }
+
+    public static void postLogout(XmlHttpResponseHandler myResponseHandler) {
+        String uri = BASE_URI;
+        RequestParams params = new RequestParams();
+        params.put("logout", "true");
+        getClientInstance().post(uri, params, myResponseHandler);
+    }
 }
