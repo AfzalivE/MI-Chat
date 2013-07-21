@@ -28,7 +28,6 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 public class LoginActivity extends Activity {
 
     private static final String TAG = LoginActivity.class.getSimpleName();
-    private boolean mRetryLogin = true;
     private EditText mUsernameField;
     private EditText mPasswordField;
     private ViewFlipper mLoginFlipper;
@@ -72,7 +71,7 @@ public class LoginActivity extends Activity {
         mLoginFlipper.setInAnimation(LoginActivity.this, android.R.anim.fade_in);
 
         if (PrefUtils.authCookieExists(LoginActivity.this)) {
-            // TODO login with stored cookies
+            MIChatApi.login(LoginActivity.this, mLoginCallback);
         }
 
         Button login = (Button) findViewById(R.id.login);

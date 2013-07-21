@@ -6,6 +6,8 @@ import android.content.ContentResolver;
 import com.afzaln.mi_chat.provider.ProviderContract.InfoTable;
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
 import com.afzaln.mi_chat.provider.ProviderContract.UsersTable;
+import com.afzaln.mi_chat.utils.MyCookieMiddleware;
+import com.koushikdutta.ion.Ion;
 
 /** Created by afzaln on 2013-05-22. */
 public class MIChatApp extends Application {
@@ -14,7 +16,9 @@ public class MIChatApp extends Application {
     public void onCreate() {
         super.onCreate();
 
-//        Ion.getDefault(this).setLogging("MI_CHAT", Log.DEBUG);
+//        Ion.getDefault(this).setLogging("mi_chat_ion", Log.DEBUG);
+        MyCookieMiddleware middleware = new MyCookieMiddleware(this);
+        Ion.getDefault(this).getHttpClient().insertMiddleware(middleware);
 
         ContentResolver cr = getContentResolver();
 

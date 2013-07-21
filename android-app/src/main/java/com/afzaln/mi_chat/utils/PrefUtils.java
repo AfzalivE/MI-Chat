@@ -6,12 +6,17 @@ import android.preference.PreferenceManager;
 
 import com.koushikdutta.ion.Ion;
 
+import java.net.CookieStore;
 import java.net.HttpCookie;
 import java.util.List;
 
 public class PrefUtils {
 
     private static final String TAG = PrefUtils.class.getSimpleName();
+    private static final String COOKIE_AUTH_TOKEN = "bbpassword";
+    private static final String COOKIE_PREFS = "CookiePrefsFile";
+    private static final String COOKIE_NAME_PREFIX = "cookie_";
+    private static final String COOKIE_NAME_STORE = "names";
 
     /**
      * Commits a preference in SharedPreferences.
@@ -63,10 +68,20 @@ public class PrefUtils {
     public static boolean authCookieExists(Context context) {
         List<HttpCookie> cookies = Ion.getDefault(context).getCookieMiddleware().getCookieStore().getCookies();
         for (HttpCookie cookie : cookies) {
-            if (cookie.getName().equals("bbpassword")) {
+            if (cookie.getName().equals(COOKIE_AUTH_TOKEN)) {
                 return true;
             }
         }
         return false;
+    }
+
+    public static void clearCookiePrefs(Context context) {
+        // Clear cookies from Shared Preferences
+        SharedPreferences cookiePrefs = context.getSharedPreferences(COOKIE_PREFS, Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = cookiePrefs.edit();
+        editor.clear();
+        editor.commit();
+        CookieStore cookieStore = Ion.getDefault(context).getCookieMiddleware().getCookieStore();
+        cookieStore.removeAll();
     }
 }

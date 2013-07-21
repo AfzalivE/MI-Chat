@@ -36,6 +36,7 @@ import com.afzaln.mi_chat.processor.ResourceProcessor;
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
 import com.afzaln.mi_chat.service.ServiceContract;
 import com.afzaln.mi_chat.utils.MIChatApi;
+import com.afzaln.mi_chat.utils.PrefUtils;
 import com.afzaln.mi_chat.view.MessageListView;
 import com.afzaln.mi_chat.view.MessageListView.OnSizeChangedListener;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -212,6 +213,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
                 showRefreshProgressBar(true);
                 break;
             case R.id.action_logout:
+                PrefUtils.clearCookiePrefs(MessagesActivity.this);
                 Ion.getDefault(MessagesActivity.this).cancelAll();
                 MIChatApi.logout(MessagesActivity.this, mLogoutCallback);
                 break;
