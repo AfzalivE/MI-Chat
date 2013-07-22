@@ -5,10 +5,12 @@ import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
 import android.text.Html;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 
 import com.afzaln.mi_chat.R.color;
@@ -78,7 +80,8 @@ public class MessagesCursorAdapter extends CursorAdapter {
         holder.userNameView = (TextView) listItemView.findViewById(R.id.username);
         holder.timestampView = (TextView) listItemView.findViewById(R.id.timestamp);
         holder.messageView = (TextView) listItemView.findViewById(R.id.message);
-        holder.imagesButton = (Button) listItemView.findViewById(R.id.images);
+        holder.imagesButton = (Button) listItemView.findViewById(R.id.show_images);
+        holder.imageScrollView = (HorizontalScrollView) listItemView.findViewById(R.id.images);
 
         listItemView.setTag(holder);
         return listItemView;
@@ -102,7 +105,7 @@ public class MessagesCursorAdapter extends CursorAdapter {
         String imgLinks = cursor.getString(cursor.getColumnIndex(MessagesTable.IMGLINKS));
         long timestamp = cursor.getLong(cursor.getColumnIndex(MessagesTable.DATETIME));
 
-        ViewHolder holder = (ViewHolder) view.getTag();
+        final ViewHolder holder = (ViewHolder) view.getTag();
         holder.userNameView.setText(userName);
         formatUsername(userRole, holder.userNameView);
         holder.timestampView.setText(getDate(timestamp));
@@ -115,6 +118,18 @@ public class MessagesCursorAdapter extends CursorAdapter {
                 String[] imgLinksArr = StringUtils.split(imgLinks, "|");
                 Collections.addAll(imgLinksList, imgLinksArr);
                 holder.imagesButton.setVisibility(View.VISIBLE);
+                holder.imagesButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (holder.imageScrollView.getVisibility() == View.VISIBLE) {
+                            Log.d(TAG, "now hiding imagesScrollView");
+                            holder.imageScrollView.setVisibility(View.GONE);
+                        } else {
+                            Log.d(TAG, "now showing imagesScrollView");
+                            holder.imageScrollView.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
                 holder.imagesButton.setText(context.getResources().getQuantityString(R.plurals.numberOfImages, imgLinksList.size(), imgLinksList.size()));
             } else {
                 holder.imagesButton.setVisibility(View.GONE);
@@ -145,5 +160,6 @@ public class MessagesCursorAdapter extends CursorAdapter {
         TextView timestampView;
         TextView messageView;
         Button imagesButton;
+        HorizontalScrollView imageScrollView;
     }
 }

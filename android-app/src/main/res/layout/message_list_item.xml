@@ -24,21 +24,6 @@
         android:text="username"
         />
 
-    <Button
-        android:id="@+id/images"
-        android:layout_width="match_parent"
-        android:layout_below="@id/message"
-        android:layout_alignParentRight="true"
-        android:layout_height="32dp"
-        android:textSize="12sp"
-        android:fontFamily="sans-serif-light"
-        android:gravity="right"
-        android:textStyle="italic"
-        android:textColor="@color/light_text"
-        style="@style/SpinnerAppTheme"
-        android:text="0 images attached"
-        android:visibility="gone"/>
-
     <TextView
         android:id="@+id/timestamp"
         android:layout_width="wrap_content"
@@ -65,5 +50,27 @@
         android:textSize="14sp"
         android:autoLink="web"
         android:text="This is a message" />
+
+
+    <Button
+        android:id="@+id/show_images"
+        android:layout_width="match_parent"
+        android:layout_below="@id/message"
+        android:layout_alignParentRight="true"
+        android:layout_height="32dp"
+        android:textSize="12sp"
+        android:fontFamily="sans-serif-light"
+        android:gravity="right"
+        android:textStyle="italic"
+        android:textColor="@color/light_text"
+        style="@style/SpinnerAppTheme"
+        android:text="0 images attached"
+        android:visibility="gone" />
+
+    <HorizontalScrollView android:id="@+id/images"
+        android:layout_height="20dp"
+        android:layout_width="wrap_content"
+        android:visibility="gone"
+        android:layout_below="@+id/show_images" />
 
 </RelativeLayout>
