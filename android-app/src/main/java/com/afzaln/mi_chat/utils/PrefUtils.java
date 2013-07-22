@@ -4,6 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import org.apache.http.cookie.Cookie;
+
+import java.util.List;
+
 public class PrefUtils {
 
     /**
@@ -51,5 +55,15 @@ public class PrefUtils {
         SharedPreferences.Editor prefsEditor = sharedPrefs.edit();
         prefsEditor.clear();
         prefsEditor.commit();
+    }
+
+    public static boolean authCookieExists(Context context) {
+        List<Cookie> cookies = NetUtils.getCookieStoreInstance(context).getCookies();
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("bbpassword")) {
+                return true;
+            }
+        }
+        return false;
     }
 }

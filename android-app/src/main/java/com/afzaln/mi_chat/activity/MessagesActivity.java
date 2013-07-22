@@ -163,6 +163,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
 
                 mEditText.setText("");
                 mSubmitButton.setEnabled(false);
+                mAlarmManager.cancel(mPendingIntent);
             }
         });
 
@@ -202,7 +203,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         ResourceProcessor processor = ProcessorFactory.getInstance(this).getProcessor(ServiceContract.RESOURCE_TYPE_PAGE);
-        Intent i = null;
+        Intent i;
         switch (item.getItemId()) {
             case R.id.action_refresh:
                 processor.getResource();

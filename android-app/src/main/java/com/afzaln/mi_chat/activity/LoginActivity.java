@@ -16,11 +16,8 @@ import android.widget.ViewFlipper;
 
 import com.afzaln.mi_chat.R;
 import com.afzaln.mi_chat.utils.NetUtils;
+import com.afzaln.mi_chat.utils.PrefUtils;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-
-import org.apache.http.cookie.Cookie;
-
-import java.util.List;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
@@ -49,7 +46,7 @@ public class LoginActivity extends Activity {
         mLoginFlipper.setOutAnimation(LoginActivity.this, android.R.anim.fade_out);
         mLoginFlipper.setInAnimation(LoginActivity.this, android.R.anim.fade_in);
 
-        if (authCookieExists()) {
+        if (PrefUtils.authCookieExists(this)) {
             NetUtils.postLogin(mLoginResponseHandler, LoginActivity.this, null, null);
         }
 
@@ -73,16 +70,6 @@ public class LoginActivity extends Activity {
         imm.hideSoftInputFromWindow(mPasswordField.getWindowToken(), 0);
     }
 
-    protected boolean authCookieExists() {
-        List<Cookie> cookies = NetUtils.getCookieStoreInstance(LoginActivity.this).getCookies();
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("bbpassword")) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private class LoginResponseHandler extends AsyncHttpResponseHandler {
         @Override
         public void onStart() {
@@ -94,7 +81,7 @@ public class LoginActivity extends Activity {
 
         @Override
         public void onSuccess(String response) {
-            if (authCookieExists()) {
+            if (PrefUtils.authCookieExists(LoginActivity.this)) {
                 Intent i = new Intent(LoginActivity.this, MessagesActivity.class);
                 LoginActivity.this.finish();
                 startActivity(i);
@@ -108,7 +95,7 @@ public class LoginActivity extends Activity {
         @Override
         public void onFailure(Throwable e, String response) {
             Log.d(TAG, "onFailure");
-            if (authCookieExists() && mRetryLogin) {
+            if (PrefUtils.authCookieExists(LoginActivity.this) && mRetryLogin) {
                 mRetryLogin = false;
                 NetUtils.postLogin(mLoginResponseHandler, LoginActivity.this, null, null);
             } else {

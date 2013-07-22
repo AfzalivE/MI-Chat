@@ -40,7 +40,7 @@ public class PageProcessor implements ResourceProcessor {
 
         @Override
         public void onFailure(Throwable e, Document response) {
-//            Log.d(TAG, "onFailure");
+            Log.d(TAG, "onFailure");
             e.printStackTrace();
             // Response failed :(
         }
@@ -135,7 +135,9 @@ public class PageProcessor implements ResourceProcessor {
     @Override
     public void deleteResource() {
         ContentResolver cr = this.mContext.getContentResolver();
+        cr.delete(UsersTable.CONTENT_URI, null, null);
         cr.delete(MessagesTable.CONTENT_URI, null, null);
+        cr.delete(InfoTable.CONTENT_URI, null, null);
     }
 
 }
