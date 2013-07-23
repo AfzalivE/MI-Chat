@@ -67,10 +67,19 @@
         android:text="0 images attached"
         android:visibility="gone" />
 
-    <HorizontalScrollView android:id="@+id/images"
-        android:layout_height="20dp"
-        android:layout_width="wrap_content"
-        android:visibility="gone"
-        android:layout_below="@+id/show_images" />
+    <HorizontalScrollView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/show_images" >
+
+        <LinearLayout android:id="@+id/images"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+        </LinearLayout>
+
+     </HorizontalScrollView>
 
 </RelativeLayout>

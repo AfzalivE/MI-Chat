@@ -7,5 +7,6 @@
     <dimen name="listPreferredItemHeightSmall">48dip</dimen>
     <dimen name="listPreferredItemPaddingStart">6dip</dimen>
     <dimen name="listPreferredItemPaddingEnd">6dip</dimen>
+    <dimen name="list_detail_image_size">60dp</dimen>
 
 </resources>
