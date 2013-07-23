@@ -71,6 +71,7 @@ public class LoginActivity extends Activity {
         mLoginFlipper.setInAnimation(LoginActivity.this, android.R.anim.fade_in);
 
         if (PrefUtils.authCookieExists(LoginActivity.this)) {
+            mLoginFlipper.showNext();
             MIChatApi.login(LoginActivity.this, mLoginCallback);
         }
 

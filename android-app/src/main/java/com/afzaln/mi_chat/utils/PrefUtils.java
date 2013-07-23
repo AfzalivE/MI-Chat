@@ -6,10 +6,6 @@ import android.preference.PreferenceManager;
 
 import com.koushikdutta.ion.Ion;
 
-import java.net.CookieStore;
-import java.net.HttpCookie;
-import java.util.List;
-
 public class PrefUtils {
 
     private static final String TAG = PrefUtils.class.getSimpleName();
@@ -66,22 +62,16 @@ public class PrefUtils {
      * @return true if auth cookie was found in the CookieStore
      */
     public static boolean authCookieExists(Context context) {
-        List<HttpCookie> cookies = Ion.getDefault(context).getCookieMiddleware().getCookieStore().getCookies();
-        for (HttpCookie cookie : cookies) {
-            if (cookie.getName().equals(COOKIE_AUTH_TOKEN)) {
-                return true;
-            }
+        SharedPreferences preferences = context.getSharedPreferences("ion-cookies", Context.MODE_PRIVATE);
+        String cookies = preferences.getString("http://www.macinsiders.com/chat/?ajax=true", "");
+        if (cookies.contains("bbpassword")) {
+            return true;
         }
         return false;
     }
 
     public static void clearCookiePrefs(Context context) {
-        // Clear cookies from Shared Preferences
-        SharedPreferences cookiePrefs = context.getSharedPreferences(COOKIE_PREFS, Context.MODE_PRIVATE);
-        final SharedPreferences.Editor editor = cookiePrefs.edit();
-        editor.clear();
-        editor.commit();
-        CookieStore cookieStore = Ion.getDefault(context).getCookieMiddleware().getCookieStore();
-        cookieStore.removeAll();
+        // Clear cookies from Shared Preferences and local store
+        Ion.getDefault(context).getCookieMiddleware().clear();
     }
 }
