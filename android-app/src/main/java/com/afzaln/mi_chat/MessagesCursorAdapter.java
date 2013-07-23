@@ -6,17 +6,22 @@ import android.support.v4.widget.CursorAdapter;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.actionbarsherlock.ActionBarSherlock;
 import com.afzaln.mi_chat.R.color;
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
 import com.afzaln.mi_chat.resource.Message;
 import com.afzaln.mi_chat.view.MessageListView;
+import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -35,11 +40,15 @@ public class MessagesCursorAdapter extends CursorAdapter {
     private final int mModNameColor;
     private final int mUserameColor;
 
+    private final List<String> urls = new ArrayList<String>();
+
+
     public MessagesCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
         mAdminNameColor = context.getResources().getColor(color.admin_name);
         mModNameColor = context.getResources().getColor(color.mod_name);
         mUserameColor = context.getResources().getColor(color.normal_text);
+        Collections.addAll(urls, Data.URLS);
     }
 
     private int getItemViewType(Cursor cursor) {
@@ -81,7 +90,7 @@ public class MessagesCursorAdapter extends CursorAdapter {
         holder.timestampView = (TextView) listItemView.findViewById(R.id.timestamp);
         holder.messageView = (TextView) listItemView.findViewById(R.id.message);
         holder.imagesButton = (Button) listItemView.findViewById(R.id.show_images);
-        holder.imageScrollView = (HorizontalScrollView) listItemView.findViewById(R.id.images);
+        holder.images = (LinearLayout) listItemView.findViewById(R.id.images);
 
         listItemView.setTag(holder);
         return listItemView;
@@ -97,7 +106,7 @@ public class MessagesCursorAdapter extends CursorAdapter {
     }
 
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindView(final View view, final Context context, Cursor cursor) {
         // Get username, timestamp and message from cursor
         String userName = cursor.getString(cursor.getColumnIndex(MessagesTable.USERNAME));
         int userRole = cursor.getInt(cursor.getColumnIndex(MessagesTable.USERROLE));
@@ -111,7 +120,7 @@ public class MessagesCursorAdapter extends CursorAdapter {
         holder.timestampView.setText(getDate(timestamp));
         holder.messageView.setText(Html.fromHtml(message));
 
-        List<String> imgLinksList = new ArrayList<String>();
+        final List<String> imgLinksList = new ArrayList<String>();
         // TODO remove this condition when ACTION_TYPE can also display images
         if (getItemViewType(cursor) == Message.NORMAL_TYPE) {
             if (imgLinks != null) {
@@ -121,18 +130,35 @@ public class MessagesCursorAdapter extends CursorAdapter {
                 holder.imagesButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (holder.imageScrollView.getVisibility() == View.VISIBLE) {
+                        if (holder.images.getVisibility() == View.VISIBLE) {
                             Log.d(TAG, "now hiding imagesScrollView");
-                            holder.imageScrollView.setVisibility(View.GONE);
+                            holder.images.setVisibility(View.GONE);
                         } else {
                             Log.d(TAG, "now showing imagesScrollView");
-                            holder.imageScrollView.setVisibility(View.VISIBLE);
+                            holder.images.setVisibility(View.VISIBLE);
+                            holder.images.removeAllViews();
+
+                            // Trigger the download of the URL asynchronously into the image view.
+                            for (String imgLink : imgLinksList) {
+                                Log.d(TAG, "Loading:" + imgLink);
+                                ImageView image = new ImageView(context);
+                                image.setLayoutParams(new ViewGroup.LayoutParams(200, 200));
+                                holder.images.addView(image);
+                                Picasso.with(context)
+                                        .load(imgLink)
+                                        .placeholder(R.drawable.placeholder)
+                                        .error(R.drawable.error)
+                                        .resizeDimen(R.dimen.list_detail_image_size, R.dimen.list_detail_image_size)
+                                        .centerCrop()
+                                        .into(image);
+                            }
                         }
                     }
                 });
                 holder.imagesButton.setText(context.getResources().getQuantityString(R.plurals.numberOfImages, imgLinksList.size(), imgLinksList.size()));
             } else {
                 holder.imagesButton.setVisibility(View.GONE);
+                holder.images.setVisibility(View.GONE);
             }
         }
     }
@@ -160,6 +186,31 @@ public class MessagesCursorAdapter extends CursorAdapter {
         TextView timestampView;
         TextView messageView;
         Button imagesButton;
-        HorizontalScrollView imageScrollView;
+        LinearLayout images;
     }
+
+
+    static class Data {
+        static final String BASE = "http://i.imgur.com/";
+        static final String EXT = ".jpg";
+        static final String[] URLS = {
+                BASE + "CqmBjo5" + EXT, BASE + "zkaAooq" + EXT, BASE + "0gqnEaY" + EXT,
+                BASE + "9gbQ7YR" + EXT, BASE + "aFhEEby" + EXT, BASE + "0E2tgV7" + EXT,
+                BASE + "P5JLfjk" + EXT, BASE + "nz67a4F" + EXT, BASE + "dFH34N5" + EXT,
+                BASE + "FI49ftb" + EXT, BASE + "DvpvklR" + EXT, BASE + "DNKnbG8" + EXT,
+                BASE + "yAdbrLp" + EXT, BASE + "55w5Km7" + EXT, BASE + "NIwNTMR" + EXT,
+                BASE + "DAl0KB8" + EXT, BASE + "xZLIYFV" + EXT, BASE + "HvTyeh3" + EXT,
+                BASE + "Ig9oHCM" + EXT, BASE + "7GUv9qa" + EXT, BASE + "i5vXmXp" + EXT,
+                BASE + "glyvuXg" + EXT, BASE + "u6JF6JZ" + EXT, BASE + "ExwR7ap" + EXT,
+                BASE + "Q54zMKT" + EXT, BASE + "9t6hLbm" + EXT, BASE + "F8n3Ic6" + EXT,
+                BASE + "P5ZRSvT" + EXT, BASE + "jbemFzr" + EXT, BASE + "8B7haIK" + EXT,
+                BASE + "aSeTYQr" + EXT, BASE + "OKvWoTh" + EXT, BASE + "zD3gT4Z" + EXT,
+                BASE + "z77CaIt" + EXT,
+        };
+
+        private Data() {
+            // No instances.
+        }
+    }
+
 }
