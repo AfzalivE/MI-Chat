@@ -69,7 +69,6 @@
     <orderEntry type="jdk" jdkName="Android SDK" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="support-v4-13.0.0" level="project" />
-    <orderEntry type="library" name="commons-lang3-3.1" level="project" />
     <orderEntry type="library" name="kefirbb-1.0" level="project" />
     <orderEntry type="library" name="libGoogleAnalyticsV2" level="project" />
     <orderEntry type="library" name="ComActionbarsherlockActionbarsherlock432SNAPSHOT.aar" level="project" />
@@ -77,6 +76,7 @@
     <orderEntry type="library" name="ComLoopjAndroidAsyncHttp143.aar" level="project" />
     <orderEntry type="library" name="DeKeyboardsurferCrouton181.aar" level="project" />
     <orderEntry type="library" name="picasso-1.1.1" level="project" />
+    <orderEntry type="library" name="commons-lang3-3.1" level="project" />
   </component>
 </module>
 

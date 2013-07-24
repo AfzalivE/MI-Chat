@@ -48,7 +48,7 @@
             android:autoText="true"
             android:textSize="16sp"
             android:capitalize="sentences"
-            android:nextFocusRight="@+id/submit_button"
+            android:nextFocusRight="@+id/submit_msg"
             android:hint="@string/type_message_hint"
             android:minHeight="48dip"
             android:maxLines="3"
@@ -57,10 +57,10 @@
             android:maxLength="2000"
             android:background="@drawable/edit_text_holo_light"
             android:fontFamily="sans-serif-light"
-            android:nextFocusForward="@+id/submit_button" />
+            android:nextFocusForward="@+id/submit_msg" />
 
         <ImageButton
-            android:id="@+id/submit_button"
+            android:id="@+id/submit_msg"
             android:src="@drawable/send_button_selector"
             android:drawablePadding="0dip"
             android:layout_width="wrap_content"
