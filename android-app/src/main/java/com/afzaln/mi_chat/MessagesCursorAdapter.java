@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
 import android.text.Html;
-import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +19,8 @@ import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
 import com.afzaln.mi_chat.resource.Message;
 import com.afzaln.mi_chat.view.MessageListView;
 import com.squareup.picasso.Picasso;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,6 +42,7 @@ public class MessagesCursorAdapter extends CursorAdapter {
         mAdminNameColor = context.getResources().getColor(color.admin_name);
         mModNameColor = context.getResources().getColor(color.mod_name);
         mUserameColor = context.getResources().getColor(color.normal_text);
+
     }
 
     private int getItemViewType(Cursor cursor) {
@@ -106,13 +108,14 @@ public class MessagesCursorAdapter extends CursorAdapter {
         String imgLinks = cursor.getString(cursor.getColumnIndex(MessagesTable.IMGLINKS));
         long timestamp = cursor.getLong(cursor.getColumnIndex(MessagesTable.DATETIME));
 
-        final ViewHolder holder = setTextViews(view, userName, userRole, message, timestamp);
+        final ViewHolder holder = (ViewHolder) view.getTag();
+        setTextViews(holder, userName, userRole, message, timestamp);
 
         final List<String> imgLinksList = new ArrayList<String>();
-        // TODO remove this condition when ACTION_TYPE can also display images
+        // TODO adjust action_list_item layout to accomodate images nicely
         if (getItemViewType(cursor) == Message.NORMAL_TYPE) {
             if (imgLinks != null) {
-                String[] imgLinksArr = TextUtils.split(imgLinks, "|");
+                String[] imgLinksArr = StringUtils.split(imgLinks, "|");
                 Collections.addAll(imgLinksList, imgLinksArr);
                 holder.imagesButton.setVisibility(View.VISIBLE);
                 holder.imagesButton.setOnClickListener(new View.OnClickListener() {
@@ -143,13 +146,16 @@ public class MessagesCursorAdapter extends CursorAdapter {
         LinearLayout imageContainer;
     }
 
-    private ViewHolder setTextViews(View view, String userName, int userRole, String message, long timestamp) {
-        final ViewHolder holder = (ViewHolder) view.getTag();
+    private void setTextViews(ViewHolder holder, String userName, int userRole, String message, long timestamp) {
         holder.userNameView.setText(userName);
         formatUsername(userRole, holder.userNameView);
         holder.timestampView.setText(getDate(timestamp));
-        holder.messageView.setText(Html.fromHtml(message));
-        return holder;
+        if (message.isEmpty()) {
+            holder.messageView.setVisibility(View.GONE);
+        } else {
+            holder.messageView.setVisibility(View.VISIBLE);
+            holder.messageView.setText(Html.fromHtml(message));
+        }
     }
 
     private void showImages(ViewHolder holder, List<String> imgLinksList, Context context) {
@@ -167,7 +173,7 @@ public class MessagesCursorAdapter extends CursorAdapter {
                     .load(imgLink)
                     .placeholder(R.drawable.placeholder)
                     .error(R.drawable.error)
-                    .resizeDimen(R.dimen.list_detail_image_size, R.dimen.list_detail_image_size)
+                    .resizeDimen(R.dimen.attached_image_size, R.dimen.attached_image_size)
                     .centerCrop()
                     .into(image);
         }

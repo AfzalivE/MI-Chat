@@ -28,12 +28,13 @@ public class BaseActivity extends SlidingFragmentActivity {
             sm.setSlidingEnabled(true);
             sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            sm.setOnOpenedListener(new OnOpenedListener() {
-                @Override
-                public void onOpened() {
-                    hideKeyboard(getCurrentFocus());
-                }
-            });
+            sm.setOnOpenedListener(onOpenedListener);
+
+            // customize the SlidingMenu
+            sm.setShadowWidthRes(R.dimen.shadow_width);
+            sm.setShadowDrawable(R.drawable.shadow);
+            sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+            sm.setFadeDegree(0.45f);
         } else {
             // add a dummy view
             View v = new View(this);
@@ -49,19 +50,7 @@ public class BaseActivity extends SlidingFragmentActivity {
                 .replace(R.id.menu_frame, new UserListFragment())
                 .commit();
 
-        // customize the SlidingMenu
-        sm.setShadowWidthRes(R.dimen.shadow_width);
-        sm.setShadowDrawable(R.drawable.shadow);
-        sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
-        sm.setFadeDegree(0.45f);
-
         setSlidingActionBarEnabled(false);
-
-    }
-
-    protected void hideKeyboard(View view) {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     @Override
@@ -72,5 +61,17 @@ public class BaseActivity extends SlidingFragmentActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private final OnOpenedListener onOpenedListener = new OnOpenedListener() {
+        @Override
+        public void onOpened() {
+            hideKeyboard(getCurrentFocus());
+        }
+    };
+
+    protected void hideKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }
