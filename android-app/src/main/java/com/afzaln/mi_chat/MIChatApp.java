@@ -3,7 +3,6 @@ package com.afzaln.mi_chat;
 import android.app.Application;
 import android.content.ContentResolver;
 
-import com.afzaln.mi_chat.provider.ProviderContract.InfoTable;
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
 import com.afzaln.mi_chat.provider.ProviderContract.UsersTable;
 
@@ -19,6 +18,5 @@ public class MIChatApp extends Application {
 
         cr.delete(UsersTable.CONTENT_URI, null, null);
         cr.delete(MessagesTable.CONTENT_URI, null, null);
-        cr.delete(InfoTable.CONTENT_URI, null, null);
     }
 }

@@ -2,7 +2,8 @@
 
     <!--
          Customize dimensions originally defined in res/values/dimens.xml (such as
-         screen margins) for sw720dp devices (e.g. 10" tablets) in landscape here.
+         screen margins) for sw600dp devices (e.g. 7" tablets) in landscape here.
     -->
+    <dimen name="shadow_width">4dp</dimen>
 
 </resources>

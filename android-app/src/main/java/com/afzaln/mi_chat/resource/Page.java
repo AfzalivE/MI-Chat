@@ -1,7 +1,5 @@
 package com.afzaln.mi_chat.resource;
 
-import android.text.TextUtils;
-
 import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -135,8 +133,7 @@ public class Page implements Resource {
             }
 
             String[] imgLinkArr = StringUtils.substringsBetween(messageText, "[img]", "[/img]");
-
-            String imgLinks = TextUtils.join("|", imgLinkArr);
+            String imgLinks = StringUtils.join(imgLinkArr, "|");
 
             // TODO optimize this mess
             if (imgLinkArr != null) {

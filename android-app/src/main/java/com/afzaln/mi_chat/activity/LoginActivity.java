@@ -38,6 +38,10 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.login);
         getWindow().setBackgroundDrawable(null);
 
+        if (PrefUtils.authCookieExists(this)) {
+            NetUtils.postLogin(mLoginResponseHandler, LoginActivity.this, null, null);
+        }
+
         mUsernameField = (EditText) findViewById(R.id.username);
         mPasswordField = (EditText) findViewById(R.id.password);
         mPasswordField.setTypeface(Typeface.DEFAULT);
@@ -46,9 +50,6 @@ public class LoginActivity extends Activity {
         mLoginFlipper.setOutAnimation(LoginActivity.this, android.R.anim.fade_out);
         mLoginFlipper.setInAnimation(LoginActivity.this, android.R.anim.fade_in);
 
-        if (PrefUtils.authCookieExists(this)) {
-            NetUtils.postLogin(mLoginResponseHandler, LoginActivity.this, null, null);
-        }
 
         Button login = (Button) findViewById(R.id.login);
 
