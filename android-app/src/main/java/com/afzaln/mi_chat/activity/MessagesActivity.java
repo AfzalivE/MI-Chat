@@ -127,7 +127,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         });
 
         mEditText = (EditText) findViewById(id.text_editor);
-        mSubmitButton = (ImageButton) findViewById(id.submit_button);
+        mSubmitButton = (ImageButton) findViewById(id.submit_msg);
         mSubmitButton.setEnabled(false);
 
         mEditText.addTextChangedListener(new TextWatcher() {

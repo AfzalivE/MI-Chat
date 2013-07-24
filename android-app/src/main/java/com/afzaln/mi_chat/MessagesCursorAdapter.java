@@ -4,26 +4,22 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
 import android.text.Html;
+import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.actionbarsherlock.ActionBarSherlock;
 import com.afzaln.mi_chat.R.color;
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
 import com.afzaln.mi_chat.resource.Message;
 import com.afzaln.mi_chat.view.MessageListView;
 import com.squareup.picasso.Picasso;
-
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -86,7 +82,7 @@ public class MessagesCursorAdapter extends CursorAdapter {
         holder.timestampView = (TextView) listItemView.findViewById(R.id.timestamp);
         holder.messageView = (TextView) listItemView.findViewById(R.id.message);
         holder.imagesButton = (Button) listItemView.findViewById(R.id.show_images);
-        holder.images = (LinearLayout) listItemView.findViewById(R.id.images);
+        holder.imageContainer = (LinearLayout) listItemView.findViewById(R.id.image_container);
 
         listItemView.setTag(holder);
         return listItemView;
@@ -110,52 +106,70 @@ public class MessagesCursorAdapter extends CursorAdapter {
         String imgLinks = cursor.getString(cursor.getColumnIndex(MessagesTable.IMGLINKS));
         long timestamp = cursor.getLong(cursor.getColumnIndex(MessagesTable.DATETIME));
 
-        final ViewHolder holder = (ViewHolder) view.getTag();
-        holder.userNameView.setText(userName);
-        formatUsername(userRole, holder.userNameView);
-        holder.timestampView.setText(getDate(timestamp));
-        holder.messageView.setText(Html.fromHtml(message));
+        final ViewHolder holder = setTextViews(view, userName, userRole, message, timestamp);
 
         final List<String> imgLinksList = new ArrayList<String>();
         // TODO remove this condition when ACTION_TYPE can also display images
         if (getItemViewType(cursor) == Message.NORMAL_TYPE) {
             if (imgLinks != null) {
-                String[] imgLinksArr = StringUtils.split(imgLinks, "|");
+                String[] imgLinksArr = TextUtils.split(imgLinks, "|");
                 Collections.addAll(imgLinksList, imgLinksArr);
                 holder.imagesButton.setVisibility(View.VISIBLE);
                 holder.imagesButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (holder.images.getVisibility() == View.VISIBLE) {
+                        if (holder.imageContainer.getVisibility() == View.VISIBLE) {
                             Log.d(TAG, "now hiding imagesScrollView");
-                            holder.images.setVisibility(View.GONE);
+                            holder.imageContainer.setVisibility(View.GONE);
                         } else {
-                            Log.d(TAG, "now showing imagesScrollView");
-                            holder.images.setVisibility(View.VISIBLE);
-                            holder.images.removeAllViews();
-
-                            // Trigger the download of the URL asynchronously into the image view.
-                            for (String imgLink : imgLinksList) {
-                                Log.d(TAG, "Loading:" + imgLink);
-                                ImageView image = new ImageView(context);
-                                image.setLayoutParams(new ViewGroup.LayoutParams(200, 200));
-                                holder.images.addView(image);
-                                Picasso.with(context)
-                                        .load(imgLink)
-                                        .placeholder(R.drawable.placeholder)
-                                        .error(R.drawable.error)
-                                        .resizeDimen(R.dimen.list_detail_image_size, R.dimen.list_detail_image_size)
-                                        .centerCrop()
-                                        .into(image);
-                            }
+                            showImages(holder, imgLinksList, context);
                         }
                     }
                 });
+
                 holder.imagesButton.setText(context.getResources().getQuantityString(R.plurals.numberOfImages, imgLinksList.size(), imgLinksList.size()));
             } else {
                 holder.imagesButton.setVisibility(View.GONE);
-                holder.images.setVisibility(View.GONE);
+                holder.imageContainer.setVisibility(View.GONE);
             }
+        }
+    }
+
+    static class ViewHolder {
+        TextView userNameView;
+        TextView timestampView;
+        TextView messageView;
+        Button imagesButton;
+        LinearLayout imageContainer;
+    }
+
+    private ViewHolder setTextViews(View view, String userName, int userRole, String message, long timestamp) {
+        final ViewHolder holder = (ViewHolder) view.getTag();
+        holder.userNameView.setText(userName);
+        formatUsername(userRole, holder.userNameView);
+        holder.timestampView.setText(getDate(timestamp));
+        holder.messageView.setText(Html.fromHtml(message));
+        return holder;
+    }
+
+    private void showImages(ViewHolder holder, List<String> imgLinksList, Context context) {
+        Log.d(TAG, "now showing imagesScrollView");
+        holder.imageContainer.setVisibility(View.VISIBLE);
+        holder.imageContainer.removeAllViews();
+
+        // Trigger the download of the URL asynchronously into the image view.
+        for (String imgLink : imgLinksList) {
+            Log.d(TAG, "Loading:" + imgLink);
+            ImageView image = new ImageView(context);
+            image.setLayoutParams(new ViewGroup.LayoutParams(200, 200));
+            holder.imageContainer.addView(image);
+            Picasso.with(context)
+                    .load(imgLink)
+                    .placeholder(R.drawable.placeholder)
+                    .error(R.drawable.error)
+                    .resizeDimen(R.dimen.list_detail_image_size, R.dimen.list_detail_image_size)
+                    .centerCrop()
+                    .into(image);
         }
     }
 
@@ -175,14 +189,6 @@ public class MessagesCursorAdapter extends CursorAdapter {
 
     private CharSequence getDate(long timestamp) {
         return DateUtils.getRelativeTimeSpanString(timestamp, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS, DateUtils.FORMAT_ABBREV_RELATIVE);
-    }
-
-    static class ViewHolder {
-        TextView userNameView;
-        TextView timestampView;
-        TextView messageView;
-        Button imagesButton;
-        LinearLayout images;
     }
 
 }

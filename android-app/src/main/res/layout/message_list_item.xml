@@ -72,7 +72,7 @@
         android:layout_width="match_parent"
         android:layout_below="@+id/show_images" >
 
-        <LinearLayout android:id="@+id/images"
+        <LinearLayout android:id="@+id/image_container"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:orientation="horizontal"
