@@ -8,7 +8,15 @@
             android:key="pref_var_msg_width"
             android:title="@string/pref_var_msg_width"
             android:summary="@string/pref_var_msg_width_summary"
-            android:defaultValue="false"
-            />
+            android:defaultValue="false" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="pref_key_notification"
+        android:title="@string/pref_notification">
+        <CheckBoxPreference
+            android:key="pref_persist_notification"
+            android:title="@string/pref_persist_notification"
+            android:summary="@string/pref_persist_notification_summary"
+            android:defaultValue="false" />
     </PreferenceCategory>
 </PreferenceScreen>
