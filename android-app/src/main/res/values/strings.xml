@@ -30,6 +30,8 @@
     <string name="pref_persist_notification_summary">Shows a notification in the shade when app is
         running in the background
     </string>
+    <string name="copy_text">Copy text</string>
+    <string name="reply">Reply</string>
 
     <plurals name="numberOfImages">
         <item quantity="one">1 image attached</item>

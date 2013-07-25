@@ -235,18 +235,31 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-
+        CharSequence message;
         switch (item.getItemId()) {
             case id.menu_copytext:
-                CharSequence message = ((TextView) info.targetView.findViewById(id.message)).getText();
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                // TODO API 9 compatibility
-                ClipData data = ClipData.newPlainText("message", message);
-                clipboard.setPrimaryClip(data);
+                message = ((TextView) info.targetView.findViewById(id.message)).getText();
+                copyToClipboard(message);
                 return true;
+            case id.menu_reply:
+                CharSequence username = ((TextView) info.targetView.findViewById(id.username)).getText();
+                makeReply(username);
             default:
                 return false;
         }
+    }
+
+    private void makeReply(CharSequence username) {
+        // TODO make reply for actions
+        mEditText.setText("@" + username + " ");
+        mEditText.setSelection(mEditText.getText().length());
+    }
+
+    private void copyToClipboard(CharSequence message) {
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        // TODO API 9 compatibility
+        ClipData data = ClipData.newPlainText("message", message);
+        clipboard.setPrimaryClip(data);
     }
 
     @Override
