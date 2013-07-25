@@ -9,7 +9,8 @@
     android:paddingTop="6dp"
     android:paddingBottom="6dp"
     android:gravity="center_vertical"
-    android:background="@color/alt_bg">
+    android:background="@drawable/item_background_holo_light"
+    android:longClickable="true">
 
     <TextView
         android:id="@+id/username"
@@ -49,7 +50,6 @@
         android:textSize="14sp"
         android:autoLink="web"
         android:text="This is a message"
-        android:longClickable="true"
         android:linksClickable="true" />
 
     <include layout="@layout/images_layout" />

@@ -253,7 +253,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     private void makeReply(CharSequence username, int itemType) {
         switch (itemType) {
             case Message.NORMAL_TYPE:
-                mEditText.setText("@" + username + " ");
+                mEditText.append("@" + username + " ");
                 mEditText.setSelection(mEditText.getText().length());
                 break;
             case Message.ACTION_TYPE:
