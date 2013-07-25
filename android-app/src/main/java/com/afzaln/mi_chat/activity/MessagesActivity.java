@@ -33,6 +33,7 @@ import com.afzaln.mi_chat.R.id;
 import com.afzaln.mi_chat.processor.ProcessorFactory;
 import com.afzaln.mi_chat.processor.ResourceProcessor;
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
+import com.afzaln.mi_chat.resource.Message;
 import com.afzaln.mi_chat.service.ServiceContract;
 import com.afzaln.mi_chat.utils.NetUtils;
 import com.afzaln.mi_chat.view.MessageListView;
@@ -243,16 +244,26 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
                 return true;
             case id.menu_reply:
                 CharSequence username = ((TextView) info.targetView.findViewById(id.username)).getText();
-                makeReply(username);
+                makeReply(username, mAdapter.getItemViewType(info.position));
             default:
                 return false;
         }
     }
 
-    private void makeReply(CharSequence username) {
-        // TODO make reply for actions
-        mEditText.setText("@" + username + " ");
-        mEditText.setSelection(mEditText.getText().length());
+    private void makeReply(CharSequence username, int itemType) {
+        switch (itemType) {
+            case Message.NORMAL_TYPE:
+                mEditText.setText("@" + username + " ");
+                mEditText.setSelection(mEditText.getText().length());
+                break;
+            case Message.ACTION_TYPE:
+                // TODO detect action type
+                mEditText.setText("!!" + username + " ");
+                mEditText.setSelection(mEditText.getText().length());
+                break;
+            default:
+                break;
+        }
     }
 
     private void copyToClipboard(CharSequence message) {
