@@ -1,5 +1,7 @@
 package com.afzaln.mi_chat.resource;
 
+import android.util.Log;
+
 import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -59,24 +61,53 @@ public class Page implements Resource {
         int userRole = 0;
         int channelId = 0;
         String channelName = null;
+        boolean loggedIn = true;
 
         if (infos.getLength() < 1) return null;
 
         for (int i = 0; i < infos.getLength(); i++) {
             Node infoNode = infos.item(i);
-
             String typeAttrs = infoNode.getAttributes().getNamedItem("type").getNodeValue();
+
+            if (typeAttrs.equals("logout")) {
+                loggedIn = false;
+                continue;
+            }
+
             String textContent = infoNode.getTextContent();
 
-            userId = (!typeAttrs.equals("userID")) ? userId : Long.parseLong(textContent);
-            userRole = (!typeAttrs.equals("userRole")) ? userRole : Integer.parseInt(textContent);
-            channelId = (!typeAttrs.equals("channelID")) ? userRole : Integer.parseInt(textContent);
-            userName = (!typeAttrs.equals("userName")) ? userName : infoNode.getTextContent();
-            channelName = (!typeAttrs.equals("channelName")) ? userName : infoNode.getTextContent();
+            if (typeAttrs.equals("userID")) {
+                userId = Long.parseLong(textContent);
+                Log.d("TEST", textContent);
+                continue;
+            }
 
+            if (typeAttrs.equals("userRole")) {
+                userRole = Integer.parseInt(textContent);
+                Log.d("TEST", textContent);
+                continue;
+            }
+
+            if (typeAttrs.equals("channelID")) {
+                Integer.parseInt(textContent);
+                Log.d("TEST", textContent);
+                continue;
+            }
+
+            if (typeAttrs.equals("userName")) {
+                userName = textContent;
+                Log.d("TEST", textContent);
+                continue;
+            }
+
+            if (typeAttrs.equals("channelName")) {
+                channelName = textContent;
+                Log.d("TEST", textContent);
+                continue;
+            }
         }
 
-        return new Info(userId, userRole, channelId, userName, channelName);
+        return new Info(userId, userRole, channelId, userName, channelName, loggedIn);
     }
 
     private List<User> processUsers(Node node) {

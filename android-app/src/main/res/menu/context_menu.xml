@@ -3,5 +3,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menu_copytext"
-        android:title="Copy text" />
+        android:title="@string/copy_text" />
+    <item
+        android:id="@+id/menu_reply"
+        android:title="@string/reply" />
 </menu>

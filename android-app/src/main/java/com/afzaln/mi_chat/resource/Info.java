@@ -11,13 +11,19 @@ public class Info {
     int channelId;
     String userName;
     String channelName;
+    boolean loggedIn;
 
-    public Info(long userId, int userRole, int channelId, String userName, String channelName) {
+    public Info(long userId, int userRole, int channelId, String userName, String channelName, boolean loggedIn) {
         this.userId = userId;
         this.userRole = userRole;
         this.channelId = channelId;
         this.userName = userName;
         this.channelName = channelName;
+        this.loggedIn = loggedIn;
+    }
+
+    public boolean isUserLoggedIn() {
+        return this.loggedIn;
     }
 
     public ContentValues toContentValues() {

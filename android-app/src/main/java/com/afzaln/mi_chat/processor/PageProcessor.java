@@ -90,9 +90,11 @@ public class PageProcessor implements ResourceProcessor {
 
         try {
             info = page.getInfo();
-            if (info != null) {
+            if (info != null && info.isUserLoggedIn()) {
                 cr.delete(InfoTable.CONTENT_URI, null, null);
                 cr.insert(InfoTable.CONTENT_URI, info.toContentValues());
+            } else if (!info.isUserLoggedIn()) {
+                Log.e(TAG, "user not logged in");
             }
         } catch (NullPointerException e) {
             Log.d(TAG, "couldn't get user info");
