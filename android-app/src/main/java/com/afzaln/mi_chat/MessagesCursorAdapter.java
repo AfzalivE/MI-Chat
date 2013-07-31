@@ -176,6 +176,12 @@ public class MessagesCursorAdapter extends CursorAdapter {
                     .resizeDimen(R.dimen.attached_image_size, R.dimen.attached_image_size)
                     .centerCrop()
                     .into(image);
+            image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(TAG, "image clicked");
+                }
+            });
         }
     }
 
