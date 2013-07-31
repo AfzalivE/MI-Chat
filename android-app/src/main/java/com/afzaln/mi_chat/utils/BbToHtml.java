@@ -136,6 +136,10 @@ public class BbToHtml {
             return message.replace("/queryClose", "Private channel to ").concat(" closed");
         }
 
+        if (message.startsWith("/channelLeave")) {
+            return message.replace("/channelLeave", userName + " has left the channel");
+        }
+
         return message;
     }
 
