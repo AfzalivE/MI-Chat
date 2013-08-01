@@ -13,4 +13,6 @@
 
     <color name="bg">#FFE5E5E5</color>
     <color name="alt_bg">@android:color/white</color>
+
+    <color name="pressed">#CC33B5E5</color>
 </resources>

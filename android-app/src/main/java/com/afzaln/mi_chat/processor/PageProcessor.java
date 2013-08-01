@@ -29,7 +29,7 @@ public class PageProcessor implements ResourceProcessor {
     private XmlHttpResponseHandler myResponseHandler = new XmlHttpResponseHandler() {
         @Override
         public void onStart() {
-            Log.d(TAG, "onStart");
+//            Log.d(TAG, "onStart");
         }
 
         @Override
@@ -47,7 +47,7 @@ public class PageProcessor implements ResourceProcessor {
 
         @Override
         public void onFinish() {
-            Log.d(TAG, "onFinish");
+//            Log.d(TAG, "onFinish");
             // Completed the request (either success or failure)
         }
     };
@@ -88,6 +88,7 @@ public class PageProcessor implements ResourceProcessor {
 
         ContentResolver cr = this.mContext.getContentResolver();
 
+        // TODO don't check for user info when not available
         try {
             info = page.getInfo();
             if (info != null && info.isUserLoggedIn()) {

@@ -6,6 +6,7 @@
         <option name="SELECTED_BUILD_VARIANT" value="Debug" />
         <option name="ASSEMBLE_TASK_NAME" value="assembleDebug" />
         <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleTest" />
+        <option name="SOURCE_GEN_TASK_NAME" value="TODO" />
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
         <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
@@ -69,15 +70,15 @@
     </content>
     <orderEntry type="jdk" jdkName="Android 4.3 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="kefirbb-1.0" level="project" />
-    <orderEntry type="library" name="libGoogleAnalyticsV2" level="project" />
-    <orderEntry type="library" name="ComActionbarsherlockActionbarsherlock432SNAPSHOT.aar" level="project" />
-    <orderEntry type="library" name="ComJeremyfeinsteinSlidingmenu13SNAPSHOT.aar" level="project" />
-    <orderEntry type="library" name="ComLoopjAndroidAsyncHttp143.aar" level="project" />
-    <orderEntry type="library" name="DeKeyboardsurferCrouton181.aar" level="project" />
-    <orderEntry type="library" name="picasso-1.1.1" level="project" />
-    <orderEntry type="library" name="commons-lang3-3.1" level="project" />
-    <orderEntry type="library" name="support-v4-18.0.0" level="project" />
+    <orderEntry type="library" exported="" name="kefirbb-1.0" level="project" />
+    <orderEntry type="library" exported="" name="libGoogleAnalyticsV2" level="project" />
+    <orderEntry type="library" exported="" name="ComJeremyfeinsteinSlidingmenu13SNAPSHOT.aar" level="project" />
+    <orderEntry type="library" exported="" name="ComLoopjAndroidAsyncHttp143.aar" level="project" />
+    <orderEntry type="library" exported="" name="DeKeyboardsurferCrouton181.aar" level="project" />
+    <orderEntry type="library" exported="" name="picasso-1.1.1" level="project" />
+    <orderEntry type="library" exported="" name="commons-lang3-3.1" level="project" />
+    <orderEntry type="library" exported="" name="support-v4-18.0.0" level="project" />
+    <orderEntry type="library" exported="" name="ComAndroidSupportAppcompatV71800.aar" level="project" />
   </component>
 </module>
 

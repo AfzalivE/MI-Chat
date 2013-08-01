@@ -2,10 +2,10 @@ package com.afzaln.mi_chat.activity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import com.actionbarsherlock.view.MenuItem;
 import com.afzaln.mi_chat.R;
 import com.afzaln.mi_chat.UserListFragment;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;

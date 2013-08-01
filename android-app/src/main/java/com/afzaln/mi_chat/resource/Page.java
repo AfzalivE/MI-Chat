@@ -18,6 +18,7 @@ public class Page implements Resource {
     Info info;
     List<User> userList;
     List<Message> messageList;
+    private static final SimpleDateFormat mDateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
 
     public Page() {
 
@@ -188,9 +189,8 @@ public class Page implements Resource {
     }
 
     private long parseDate(String dateString) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
         try {
-            Date date = dateFormat.parse(dateString);
+            Date date = mDateFormat.parse(dateString);
             long dateMillis = date.getTime();
             return dateMillis;
         } catch (ParseException e) {

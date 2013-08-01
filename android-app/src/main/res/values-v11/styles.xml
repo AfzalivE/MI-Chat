@@ -20,4 +20,10 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <style name="ActionBarDropDown" parent="android:Widget.Spinner.DropDown">
+        <item name="android:background">@drawable/spinner_background_holo_light</item>
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel</item>
+        <item name="android:dropDownSelector">@drawable/selectable_background</item>
+    </style>
+
 </resources>
