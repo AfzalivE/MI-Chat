@@ -32,7 +32,7 @@ _sandbox
 /java-dillon/
 
 # Google analytics stuff
-analysis.xml
+analytics.xml
 
 # SonarQube stuff
 .sonar
