@@ -3,7 +3,7 @@ package com.afzaln.mi_chat.resource;
 import android.content.ContentValues;
 
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
-import com.afzaln.mi_chat.utils.BbToHtml;
+import com.afzaln.mi_chat.utils.ParserUtils;
 
 public class Message {
 
@@ -30,7 +30,7 @@ public class Message {
         this.userRole = userRole;
         this.channelId = channelId;
         this.userName = userName;
-        this.message = BbToHtml.process(userName, messageText);
+        this.message = ParserUtils.process(userName, messageText);
         this.imgLinks = imgLinks;
     }
 

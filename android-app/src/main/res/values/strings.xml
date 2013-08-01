@@ -38,4 +38,9 @@
         <item quantity="other">%d images attached</item>
     </plurals>
 
+    <plurals name="numberofUsers">
+        <item quantity="one">1 user online</item>
+        <item quantity="other">%d users online</item>
+    </plurals>
+
 </resources>
