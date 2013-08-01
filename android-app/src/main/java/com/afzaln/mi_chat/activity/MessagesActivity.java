@@ -334,8 +334,10 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
             }
         }
 
-        long latestTimestamp = mAdapter.getItemDateTime(newCount - 1);
-        mRefreshInterval = BackoffUtils.getRefreshInterval(newMessagesExist, latestTimestamp);
+        if (newCount > 0) {
+            long latestTimestamp = mAdapter.getItemDateTime(newCount - 1);
+            mRefreshInterval = BackoffUtils.getRefreshInterval(newMessagesExist, latestTimestamp);
+        }
 
         mManualRefresh = false;
 
