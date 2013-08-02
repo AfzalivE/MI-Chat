@@ -6,6 +6,7 @@
         <option name="SELECTED_BUILD_VARIANT" value="Debug" />
         <option name="ASSEMBLE_TASK_NAME" value="assembleDebug" />
         <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleTest" />
+        <option name="SOURCE_GEN_TASK_NAME" value="TODO" />
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
         <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
@@ -66,18 +67,19 @@
       <excludeFolder url="file://$MODULE_DIR$/build/symbols" />
       <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
     </content>
-    <orderEntry type="jdk" jdkName="Android SDK" jdkType="Android SDK" />
+    <orderEntry type="jdk" jdkName="Android 4.3 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="support-v4-13.0.0" level="project" />
-    <orderEntry type="library" name="commons-lang3-3.1" level="project" />
-    <orderEntry type="library" name="kefirbb-1.0" level="project" />
-    <orderEntry type="library" name="libGoogleAnalyticsV2" level="project" />
-    <orderEntry type="library" name="ComActionbarsherlockActionbarsherlock432SNAPSHOT.aar" level="project" />
-    <orderEntry type="library" name="ComJeremyfeinsteinSlidingmenu13SNAPSHOT.aar" level="project" />
-    <orderEntry type="library" name="DeKeyboardsurferCrouton181.aar" level="project" />
-    <orderEntry type="library" name="androidasync-1.1.5" level="project" />
-    <orderEntry type="library" name="gson-2.2.4" level="project" />
-    <orderEntry type="library" name="ComKoushikduttaIonIon116SNAPSHOT.aar" level="project" />
+    <orderEntry type="library" exported="" name="commons-lang3-3.1" level="project" />
+    <orderEntry type="library" exported="" name="kefirbb-1.0" level="project" />
+    <orderEntry type="library" exported="" name="libGoogleAnalyticsV2" level="project" />
+    <orderEntry type="library" exported="" name="support-v4-18.0.0" level="project" />
+    <orderEntry type="library" exported="" name="support-v4-r7" level="project" />
+    <orderEntry type="library" exported="" name="ComJeremyfeinsteinSlidingmenu13SNAPSHOT.aar" level="project" />
+    <orderEntry type="library" exported="" name="ComActionbarsherlockActionbarsherlock440.aar" level="project" />
+    <orderEntry type="library" exported="" name="androidasync-1.1.5" level="project" />
+    <orderEntry type="library" exported="" name="gson-2.2.4" level="project" />
+    <orderEntry type="library" exported="" name="ComKoushikduttaIonIon116SNAPSHOT.aar" level="project" />
+    <orderEntry type="library" exported="" name="DeKeyboardsurferCrouton181.aar" level="project" />
   </component>
 </module>
 
