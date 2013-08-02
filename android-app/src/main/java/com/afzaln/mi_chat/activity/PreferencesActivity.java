@@ -1,20 +1,20 @@
 package com.afzaln.mi_chat.activity;
 
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
+import android.view.MenuItem;
 
-import com.actionbarsherlock.app.SherlockPreferenceActivity;
-import com.actionbarsherlock.view.MenuItem;
 import com.afzaln.mi_chat.R;
 
-public class PreferencesActivity extends SherlockPreferenceActivity {
+public class PreferencesActivity extends PreferenceActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getSupportActionBar().setTitle(R.string.action_prefs);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setTitle(R.string.action_prefs);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         getFragmentManager().beginTransaction().replace(android.R.id.content, new MyPreferenceFragment()).commit();
     }
 

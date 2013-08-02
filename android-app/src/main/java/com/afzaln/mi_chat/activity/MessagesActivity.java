@@ -15,8 +15,11 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.EditText;
@@ -24,9 +27,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.Window;
 import com.afzaln.mi_chat.AlarmReceiver;
 import com.afzaln.mi_chat.MessagesCursorAdapter;
 import com.afzaln.mi_chat.R;
@@ -188,7 +188,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
         mMenu = menu;
         return true;
     }

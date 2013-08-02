@@ -73,13 +73,12 @@
     <orderEntry type="library" exported="" name="kefirbb-1.0" level="project" />
     <orderEntry type="library" exported="" name="libGoogleAnalyticsV2" level="project" />
     <orderEntry type="library" exported="" name="support-v4-18.0.0" level="project" />
-    <orderEntry type="library" exported="" name="support-v4-r7" level="project" />
     <orderEntry type="library" exported="" name="ComJeremyfeinsteinSlidingmenu13SNAPSHOT.aar" level="project" />
-    <orderEntry type="library" exported="" name="ComActionbarsherlockActionbarsherlock440.aar" level="project" />
     <orderEntry type="library" exported="" name="androidasync-1.1.5" level="project" />
     <orderEntry type="library" exported="" name="gson-2.2.4" level="project" />
     <orderEntry type="library" exported="" name="ComKoushikduttaIonIon116SNAPSHOT.aar" level="project" />
     <orderEntry type="library" exported="" name="DeKeyboardsurferCrouton181.aar" level="project" />
+    <orderEntry type="library" exported="" name="ComAndroidSupportAppcompatV71800.aar" level="project" />
   </component>
 </module>
 

@@ -19,7 +19,7 @@
         <item name="android:background">@drawable/btn_default_holo_light</item>
     </style>
 
-    <style name="ActionBarAppTheme" parent="Widget.Sherlock.ActionBar">
+    <style name="ActionBarAppTheme" parent="Widget.AppCompat.ActionBar">
         <item name="android:background">@color/mi_maroon_darkest</item>
         <item name="android:titleTextStyle">@style/ActionBarTextAppTheme</item>
     </style>

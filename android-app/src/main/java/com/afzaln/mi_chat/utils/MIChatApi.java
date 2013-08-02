@@ -28,7 +28,6 @@ public class MIChatApi {
 
     public static Future<Response<String>> login(Context context, FutureCallback<Response<String>> callback) {
         return Ion.with(context, LOGIN_URI)
-                .setBodyParameter("do", "login")
                 .asString()
                 .withResponse()
                 .setCallback(callback);
