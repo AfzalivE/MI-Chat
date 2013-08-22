@@ -13,6 +13,7 @@ dependencies {
     compile "com.jeremyfeinstein:slidingmenu:1.3-SNAPSHOT"
     compile "com.loopj:android-async-http:1.4.3"
     compile "de.keyboardsurfer:crouton:1.8.1"
+    compile "com.squareup.picasso:picasso:1.1.1"
 
     compile fileTree(dir: 'libs', include: '*.jar')
 }
