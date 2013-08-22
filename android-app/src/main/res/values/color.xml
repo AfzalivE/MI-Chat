@@ -15,4 +15,8 @@
     <color name="alt_bg">@android:color/white</color>
 
     <color name="pressed">#CC33B5E5</color>
+
+    <color name="ics_blue">#ff33b5e5</color>
+    <color name="ics_blue_dark">#ff0099cc</color>
+    <color name="ics_blue_semi">#6633b5e5</color>
 </resources>
