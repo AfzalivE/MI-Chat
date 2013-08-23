@@ -58,6 +58,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     private MessageListView mListView;
     private EditText mEditText;
     private ImageButton mSubmitButton;
+    private ImageButton mSubmitImgButton;
     private Menu mMenu;
 
     private AlarmManager mAlarmManager;
@@ -186,6 +187,21 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
                 mEditText.setText("");
                 mSubmitButton.setEnabled(false);
 
+            }
+        });
+
+        mSubmitImgButton = (ImageButton) findViewById(id.submit_img);
+        mSubmitImgButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAlarmManager.cancel(mPendingIntent);
+                Bundle bundle = new Bundle();
+                bundle.putString("message", "[img]http://afzaln.com/vv/photo1.jpg[/img][img]http://afzaln.com/vv/photo3.jpg[/img]");
+
+                ResourceProcessor processor = ProcessorFactory.getInstance(MessagesActivity.this).getProcessor(ServiceContract.RESOURCE_TYPE_MESSAGE);
+                processor.postResource(bundle);
+
+                showRefreshProgressBar(true);
             }
         });
 
