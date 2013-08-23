@@ -3,6 +3,7 @@ package com.afzaln.mi_chat;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Bundle;
 import android.support.v4.widget.CursorAdapter;
 import android.text.Html;
 import android.text.format.DateUtils;
@@ -26,7 +27,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 public class MessagesCursorAdapter extends CursorAdapter {
 
@@ -113,11 +113,11 @@ public class MessagesCursorAdapter extends CursorAdapter {
         final ViewHolder holder = (ViewHolder) view.getTag();
         setTextViews(holder, userName, userRole, message, timestamp);
 
-        final List<String> imgLinksList = new ArrayList<String>();
+        final ArrayList<String> imgLinksList = new ArrayList<String>();
         // TODO adjust action_list_item layout to accomodate images nicely
         if (getItemViewType(cursor) == Message.NORMAL_TYPE) {
             if (imgLinks != null) {
-                String[] imgLinksArr = StringUtils.split(imgLinks, "|");
+                final String[] imgLinksArr = StringUtils.split(imgLinks, "|");
                 Collections.addAll(imgLinksList, imgLinksArr);
                 holder.imagesButton.setVisibility(View.VISIBLE);
                 holder.imagesButton.setOnClickListener(new View.OnClickListener() {
@@ -127,7 +127,7 @@ public class MessagesCursorAdapter extends CursorAdapter {
                             Log.d(TAG, "now hiding imagesScrollView");
                             holder.imageContainer.setVisibility(View.GONE);
                         } else {
-                            showImages(holder, imgLinksList, context);
+                            showImages(holder, imgLinksList, imgLinksArr, context);
                         }
                     }
                 });
@@ -160,7 +160,7 @@ public class MessagesCursorAdapter extends CursorAdapter {
         }
     }
 
-    private void showImages(ViewHolder holder, List<String> imgLinksList, Context context) {
+    private void showImages(ViewHolder holder, final ArrayList<String> imgLinksList, final String[] imgLinksArr, Context context) {
         Log.d(TAG, "now showing imagesScrollView");
         holder.imageContainer.setVisibility(View.VISIBLE);
         holder.imageContainer.removeAllViews();
@@ -183,6 +183,9 @@ public class MessagesCursorAdapter extends CursorAdapter {
                 public void onClick(View v) {
                     Log.d(TAG, "image clicked");
                     Intent i = new Intent(mContext, ImageActivity.class);
+                    Bundle extras = new Bundle();
+                    extras.putStringArrayList("imgLinksList", imgLinksList);
+                    i.putExtras(extras);
                     mContext.startActivity(i);
                 }
             });
