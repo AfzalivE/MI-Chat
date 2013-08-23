@@ -285,6 +285,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         }
     }
 
+    @SuppressLint("NewApi")
     private void copyToClipboard(CharSequence message) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
             @SuppressWarnings("deprecation")
@@ -295,7 +296,6 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         } else {
             android.content.ClipboardManager clipboardManager = (android.content.ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
             if (clipboardManager != null) {
-                @SuppressLint("NewApi")
                 android.content.ClipData data = android.content.ClipData.newPlainText("message", message);
                 clipboardManager.setPrimaryClip(data);
             }
