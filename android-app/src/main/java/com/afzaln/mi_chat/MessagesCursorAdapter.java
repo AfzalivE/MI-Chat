@@ -117,8 +117,7 @@ public class MessagesCursorAdapter extends CursorAdapter {
         // TODO adjust action_list_item layout to accomodate images nicely
         if (getItemViewType(cursor) == Message.NORMAL_TYPE) {
             if (imgLinks != null) {
-                final String[] imgLinksArr = StringUtils.split(imgLinks, "|");
-                Collections.addAll(imgLinksList, imgLinksArr);
+                Collections.addAll(imgLinksList, StringUtils.split(imgLinks, "|"));
                 holder.imagesButton.setVisibility(View.VISIBLE);
                 holder.imagesButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -127,7 +126,7 @@ public class MessagesCursorAdapter extends CursorAdapter {
                             Log.d(TAG, "now hiding imagesScrollView");
                             holder.imageContainer.setVisibility(View.GONE);
                         } else {
-                            showImages(holder, imgLinksList, imgLinksArr, context);
+                            showImages(holder, imgLinksList, context);
                         }
                     }
                 });
@@ -160,7 +159,7 @@ public class MessagesCursorAdapter extends CursorAdapter {
         }
     }
 
-    private void showImages(ViewHolder holder, final ArrayList<String> imgLinksList, final String[] imgLinksArr, Context context) {
+    private void showImages(ViewHolder holder, final ArrayList<String> imgLinksList, Context context) {
         Log.d(TAG, "now showing imagesScrollView");
         holder.imageContainer.setVisibility(View.VISIBLE);
         holder.imageContainer.removeAllViews();

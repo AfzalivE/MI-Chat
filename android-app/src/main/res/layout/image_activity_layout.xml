@@ -6,9 +6,9 @@
     android:layout_height="match_parent"
     android:gravity="center">
 
-    <ImageView
-        android:layout_width="300dp"
-        android:layout_height="400dp"
-        android:id="@+id/imageView"
-        android:background="@android:color/transparent"/>
+    <com.afzaln.mi_chat.view.MyViewPager
+        android:id="@+id/image_pager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>
