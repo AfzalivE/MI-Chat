@@ -10,5 +10,5 @@
         android:layout_width="300dp"
         android:layout_height="400dp"
         android:id="@+id/imageView"
-        android:background="@color/ics_blue"/>
+        android:background="@android:color/transparent"/>
 </LinearLayout>
