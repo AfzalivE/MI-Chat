@@ -1,6 +1,7 @@
 package com.afzaln.mi_chat;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
 import android.text.Html;
@@ -15,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.afzaln.mi_chat.R.color;
+import com.afzaln.mi_chat.activity.ImageActivity;
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
 import com.afzaln.mi_chat.resource.Message;
 import com.afzaln.mi_chat.view.MessageListView;
@@ -180,6 +182,8 @@ public class MessagesCursorAdapter extends CursorAdapter {
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG, "image clicked");
+                    Intent i = new Intent(mContext, ImageActivity.class);
+                    mContext.startActivity(i);
                 }
             });
         }
