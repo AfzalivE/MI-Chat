@@ -33,11 +33,6 @@ public class ImageActivity extends FragmentActivity {
 
         mViewPager.setAdapter(new ImagesPagerAdapter(imgLinksList));
 
-//        Picasso.with(this)
-//                .load(imgLinksList.get(0))
-//                .placeholder(R.drawable.placeholder)
-//                .error(R.drawable.error)
-//                .into(imageView);
     }
 
     static class ImagesPagerAdapter extends PagerAdapter {
@@ -56,11 +51,16 @@ public class ImageActivity extends FragmentActivity {
         @Override
         public View instantiateItem(ViewGroup container, int position) {
             PhotoView photoView = new PhotoView(container.getContext());
+            Picasso picasso = Picasso.with(container.getContext());
+            picasso.setDebugging(true);
+            picasso.load(mImgLinksList.get(position))
+                    .placeholder(R.drawable.placeholder)
+                    .error(R.drawable.error)
+                    .resizeDimen(R.dimen.attached_image_size, R.dimen.attached_image_size)
+                    .centerInside()
+                    .into(photoView);
+
             container.addView(photoView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            Picasso.with(container.getContext())
-                   .load(mImgLinksList.get(position))
-                   .error(R.drawable.error)
-                   .into(photoView);
 
             return photoView;
         }

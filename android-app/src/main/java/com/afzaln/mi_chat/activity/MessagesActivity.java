@@ -196,7 +196,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
             public void onClick(View v) {
                 mAlarmManager.cancel(mPendingIntent);
                 Bundle bundle = new Bundle();
-                bundle.putString("message", "[img]http://afzaln.com/vv/photo1.jpg[/img][img]http://afzaln.com/vv/photo3.jpg[/img]");
+                bundle.putString("message", "[img]http://www.hdwallpapers3d.com/wp-content/uploads/2013/04/Jennifer_Lawrence_7.jpg[/img][img]http://www.moviepilot.de/files/images/0875/3330/jennifer-lawrence.jpg[/img]");
 
                 ResourceProcessor processor = ProcessorFactory.getInstance(MessagesActivity.this).getProcessor(ServiceContract.RESOURCE_TYPE_MESSAGE);
                 processor.postResource(bundle);

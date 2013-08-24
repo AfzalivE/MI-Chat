@@ -39,7 +39,7 @@
         </activity>
         <activity
             android:name=".activity.ImageActivity"
-            android:theme="@android:style/Theme.Holo.Dialog.NoActionBar">
+            android:theme="@style/TransparentTheme">
         </activity>
         <activity
             android:name=".activity.SettingsActivity"
