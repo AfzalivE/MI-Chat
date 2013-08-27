@@ -30,6 +30,7 @@ import com.afzaln.mi_chat.AlarmReceiver;
 import com.afzaln.mi_chat.MessagesCursorAdapter;
 import com.afzaln.mi_chat.R;
 import com.afzaln.mi_chat.R.id;
+import com.afzaln.mi_chat.handler.LogoutResponseHandler;
 import com.afzaln.mi_chat.processor.ProcessorFactory;
 import com.afzaln.mi_chat.processor.ResourceProcessor;
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
@@ -40,10 +41,6 @@ import com.afzaln.mi_chat.utils.NetUtils;
 import com.afzaln.mi_chat.view.MessageListView;
 import com.afzaln.mi_chat.view.MessageListView.OnSizeChangedListener;
 import com.google.analytics.tracking.android.EasyTracker;
-import com.loopj.android.http.XmlHttpResponseHandler;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 
 import java.util.Calendar;
 
@@ -64,37 +61,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     private AlarmManager mAlarmManager;
     private PendingIntent mPendingIntent;
     private boolean mManualRefresh = false;
-    private XmlHttpResponseHandler mLogoutResponseHandler = new XmlHttpResponseHandler() {
-        @Override
-        public void onStart() {
-//            Log.d(TAG, "onStart");
-        }
-
-        @Override
-        public void onSuccess(Document response) {
-//            Log.d(TAG, "onSuccess");
-            Node info = response.getElementsByTagName("info").item(0);
-            if (info.getAttributes().getNamedItem("type").getNodeValue().equals("logout")) {
-                NetUtils.getCookieStoreInstance(MessagesActivity.this).clear();
-                Intent i = new Intent(MessagesActivity.this, LoginActivity.class);
-                MessagesActivity.this.finish();
-                startActivity(i);
-            };
-        }
-
-        @Override
-        public void onFailure(Throwable e, Document response) {
-//            Log.d(TAG, "onFailure");
-            e.printStackTrace();
-            // Response failed :(
-        }
-
-        @Override
-        public void onFinish() {
-//            Log.d(TAG, "onFinish");
-            // Completed the request (either success or failure)
-        }
-    };
+    private LogoutResponseHandler mLogoutResponseHandler = new LogoutResponseHandler(MessagesActivity.this);
 
     @Override
     public void onStart() {
