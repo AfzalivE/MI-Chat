@@ -3,6 +3,7 @@ package com.afzaln.mi_chat;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.widget.CursorAdapter;
 import android.text.Html;
@@ -10,20 +11,20 @@ import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.ViewAnimator;
 
 import com.afzaln.mi_chat.R.color;
 import com.afzaln.mi_chat.activity.ImageActivity;
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
 import com.afzaln.mi_chat.resource.Message;
 import com.afzaln.mi_chat.view.MessageListView;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -33,10 +34,8 @@ import java.util.Collections;
 public class MessagesCursorAdapter extends CursorAdapter {
 
     private static final String TAG = MessagesCursorAdapter.class.getSimpleName();
-
     private static final int MOD_USER_ROLE = 2;
     private static final int ADMIN_USER_ROLE = 3;
-
     private final int mAdminNameColor;
     private final int mModNameColor;
     private final int mUserameColor;
@@ -140,14 +139,6 @@ public class MessagesCursorAdapter extends CursorAdapter {
         }
     }
 
-    static class ViewHolder {
-        TextView userNameView;
-        TextView timestampView;
-        TextView messageView;
-        Button imagesButton;
-        LinearLayout imageContainer;
-    }
-
     private void setTextViews(ViewHolder holder, String userName, int userRole, String message, long timestamp) {
         holder.userNameView.setText(userName);
         formatUsername(userRole, holder.userNameView);
@@ -168,40 +159,28 @@ public class MessagesCursorAdapter extends CursorAdapter {
         for (int i = 0; i < imgLinksList.size(); i++) {
             final int imgIndex = i;
             ImageView image = new ImageView(context);
-            ProgressBar progressBar = new ProgressBar(context);
+            image.setLayoutParams(new ViewGroup.LayoutParams(200, 200));
 
-            final ViewAnimator imageAnimator = new ViewAnimator(context);
-            imageAnimator.setLayoutParams(new ViewGroup.LayoutParams(200, 200));
-            imageAnimator.addView(image);
-            imageAnimator.addView(progressBar);
-            imageAnimator.setDisplayedChild(1);
+            holder.imageContainer.addView(image);
 
-            holder.imageContainer.addView(imageAnimator);
-            Picasso.with(context)
-                    .load(imgLinksList.get(i))
-                    .error(R.drawable.error)
-                    .resizeDimen(R.dimen.attached_image_size, R.dimen.attached_image_size)
-                    .centerCrop()
-                    .into(image, new Callback.EmptyCallback() {
-                        @Override
-                        public void onSuccess() {
-                            imageAnimator.setDisplayedChild(0);
-                        }
-
-                        @Override
-                        public void onError() {
-                            imageAnimator.setDisplayedChild(0);
-                        }
-                     });
-            image.setOnClickListener(new View.OnClickListener() {
+            UrlImageViewHelper.setUrlDrawable(image, imgLinksList.get(i), R.drawable.placeholder, new UrlImageViewCallback() {
                 @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(mContext, ImageActivity.class);
-                    Bundle extras = new Bundle();
-                    extras.putStringArrayList("imgLinksList", imgLinksList);
-                    extras.putInt("imgIndex", imgIndex);
-                    intent.putExtras(extras);
-                    mContext.startActivity(intent);
+                public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
+                    ScaleAnimation scale = new ScaleAnimation(0, 1, 0, 1, ScaleAnimation.RELATIVE_TO_SELF, .5f, ScaleAnimation.RELATIVE_TO_SELF, .5f);
+                    scale.setDuration(300);
+                    scale.setInterpolator(new OvershootInterpolator());
+                    imageView.startAnimation(scale);
+                    imageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(mContext, ImageActivity.class);
+                            Bundle extras = new Bundle();
+                            extras.putStringArrayList("imgLinksList", imgLinksList);
+                            extras.putInt("imgIndex", imgIndex);
+                            intent.putExtras(extras);
+                            mContext.startActivity(intent);
+                        }
+                    });
                 }
             });
         }
@@ -223,6 +202,14 @@ public class MessagesCursorAdapter extends CursorAdapter {
 
     private CharSequence getDate(long timestamp) {
         return DateUtils.getRelativeTimeSpanString(timestamp, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS, DateUtils.FORMAT_ABBREV_RELATIVE);
+    }
+
+    static class ViewHolder {
+        TextView userNameView;
+        TextView timestampView;
+        TextView messageView;
+        Button imagesButton;
+        LinearLayout imageContainer;
     }
 
 }

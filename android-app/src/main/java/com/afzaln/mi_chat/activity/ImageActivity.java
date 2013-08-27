@@ -1,18 +1,19 @@
 package com.afzaln.mi_chat.activity;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.ViewAnimator;
+import android.view.animation.ScaleAnimation;
+import android.widget.ImageView;
 
 import com.afzaln.mi_chat.R;
 import com.afzaln.mi_chat.view.MyViewPager;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import java.util.ArrayList;
 
@@ -59,34 +60,19 @@ public class ImageActivity extends FragmentActivity {
         @Override
         public View instantiateItem(ViewGroup container, int position) {
             PhotoView photoView = new PhotoView(container.getContext());
-            ProgressBar progressBar = new ProgressBar(container.getContext());
-            progressBar.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+            photoView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+            container.addView(photoView);
 
-            final ViewAnimator photoAnimator = new ViewAnimator(container.getContext());
-            photoAnimator.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-            photoAnimator.addView(photoView);
-            photoAnimator.addView(progressBar);
-            photoAnimator.setDisplayedChild(1);
+            UrlImageViewHelper.setUrlDrawable(photoView, mImgLinksList.get(position), R.drawable.placeholder, new UrlImageViewCallback() {
+                @Override
+                public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
+                    ScaleAnimation scale = new ScaleAnimation(0, 1, 0, 1, ScaleAnimation.RELATIVE_TO_SELF, .5f, ScaleAnimation.RELATIVE_TO_SELF, .5f);
+                    scale.setDuration(300);
+                    imageView.startAnimation(scale);
+                }
+            });
 
-            container.addView(photoAnimator);
-            Picasso picasso = Picasso.with(container.getContext());
-            picasso.load(mImgLinksList.get(position))
-                    .error(R.drawable.error)
-                    .resizeDimen(R.dimen.default_image_size, R.dimen.default_image_size)
-                    .centerInside()
-                    .into(photoView, new Callback.EmptyCallback() {
-                        @Override
-                        public void onSuccess() {
-                            photoAnimator.setDisplayedChild(0);
-                        }
-
-                        @Override
-                        public void onError() {
-                            photoAnimator.setDisplayedChild(0);
-                        }
-                    });
-
-            return photoAnimator;
+            return photoView;
         }
 
         @Override
