@@ -1,9 +1,5 @@
 package com.afzaln.mi_chat.processor;
 
-import org.w3c.dom.Document;
-
-import java.util.List;
-
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -18,8 +14,22 @@ import com.afzaln.mi_chat.resource.Info;
 import com.afzaln.mi_chat.resource.Message;
 import com.afzaln.mi_chat.resource.Page;
 import com.afzaln.mi_chat.resource.User;
-import com.afzaln.mi_chat.utils.NetUtils;
-import com.loopj.android.http.XmlHttpResponseHandler;
+import com.afzaln.mi_chat.utils.MIChatApi;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Response;
+
+import org.apache.http.HttpStatus;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 /**
  * Created by afzaln on 2013-05-21.
@@ -28,29 +38,31 @@ public class MessageProcessor implements ResourceProcessor {
 
     protected static final String TAG = PageProcessor.class.getSimpleName();
     private Context mContext;
-    private XmlHttpResponseHandler myResponseHandler = new XmlHttpResponseHandler() {
+    private FutureCallback<Response<String>> mMessageCallback = new FutureCallback<Response<String>>() {
         @Override
-        public void onStart() {
-            Log.d(TAG, "onStart");
-        }
+        public void onCompleted(Exception e, Response<String> response) {
+            if (e != null) {
+                e.printStackTrace();
+            } else if (response.getHeaders().getResponseCode() == HttpStatus.SC_OK) {
+                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+                try {
+                    // TODO create this stuff somewhere else
+                    DocumentBuilder db = dbf.newDocumentBuilder();
+                    InputStream is = new ByteArrayInputStream(response.getResult().getBytes());
+                    Document doc = db.parse(is);
+                    updateContentProvider(doc);
+                } catch (ParserConfigurationException e1) {
+                    e1.printStackTrace();
+                } catch (SAXException e1) {
+                    e1.printStackTrace();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
 
-        @Override
-        public void onSuccess(Document response) {
-            Log.d(TAG, "onSuccess");
-            updateContentProvider(response);
-        }
-
-        @Override
-        public void onFailure(Throwable e, Document response) {
-            Log.d(TAG, "onFailure");
-            e.printStackTrace();
-            // Response failed :(
-        }
-
-        @Override
-        public void onFinish() {
-            Log.d(TAG, "onFinish");
-            // Completed the request (either success or failure)
+            } else {
+                // TODO handle this gracefully
+                e.printStackTrace();
+            }
         }
     };
 
@@ -69,7 +81,7 @@ public class MessageProcessor implements ResourceProcessor {
         // get the last id
         long lastId = getLastMessageId();
 
-        NetUtils.postMessage(myResponseHandler, message, lastId);
+        MIChatApi.postMessage(mContext, message, lastId, mMessageCallback);
     }
 
     private void updateContentProvider(Document result) {

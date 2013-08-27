@@ -25,26 +25,33 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afzaln.mi_chat.AlarmReceiver;
 import com.afzaln.mi_chat.MessagesCursorAdapter;
 import com.afzaln.mi_chat.R;
 import com.afzaln.mi_chat.R.id;
-import com.afzaln.mi_chat.handler.LogoutResponseHandler;
 import com.afzaln.mi_chat.processor.ProcessorFactory;
 import com.afzaln.mi_chat.processor.ResourceProcessor;
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
 import com.afzaln.mi_chat.resource.Message;
 import com.afzaln.mi_chat.service.ServiceContract;
+import com.afzaln.mi_chat.utils.BackoffUtils;
 import com.afzaln.mi_chat.utils.MIChatApi;
 import com.afzaln.mi_chat.utils.PrefUtils;
-import com.afzaln.mi_chat.utils.BackoffUtils;
-import com.afzaln.mi_chat.utils.NetUtils;
 import com.afzaln.mi_chat.view.MessageListView;
 import com.afzaln.mi_chat.view.MessageListView.OnSizeChangedListener;
 import com.google.analytics.tracking.android.EasyTracker;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
+import com.koushikdutta.ion.Response;
+
+import org.apache.http.HttpStatus;
 
 import java.util.Calendar;
+
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class MessagesActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -82,16 +89,18 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
             }
         }
     };
-    
+
     @Override
     public void onStart() {
         super.onStart();
+        Log.d(TAG, "calling onStart now");
         EasyTracker.getInstance().activityStart(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        Log.d(TAG, "calling onStop now");
         EasyTracker.getInstance().activityStop(this);
     }
 
@@ -195,6 +204,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(TAG, "calling onResume now");
         showRefreshProgressBar(true);
 
         // TODO use the Service for this
@@ -207,8 +217,15 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     @Override
     public void onPause() {
         super.onPause();
+        Log.d(TAG, "calling onPause now");
         mManualRefresh = false;
         mAlarmManager.cancel(mPendingIntent);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "calling onDestroy now");
     }
 
     @Override
