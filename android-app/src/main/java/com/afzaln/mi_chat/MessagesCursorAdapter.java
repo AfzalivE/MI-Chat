@@ -13,13 +13,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.ViewAnimator;
 
 import com.afzaln.mi_chat.R.color;
 import com.afzaln.mi_chat.activity.ImageActivity;
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
 import com.afzaln.mi_chat.resource.Message;
 import com.afzaln.mi_chat.view.MessageListView;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang3.StringUtils;
@@ -157,30 +160,48 @@ public class MessagesCursorAdapter extends CursorAdapter {
         }
     }
 
-    private void showImages(ViewHolder holder, final ArrayList<String> imgLinksList, Context context) {
+    private void showImages(final ViewHolder holder, final ArrayList<String> imgLinksList, Context context) {
         holder.imageContainer.setVisibility(View.VISIBLE);
         holder.imageContainer.removeAllViews();
 
         // Trigger the download of the URL asynchronously into the image view.
-        for (String imgLink : imgLinksList) {
+        for (int i = 0; i < imgLinksList.size(); i++) {
+            final int imgIndex = i;
             ImageView image = new ImageView(context);
-            image.setLayoutParams(new ViewGroup.LayoutParams(200, 200));
-            holder.imageContainer.addView(image);
+            ProgressBar progressBar = new ProgressBar(context);
+
+            final ViewAnimator imageAnimator = new ViewAnimator(context);
+            imageAnimator.setLayoutParams(new ViewGroup.LayoutParams(200, 200));
+            imageAnimator.addView(image);
+            imageAnimator.addView(progressBar);
+            imageAnimator.setDisplayedChild(1);
+
+            holder.imageContainer.addView(imageAnimator);
             Picasso.with(context)
-                    .load(imgLink)
-                    .placeholder(R.drawable.placeholder)
+                    .load(imgLinksList.get(i))
                     .error(R.drawable.error)
                     .resizeDimen(R.dimen.attached_image_size, R.dimen.attached_image_size)
                     .centerCrop()
-                    .into(image);
+                    .into(image, new Callback.EmptyCallback() {
+                        @Override
+                        public void onSuccess() {
+                            imageAnimator.setDisplayedChild(0);
+                        }
+
+                        @Override
+                        public void onError() {
+                            imageAnimator.setDisplayedChild(0);
+                        }
+                     });
             image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(mContext, ImageActivity.class);
+                    Intent intent = new Intent(mContext, ImageActivity.class);
                     Bundle extras = new Bundle();
                     extras.putStringArrayList("imgLinksList", imgLinksList);
-                    i.putExtras(extras);
-                    mContext.startActivity(i);
+                    extras.putInt("imgIndex", imgIndex);
+                    intent.putExtras(extras);
+                    mContext.startActivity(intent);
                 }
             });
         }
