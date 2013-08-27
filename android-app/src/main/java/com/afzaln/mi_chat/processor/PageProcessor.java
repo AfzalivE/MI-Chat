@@ -26,9 +26,7 @@ public class PageProcessor implements ResourceProcessor {
 
     protected static final String TAG = PageProcessor.class.getSimpleName();
     private Context mContext;
-
     private AutoLoginResponseHandler mLoginResponseHandler;
-
 
     private XmlHttpResponseHandler myResponseHandler = new XmlHttpResponseHandler() {
         @Override

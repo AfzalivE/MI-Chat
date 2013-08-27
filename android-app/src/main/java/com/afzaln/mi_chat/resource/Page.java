@@ -15,12 +15,31 @@ import java.util.Date;
 import java.util.List;
 
 public class Page implements Resource {
+    private static final SimpleDateFormat mDateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
     Info info;
     List<User> userList;
     List<Message> messageList;
-    private static final SimpleDateFormat mDateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
 
-    public Page() {
+    public Page(Document document) {
+        // possible NPE
+        try {
+            NodeList mainNodes = document.getElementsByTagName("root").item(0).getChildNodes();
+
+            for (int i = 0; i < mainNodes.getLength(); i++) {
+                Node node = mainNodes.item(i);
+
+                String nodeName = node.getNodeName();
+                if (nodeName.equals("users")) {
+                    this.userList = processUsers(node);
+                } else if (nodeName.equals("messages")) {
+                    this.messageList = processMessages(node);
+                } else if (nodeName.equals("infos")) {
+                    this.info = processInfo(node);
+                }
+            }
+        } catch (NullPointerException e) {
+            // Do nothing
+        }
 
     }
 
@@ -34,25 +53,6 @@ public class Page implements Resource {
 
     public Info getInfo() {
         return this.info;
-    }
-
-    public Page(Document document) {
-        // possible NPE
-        NodeList mainNodes = document.getElementsByTagName("root").item(0).getChildNodes();
-
-        for (int i = 0; i < mainNodes.getLength(); i++) {
-            Node node = mainNodes.item(i);
-
-            String nodeName = node.getNodeName();
-            if (nodeName.equals("users")) {
-                this.userList = processUsers(node);
-            } else if (nodeName.equals("messages")) {
-                this.messageList = processMessages(node);
-            } else if (nodeName.equals("infos")) {
-                this.info = processInfo(node);
-            }
-        }
-
     }
 
     private Info processInfo(Node node) {
