@@ -8,5 +8,6 @@
     <dimen name="listPreferredItemPaddingStart">6dip</dimen>
     <dimen name="listPreferredItemPaddingEnd">6dip</dimen>
     <dimen name="attached_image_size">200dp</dimen>
+    <dimen name="default_image_size">480dp</dimen>
 
 </resources>

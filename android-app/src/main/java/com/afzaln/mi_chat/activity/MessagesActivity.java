@@ -98,9 +98,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
-
         super.onCreate(savedInstanceState);
-
         getWindow().setBackgroundDrawable(null);
 
         getSupportLoaderManager().initLoader(MESSAGE_LOADER, null, this);
