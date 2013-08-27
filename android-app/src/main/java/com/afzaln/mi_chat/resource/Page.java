@@ -37,6 +37,7 @@ public class Page implements Resource {
     }
 
     public Page(Document document) {
+        // possible NPE
         NodeList mainNodes = document.getElementsByTagName("root").item(0).getChildNodes();
 
         for (int i = 0; i < mainNodes.getLength(); i++) {
