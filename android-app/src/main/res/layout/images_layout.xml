@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="4dp">
+
+    <Button
+        android:id="@+id/show_images"
+        android:layout_width="match_parent"
+        android:layout_below="@id/message"
+        android:layout_alignParentRight="true"
+        android:layout_height="32dp"
+        android:textSize="12sp"
+        android:fontFamily="sans-serif-light"
+        android:gravity="right"
+        android:textStyle="italic"
+        android:textColor="@color/light_text"
+        style="@style/SpinnerAppTheme"
+        android:text="0 images attached"
+        android:visibility="gone" />
+
+    <HorizontalScrollView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/show_images">
+
+        <LinearLayout android:id="@+id/image_container"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:visibility="gone" />
+
+    </HorizontalScrollView>
+
+</merge>

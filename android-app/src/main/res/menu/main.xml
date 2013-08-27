@@ -1,25 +1,27 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <item
         android:id="@+id/action_refresh"
         android:icon="@drawable/ic_refresh"
-        android:showAsAction="ifRoom"
+        app:showAsAction="ifRoom"
         android:visible="false"
         android:title="@string/action_refresh" />
     <item
         android:id="@+id/action_prefs"
         android:icon="@android:drawable/ic_menu_preferences"
-        android:showAsAction="never"
-        android:title="@string/action_prefs" />
+        app:showAsAction="never"
+        android:title="@string/action_prefs"
+        android:visible="false" />
+    <item
+        android:id="@+id/action_clearmessages"
+        android:icon="@android:drawable/ic_menu_close_clear_cancel"
+        app:showAsAction="never"
+        android:title="@string/action_clearmessages" />
     <item
         android:id="@+id/action_logout"
         android:icon="@android:drawable/ic_menu_revert"
-        android:showAsAction="never"
+        app:showAsAction="never"
         android:title="@string/action_logout" />
-    <item
-        android:id="@+id/action_clearmessages"
-        android:icon="@android:drawable/ic_menu_revert"
-        android:showAsAction="never"
-        android:title="@string/action_clearmessages" />
 
 </menu>

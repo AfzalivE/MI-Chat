@@ -1,5 +1,7 @@
 package com.afzaln.mi_chat.resource;
 
+import android.util.Log;
+
 import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -13,11 +15,31 @@ import java.util.Date;
 import java.util.List;
 
 public class Page implements Resource {
+    private static final SimpleDateFormat mDateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
     Info info;
     List<User> userList;
     List<Message> messageList;
 
-    public Page() {
+    public Page(Document document) {
+        // possible NPE
+        try {
+            NodeList mainNodes = document.getElementsByTagName("root").item(0).getChildNodes();
+
+            for (int i = 0; i < mainNodes.getLength(); i++) {
+                Node node = mainNodes.item(i);
+
+                String nodeName = node.getNodeName();
+                if (nodeName.equals("users")) {
+                    this.userList = processUsers(node);
+                } else if (nodeName.equals("messages")) {
+                    this.messageList = processMessages(node);
+                } else if (nodeName.equals("infos")) {
+                    this.info = processInfo(node);
+                }
+            }
+        } catch (NullPointerException e) {
+            // Do nothing
+        }
 
     }
 
@@ -33,24 +55,6 @@ public class Page implements Resource {
         return this.info;
     }
 
-    public Page(Document document) {
-        NodeList mainNodes = document.getElementsByTagName("root").item(0).getChildNodes();
-
-        for (int i = 0; i < mainNodes.getLength(); i++) {
-            Node node = mainNodes.item(i);
-
-            String nodeName = node.getNodeName();
-            if (nodeName.equals("users")) {
-                this.userList = processUsers(node);
-            } else if (nodeName.equals("messages")) {
-                this.messageList = processMessages(node);
-            } else if (nodeName.equals("infos")) {
-                this.info = processInfo(node);
-            }
-        }
-
-    }
-
     private Info processInfo(Node node) {
         NodeList infos = node.getChildNodes();
 
@@ -59,24 +63,53 @@ public class Page implements Resource {
         int userRole = 0;
         int channelId = 0;
         String channelName = null;
+        boolean loggedIn = true;
 
         if (infos.getLength() < 1) return null;
 
         for (int i = 0; i < infos.getLength(); i++) {
             Node infoNode = infos.item(i);
-
             String typeAttrs = infoNode.getAttributes().getNamedItem("type").getNodeValue();
+
+            if (typeAttrs.equals("logout")) {
+                loggedIn = false;
+                continue;
+            }
+
             String textContent = infoNode.getTextContent();
 
-            userId = (!typeAttrs.equals("userID")) ? userId : Long.parseLong(textContent);
-            userRole = (!typeAttrs.equals("userRole")) ? userRole : Integer.parseInt(textContent);
-            channelId = (!typeAttrs.equals("channelID")) ? userRole : Integer.parseInt(textContent);
-            userName = (!typeAttrs.equals("userName")) ? userName : infoNode.getTextContent();
-            channelName = (!typeAttrs.equals("channelName")) ? userName : infoNode.getTextContent();
+            if (typeAttrs.equals("userID")) {
+                userId = Long.parseLong(textContent);
+                Log.d("TEST", textContent);
+                continue;
+            }
 
+            if (typeAttrs.equals("userRole")) {
+                userRole = Integer.parseInt(textContent);
+                Log.d("TEST", textContent);
+                continue;
+            }
+
+            if (typeAttrs.equals("channelID")) {
+                Integer.parseInt(textContent);
+                Log.d("TEST", textContent);
+                continue;
+            }
+
+            if (typeAttrs.equals("userName")) {
+                userName = textContent;
+                Log.d("TEST", textContent);
+                continue;
+            }
+
+            if (typeAttrs.equals("channelName")) {
+                channelName = textContent;
+                Log.d("TEST", textContent);
+                continue;
+            }
         }
 
-        return new Info(userId, userRole, channelId, userName, channelName);
+        return new Info(userId, userRole, channelId, userName, channelName, loggedIn);
     }
 
     private List<User> processUsers(Node node) {
@@ -133,7 +166,6 @@ public class Page implements Resource {
             }
 
             String[] imgLinkArr = StringUtils.substringsBetween(messageText, "[img]", "[/img]");
-
             String imgLinks = StringUtils.join(imgLinkArr, "|");
 
             // TODO optimize this mess
@@ -158,9 +190,8 @@ public class Page implements Resource {
     }
 
     private long parseDate(String dateString) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
         try {
-            Date date = dateFormat.parse(dateString);
+            Date date = mDateFormat.parse(dateString);
             long dateMillis = date.getTime();
             return dateMillis;
         } catch (ParseException e) {

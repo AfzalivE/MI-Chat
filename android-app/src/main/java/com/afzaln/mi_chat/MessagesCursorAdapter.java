@@ -1,34 +1,41 @@
 package com.afzaln.mi_chat;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.support.v4.widget.CursorAdapter;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.afzaln.mi_chat.R.color;
+import com.afzaln.mi_chat.activity.ImageActivity;
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
 import com.afzaln.mi_chat.resource.Message;
 import com.afzaln.mi_chat.view.MessageListView;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 public class MessagesCursorAdapter extends CursorAdapter {
 
     private static final String TAG = MessagesCursorAdapter.class.getSimpleName();
-
     private static final int MOD_USER_ROLE = 2;
     private static final int ADMIN_USER_ROLE = 3;
-
     private final int mAdminNameColor;
     private final int mModNameColor;
     private final int mUserameColor;
@@ -38,6 +45,7 @@ public class MessagesCursorAdapter extends CursorAdapter {
         mAdminNameColor = context.getResources().getColor(color.admin_name);
         mModNameColor = context.getResources().getColor(color.mod_name);
         mUserameColor = context.getResources().getColor(color.normal_text);
+
     }
 
     private int getItemViewType(Cursor cursor) {
@@ -78,7 +86,8 @@ public class MessagesCursorAdapter extends CursorAdapter {
         holder.userNameView = (TextView) listItemView.findViewById(R.id.username);
         holder.timestampView = (TextView) listItemView.findViewById(R.id.timestamp);
         holder.messageView = (TextView) listItemView.findViewById(R.id.message);
-        holder.imagesButton = (Button) listItemView.findViewById(R.id.images);
+        holder.imagesButton = (Button) listItemView.findViewById(R.id.show_images);
+        holder.imageContainer = (LinearLayout) listItemView.findViewById(R.id.image_container);
 
         listItemView.setTag(holder);
         return listItemView;
@@ -94,7 +103,7 @@ public class MessagesCursorAdapter extends CursorAdapter {
     }
 
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindView(final View view, final Context context, Cursor cursor) {
         // Get username, timestamp and message from cursor
         String userName = cursor.getString(cursor.getColumnIndex(MessagesTable.USERNAME));
         int userRole = cursor.getInt(cursor.getColumnIndex(MessagesTable.USERROLE));
@@ -102,23 +111,78 @@ public class MessagesCursorAdapter extends CursorAdapter {
         String imgLinks = cursor.getString(cursor.getColumnIndex(MessagesTable.IMGLINKS));
         long timestamp = cursor.getLong(cursor.getColumnIndex(MessagesTable.DATETIME));
 
-        ViewHolder holder = (ViewHolder) view.getTag();
-        holder.userNameView.setText(userName);
-        formatUsername(userRole, holder.userNameView);
-        holder.timestampView.setText(getDate(timestamp));
-        holder.messageView.setText(Html.fromHtml(message));
+        final ViewHolder holder = (ViewHolder) view.getTag();
+        setTextViews(holder, userName, userRole, message, timestamp);
 
-        List<String> imgLinksList = new ArrayList<String>();
-        // TODO remove this condition when ACTION_TYPE can also display images
+        final ArrayList<String> imgLinksList = new ArrayList<String>();
+        // TODO adjust action_list_item layout to accomodate images nicely
         if (getItemViewType(cursor) == Message.NORMAL_TYPE) {
             if (imgLinks != null) {
-                String[] imgLinksArr = StringUtils.split(imgLinks, "|");
-                Collections.addAll(imgLinksList, imgLinksArr);
+                Collections.addAll(imgLinksList, StringUtils.split(imgLinks, "|"));
                 holder.imagesButton.setVisibility(View.VISIBLE);
+                holder.imagesButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (holder.imageContainer.getVisibility() == View.VISIBLE) {
+                            holder.imageContainer.setVisibility(View.GONE);
+                        } else {
+                            showImages(holder, imgLinksList, context);
+                        }
+                    }
+                });
+
                 holder.imagesButton.setText(context.getResources().getQuantityString(R.plurals.numberOfImages, imgLinksList.size(), imgLinksList.size()));
             } else {
                 holder.imagesButton.setVisibility(View.GONE);
+                holder.imageContainer.setVisibility(View.GONE);
             }
+        }
+    }
+
+    private void setTextViews(ViewHolder holder, String userName, int userRole, String message, long timestamp) {
+        holder.userNameView.setText(userName);
+        formatUsername(userRole, holder.userNameView);
+        holder.timestampView.setText(getDate(timestamp));
+        if (message.isEmpty()) {
+            holder.messageView.setVisibility(View.GONE);
+        } else {
+            holder.messageView.setVisibility(View.VISIBLE);
+            holder.messageView.setText(Html.fromHtml(message));
+        }
+    }
+
+    private void showImages(final ViewHolder holder, final ArrayList<String> imgLinksList, Context context) {
+        holder.imageContainer.setVisibility(View.VISIBLE);
+        holder.imageContainer.removeAllViews();
+
+        // Trigger the download of the URL asynchronously into the image view.
+        for (int i = 0; i < imgLinksList.size(); i++) {
+            final int imgIndex = i;
+            ImageView image = new ImageView(context);
+            image.setLayoutParams(new ViewGroup.LayoutParams(200, 200));
+
+            holder.imageContainer.addView(image);
+
+            UrlImageViewHelper.setUrlDrawable(image, imgLinksList.get(i), R.drawable.placeholder, new UrlImageViewCallback() {
+                @Override
+                public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
+                    ScaleAnimation scale = new ScaleAnimation(0, 1, 0, 1, ScaleAnimation.RELATIVE_TO_SELF, .5f, ScaleAnimation.RELATIVE_TO_SELF, .5f);
+                    scale.setDuration(300);
+                    scale.setInterpolator(new OvershootInterpolator());
+                    imageView.startAnimation(scale);
+                    imageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(mContext, ImageActivity.class);
+                            Bundle extras = new Bundle();
+                            extras.putStringArrayList("imgLinksList", imgLinksList);
+                            extras.putInt("imgIndex", imgIndex);
+                            intent.putExtras(extras);
+                            mContext.startActivity(intent);
+                        }
+                    });
+                }
+            });
         }
     }
 
@@ -145,5 +209,7 @@ public class MessagesCursorAdapter extends CursorAdapter {
         TextView timestampView;
         TextView messageView;
         Button imagesButton;
+        LinearLayout imageContainer;
     }
+
 }

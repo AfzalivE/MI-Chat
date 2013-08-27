@@ -25,10 +25,22 @@
     <string name="pref_var_msg_width_summary">If checked, messages will only be as wide as their
         content
     </string>
+    <string name="pref_notification">Notifications</string>
+    <string name="pref_persist_notification">Show persistent notification</string>
+    <string name="pref_persist_notification_summary">Shows a notification in the shade when app is
+        running in the background
+    </string>
+    <string name="copy_text">Copy text</string>
+    <string name="reply">Reply</string>
 
     <plurals name="numberOfImages">
         <item quantity="one">1 image attached</item>
         <item quantity="other">%d images attached</item>
+    </plurals>
+
+    <plurals name="numberofUsers">
+        <item quantity="one">1 user online</item>
+        <item quantity="other">%d users online</item>
     </plurals>
 
 </resources>

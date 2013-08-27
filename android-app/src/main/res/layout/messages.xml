@@ -48,7 +48,7 @@
             android:autoText="true"
             android:textSize="16sp"
             android:capitalize="sentences"
-            android:nextFocusRight="@+id/submit_button"
+            android:nextFocusRight="@+id/submit_msg"
             android:hint="@string/type_message_hint"
             android:minHeight="48dip"
             android:maxLines="3"
@@ -56,25 +56,28 @@
             android:imeOptions="actionSend|flagNoEnterAction"
             android:maxLength="2000"
             android:background="@drawable/edit_text_holo_light"
-            android:fontFamily="sans-serif-lightAfz"/>
+            android:fontFamily="sans-serif-light"
+            android:nextFocusForward="@+id/submit_msg" />
 
-        <RelativeLayout
-            android:id="@+id/button"
-            android:orientation="vertical"
-            android:layout_gravity="bottom"
+        <ImageButton
+            android:id="@+id/submit_img"
+            android:src="@drawable/ic_ab_up"
+            android:drawablePadding="0dip"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dip"
+            android:contentDescription="@string/send_message"
+            android:nextFocusLeft="@id/text_editor" />
 
-            <ImageButton
-                android:id="@+id/submit_button"
-                android:src="@drawable/send_button_selector"
-                android:drawablePadding="0dip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="4dip"
-                android:contentDescription="@string/send_message"
-                android:nextFocusLeft="@id/text_editor" />
-        </RelativeLayout>
+        <ImageButton
+            android:id="@+id/submit_msg"
+            android:src="@drawable/send_button_selector"
+            android:drawablePadding="0dip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dip"
+            android:contentDescription="@string/send_message"
+            android:nextFocusLeft="@id/text_editor" />
 
     </LinearLayout>
 </merge>

@@ -2,11 +2,9 @@ package com.afzaln.mi_chat.activity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
@@ -15,24 +13,18 @@ import android.widget.EditText;
 import android.widget.ViewFlipper;
 
 import com.afzaln.mi_chat.R;
-import com.afzaln.mi_chat.utils.MIChatApi;
+import com.afzaln.mi_chat.handler.LoginResponseHandler;
+import com.afzaln.mi_chat.utils.NetUtils;
 import com.afzaln.mi_chat.utils.PrefUtils;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Response;
-
-import org.apache.http.HttpStatus;
-
-import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 
 public class LoginActivity extends Activity {
 
     private static final String TAG = LoginActivity.class.getSimpleName();
     private EditText mUsernameField;
     private EditText mPasswordField;
-    private ViewFlipper mLoginFlipper;
-
-    private FutureCallback<Response<String>> mLoginCallback = new FutureCallback<Response<String>>() {
+    public ViewFlipper mLoginFlipper;
+	private FutureCallback<Response<String>> mLoginCallback = new FutureCallback<Response<String>>() {
         @Override
         public void onCompleted(Exception e, Response<String> response) {
             if (e != null) {
@@ -55,7 +47,7 @@ public class LoginActivity extends Activity {
             }
         }
     };
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +62,7 @@ public class LoginActivity extends Activity {
         mLoginFlipper.setOutAnimation(LoginActivity.this, android.R.anim.fade_out);
         mLoginFlipper.setInAnimation(LoginActivity.this, android.R.anim.fade_in);
 
-        if (PrefUtils.authCookieExists(LoginActivity.this)) {
+        if (PrefUtils.authCookieExists(this)) {
             mLoginFlipper.showNext();
             MIChatApi.login(LoginActivity.this, mLoginCallback);
         }
@@ -84,11 +76,9 @@ public class LoginActivity extends Activity {
                 hideKeyboard();
                 String username = mUsernameField.getText().toString();
                 String password = mPasswordField.getText().toString();
-                mLoginFlipper.showNext();
                 MIChatApi.login(LoginActivity.this, mLoginCallback, username, password);
             }
         });
-
     }
 
     protected void hideKeyboard() {

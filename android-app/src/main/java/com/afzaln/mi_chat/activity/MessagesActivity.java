@@ -1,11 +1,11 @@
 package com.afzaln.mi_chat.activity;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -25,43 +25,41 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afzaln.mi_chat.AlarmReceiver;
 import com.afzaln.mi_chat.MessagesCursorAdapter;
 import com.afzaln.mi_chat.R;
 import com.afzaln.mi_chat.R.id;
+import com.afzaln.mi_chat.handler.LogoutResponseHandler;
 import com.afzaln.mi_chat.processor.ProcessorFactory;
 import com.afzaln.mi_chat.processor.ResourceProcessor;
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
+import com.afzaln.mi_chat.resource.Message;
 import com.afzaln.mi_chat.service.ServiceContract;
 import com.afzaln.mi_chat.utils.MIChatApi;
 import com.afzaln.mi_chat.utils.PrefUtils;
+import com.afzaln.mi_chat.utils.BackoffUtils;
+import com.afzaln.mi_chat.utils.NetUtils;
 import com.afzaln.mi_chat.view.MessageListView;
 import com.afzaln.mi_chat.view.MessageListView.OnSizeChangedListener;
 import com.google.analytics.tracking.android.EasyTracker;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
-import com.koushikdutta.ion.Response;
-
-import org.apache.http.HttpStatus;
 
 import java.util.Calendar;
 
-import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
-
 public class MessagesActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    private static int mRefreshInterval = BackoffUtils.DEFAULT_REFRESH_INTERVAL;
+
     private static final int MESSAGE_LOADER = 0;
-    private static final int DEFAULT_REFRESH_INTERVAL = 3000;
     private static final String TAG = MessagesActivity.class.getSimpleName();
-    private static int mRefreshInterval = DEFAULT_REFRESH_INTERVAL;
+
     private MessagesCursorAdapter mAdapter;
     private MessageListView mListView;
     private EditText mEditText;
     private ImageButton mSubmitButton;
+    private ImageButton mSubmitImgButton;
     private Menu mMenu;
+
     private AlarmManager mAlarmManager;
     private PendingIntent mPendingIntent;
     private boolean mManualRefresh = false;
@@ -84,7 +82,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
             }
         }
     };
-
+    
     @Override
     public void onStart() {
         super.onStart();
@@ -97,21 +95,55 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         EasyTracker.getInstance().activityStop(this);
     }
 
+    private TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (s.toString().trim().equals("")) {
+                mSubmitButton.setEnabled(false);
+            } else {
+                mSubmitButton.setEnabled(true);
+            }
+        }
+    };
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
-
         super.onCreate(savedInstanceState);
-
         getWindow().setBackgroundDrawable(null);
 
         getSupportLoaderManager().initLoader(MESSAGE_LOADER, null, this);
-        mListView = (MessageListView) findViewById(R.id.messagelist);
+        initListView();
+
+        mEditText = (EditText) findViewById(id.text_editor);
+        mEditText.addTextChangedListener(textWatcher);
+
+        initSubmitButton();
+
+        mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        mPendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+//        ViewServer.get(this).addWindow(this);
+    }
+
+    private void initListView() {
+        mListView = (MessageListView) findViewById(id.messagelist);
         mAdapter = new MessagesCursorAdapter(this, null, 0);
         mListView.setAdapter(mAdapter);
-        // TODO API 9 compatibility
-        mListView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            mListView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
+        }
         registerForContextMenu(mListView);
 
         mListView.setOnSizeChangedListener(new OnSizeChangedListener() {
@@ -119,52 +151,45 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
                 mListView.setSelection(mAdapter.getCount() - 1);
             }
         });
+    }
 
-        mEditText = (EditText) findViewById(id.text_editor);
-        mSubmitButton = (ImageButton) findViewById(id.submit_button);
+    private void initSubmitButton() {
+        mSubmitButton = (ImageButton) findViewById(id.submit_msg);
         mSubmitButton.setEnabled(false);
-
-        mEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().trim().equals("")) {
-                    mSubmitButton.setEnabled(false);
-                } else {
-                    mSubmitButton.setEnabled(true);
-                }
-            }
-        });
 
         mSubmitButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                mAlarmManager.cancel(mPendingIntent);
                 Bundle bundle = new Bundle();
                 bundle.putString("message", mEditText.getText().toString());
 
                 ResourceProcessor processor = ProcessorFactory.getInstance(MessagesActivity.this).getProcessor(ServiceContract.RESOURCE_TYPE_MESSAGE);
                 processor.postResource(bundle);
 
-                setProgressBarIndeterminateVisibility(true);
-                mMenu.findItem(id.action_refresh).setVisible(false);
+                showRefreshProgressBar(true);
 
                 mEditText.setText("");
                 mSubmitButton.setEnabled(false);
+
             }
         });
 
-        mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        Intent intent = new Intent(this, AlarmReceiver.class);
-        mPendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        mSubmitImgButton = (ImageButton) findViewById(id.submit_img);
+        mSubmitImgButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAlarmManager.cancel(mPendingIntent);
+                Bundle bundle = new Bundle();
+                bundle.putString("message", "[img]http://collider.com/wp-content/uploads/christina-hendricks-1.jpeg[/img][img]http://cdn.evilbeetgossip.com/wp-content/uploads/2013/01/christina_hendricks.jpg[/img]");
 
-//        ViewServer.get(this).addWindow(this);
+                ResourceProcessor processor = ProcessorFactory.getInstance(MessagesActivity.this).getProcessor(ServiceContract.RESOURCE_TYPE_MESSAGE);
+                processor.postResource(bundle);
+
+                showRefreshProgressBar(true);
+            }
+        });
+
     }
 
     @Override
@@ -189,6 +214,9 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            menu.findItem(id.action_prefs).setVisible(true);
+        }
         mMenu = menu;
         return true;
     }
@@ -196,16 +224,16 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         ResourceProcessor processor = ProcessorFactory.getInstance(this).getProcessor(ServiceContract.RESOURCE_TYPE_PAGE);
-        Intent i = null;
+        Intent i;
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                processor.getResource();
-                setProgressBarIndeterminateVisibility(true);
+                setSupportProgressBarIndeterminateVisibility(true);
                 item.setVisible(false);
                 mManualRefresh = true;
+                processor.getResource();
                 return true;
             case R.id.action_prefs:
-                i = new Intent(MessagesActivity.this, PreferencesActivity.class);
+                i = new Intent(MessagesActivity.this, SettingsActivity.class);
                 startActivity(i);
                 break;
             case R.id.action_clearmessages:
@@ -230,17 +258,50 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-
+        CharSequence message;
         switch (item.getItemId()) {
             case id.menu_copytext:
-                CharSequence message = ((TextView) info.targetView.findViewById(id.message)).getText();
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                // TODO API 9 compatibility
-                ClipData data = ClipData.newPlainText("message", message);
-                clipboard.setPrimaryClip(data);
+                message = ((TextView) info.targetView.findViewById(id.message)).getText();
+                copyToClipboard(message);
                 return true;
+            case id.menu_reply:
+                CharSequence username = ((TextView) info.targetView.findViewById(id.username)).getText();
+                makeReply(username, mAdapter.getItemViewType(info.position));
             default:
                 return false;
+        }
+    }
+
+    private void makeReply(CharSequence username, int itemType) {
+        switch (itemType) {
+            case Message.NORMAL_TYPE:
+                mEditText.append("@" + username + " ");
+                mEditText.setSelection(mEditText.getText().length());
+                break;
+            case Message.ACTION_TYPE:
+                // TODO detect action type
+                mEditText.setText("!!" + username + " ");
+                mEditText.setSelection(mEditText.getText().length());
+                break;
+            default:
+                break;
+        }
+    }
+
+    @SuppressLint("NewApi")
+    private void copyToClipboard(CharSequence message) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+            @SuppressWarnings("deprecation")
+            android.text.ClipboardManager clipboardManager = (android.text.ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+            if (clipboardManager != null) {
+                clipboardManager.setText(message);
+            }
+        } else {
+            android.content.ClipboardManager clipboardManager = (android.content.ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+            if (clipboardManager != null) {
+                android.content.ClipData data = android.content.ClipData.newPlainText("message", message);
+                clipboardManager.setPrimaryClip(data);
+            }
         }
     }
 
@@ -259,15 +320,16 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        boolean isListAtEnd = mListView.getLastVisiblePosition() == (mAdapter.getCount() - 1);
+        int prevCount = mAdapter.getCount();
+        boolean isListAtEnd = mListView.getLastVisiblePosition() == (prevCount - 1);
         mAdapter.changeCursor(cursor);
         showRefreshProgressBar(false);
-
-        // if refresh was manual or if list was scrolled to the
-        // bottom and the content new content is more than
-        // 10 rows below, jump to it, otherwise smooth scroll
         int newCount = mAdapter.getCount();
-        if (mManualRefresh || isListAtEnd) {
+        boolean newMessagesExist = newCount - prevCount > 0;
+
+        // Smooth scroll if the refresh was manual
+        // or the user is within 10 rows of the new content
+        if (newMessagesExist && (mManualRefresh || isListAtEnd)) {
             if (newCount - mListView.getLastVisiblePosition() > 10) {
                 mListView.setSelection(newCount - 1);
             } else {
@@ -275,20 +337,9 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
             }
         }
 
-        // Refresh backoff code
         if (newCount > 0) {
-            long latestItem = mAdapter.getItemDateTime(newCount - 1);
-            if (Calendar.getInstance().getTimeInMillis() - latestItem > 60000) {
-                mRefreshInterval = 5000;
-            } else if (Calendar.getInstance().getTimeInMillis() - latestItem > 120000) {
-                mRefreshInterval = 10000;
-            } else if (Calendar.getInstance().getTimeInMillis() - latestItem > 150000) {
-                mRefreshInterval = 20000;
-            } else if (Calendar.getInstance().getTimeInMillis() - latestItem > 180000) {
-                mRefreshInterval = 40000;
-            } else {
-                mRefreshInterval = DEFAULT_REFRESH_INTERVAL;
-            }
+            long latestTimestamp = mAdapter.getItemDateTime(newCount - 1);
+            mRefreshInterval = BackoffUtils.getRefreshInterval(newMessagesExist, latestTimestamp);
         }
 
         mManualRefresh = false;
@@ -313,6 +364,6 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         if (mMenu != null) {
             mMenu.findItem(id.action_refresh).setVisible(!value);
         }
-        setProgressBarIndeterminateVisibility(value);
+        setSupportProgressBarIndeterminateVisibility(value);
     }
 }

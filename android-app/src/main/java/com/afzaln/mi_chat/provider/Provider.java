@@ -1,7 +1,5 @@
 package com.afzaln.mi_chat.provider;
 
-import java.util.HashMap;
-
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -15,6 +13,8 @@ import android.net.Uri;
 import com.afzaln.mi_chat.provider.ProviderContract.InfoTable;
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
 import com.afzaln.mi_chat.provider.ProviderContract.UsersTable;
+
+import java.util.HashMap;
 
 public class Provider extends ContentProvider {
 
@@ -298,7 +298,7 @@ public class Provider extends ContentProvider {
             db.setTransactionSuccessful();
             // Build a new Node URI appended with the row ID of the last node to
             // get inserted in the batch
-            Uri nodeUri = null;
+            Uri nodeUri;
 
             switch (uriMatcher.match(uri)) {
                 case MATCHER_USER:

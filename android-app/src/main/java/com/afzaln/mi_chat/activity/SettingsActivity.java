@@ -1,5 +1,6 @@
 package com.afzaln.mi_chat.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
@@ -7,7 +8,8 @@ import android.view.MenuItem;
 
 import com.afzaln.mi_chat.R;
 
-public class PreferencesActivity extends PreferenceActivity {
+@SuppressLint("NewApi")
+public class SettingsActivity extends PreferenceActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

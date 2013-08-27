@@ -26,7 +26,8 @@
             android:id="@+id/loginflipper"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/miLogo">
+            android:layout_below="@id/miLogo"
+            android:layout_marginTop="56dp" >
 
             <RelativeLayout
                 android:id="@+id/loginform"
@@ -39,10 +40,10 @@
                     android:layout_width="260dp"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="56dp"
-                    android:background="@android:color/white"
+                    android:background="@drawable/card_white"
                     android:ems="10"
                     android:hint="@string/login_username_hint"
+                    android:singleLine="true"
                     android:paddingBottom="12dp"
                     android:paddingLeft="12dp"
                     android:paddingTop="12dp">
@@ -57,9 +58,10 @@
                     android:layout_alignLeft="@+id/username"
                     android:layout_below="@+id/username"
                     android:layout_marginTop="24dp"
-                    android:background="@android:color/white"
+                    android:background="@drawable/card_white"
                     android:ems="10"
                     android:hint="@string/login_password_hint"
+                    android:singleLine="true"
                     android:inputType="textPassword"
                     android:paddingBottom="12dp"
                     android:paddingLeft="12dp"
@@ -80,15 +82,15 @@
                 android:id="@+id/progress"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="96dp"
                 android:orientation="vertical"
+                android:layout_marginTop="40dp"
                 android:visibility="gone">
 
                 <ProgressBar
                     android:id="@+id/progressbar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true" />
+                    android:layout_centerHorizontal="true"/>
 
                 <TextView
                     android:layout_width="wrap_content"

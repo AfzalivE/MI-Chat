@@ -31,7 +31,7 @@ Dependencies (from Maven)
 - [Ion](https://github.com/koush/ion) by Koush
 - [Crouton](https://github.com/keyboardsurfer/Crouton) by keyboardsurfer
 - [SlidingMenu](https://github.com/jfeinstein10/SlidingMenu) by Jeremy Feinstein (Modified to use ABS)
-- [ActionBarSherlock](https://github.com/JakeWharton/ActionBarSherlock) by Jake Wharton
+- Support v4 and AppCompatLib
 
 #### Included as jars
 

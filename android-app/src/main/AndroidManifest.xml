@@ -2,12 +2,12 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.afzaln.mi_chat"
-    android:versionCode="5"
+    android:versionCode="6"
     android:versionName="See version.properties">
 
     <uses-sdk
-        android:minSdkVersion="11"
-        android:targetSdkVersion="17" />
+        android:minSdkVersion="9"
+        android:targetSdkVersion="18" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -36,9 +36,18 @@
             android:name=".activity.MessagesActivity"
             android:windowSoftInputMode="stateHidden|adjustResize"
             android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
-            android:name=".activity.PreferencesActivity"
+            android:name=".activity.ImageActivity"
+            android:theme="@style/TransparentTheme">
+        </activity>
+        <activity
+            android:name=".activity.SettingsActivity"
             android:theme="@style/PrefTheme">
         </activity>
 

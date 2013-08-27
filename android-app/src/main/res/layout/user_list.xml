@@ -4,27 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="16dp"
     android:paddingLeft="16dp"
-    android:paddingRight="16dp"
     android:background="#EFEFEF">
 
     <TextView
-        android:id="@+id/userlabel"
+        android:id="@+id/users_online"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/user_list"
         android:textColor="@color/mi_maroon_darker"
         android:paddingBottom="8dp"
-        android:paddingLeft="4dp" />
+        android:paddingLeft="4dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp" />
 
     <View
         android:id="@+id/separator"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_below="@id/userlabel"
+        android:layout_below="@id/users_online"
         android:layout_centerVertical="true"
-        android:background="@color/mi_maroon_darkest" />
+        android:background="@color/mi_maroon_darkest"
+        android:layout_marginRight="16dp" />
 
     <ListView
         android:id="@+id/userlist"
@@ -33,6 +34,9 @@
         android:layout_below="@id/separator"
         android:paddingLeft="@dimen/userlist_padding"
         android:paddingRight="@dimen/userlist_padding"
-        tools:listitem="@layout/user_list_item" />
+        tools:listitem="@layout/user_list_item"
+        android:layout_marginRight="16dp" />
+
+    <include layout="@layout/user_list_shadow" />
 
 </RelativeLayout>

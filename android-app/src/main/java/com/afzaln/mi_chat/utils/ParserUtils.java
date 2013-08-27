@@ -18,7 +18,7 @@ import java.util.Arrays;
 /**
  * Created by afzaln on 2013-05-26.
  */
-public class BbToHtml {
+public class ParserUtils {
 
     private static TextProcessor mProcessor;
 
@@ -134,6 +134,14 @@ public class BbToHtml {
 
         if (message.startsWith("/queryClose")) {
             return message.replace("/queryClose", "Private channel to ").concat(" closed");
+        }
+
+        if (message.startsWith("/channelLeave")) {
+            return message.replace("/channelLeave", "").concat(" has left the channel");
+        }
+
+        if (message.startsWith("/channelEnter")) {
+            return message.replace("/channelEnter", "").concat(" has entered the channel");
         }
 
         return message;

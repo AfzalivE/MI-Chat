@@ -2,6 +2,21 @@
 
 <!-- Generated with http://android-holo-colors.com -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- API 11 theme customizations can go here. -->
+    <style name="NoActionBarTheme" parent="android:Theme.Holo.Light.NoActionBar">
+        <item name="android:windowBackground">@null</item>
+        <item name="android:buttonStyle">@style/ButtonAppTheme</item>
+        <item name="android:windowActionBar">false</item>
+    </style>
+
+    <style name="TransparentTheme" parent="android:Theme.Holo.Dialog.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowBackground">@color/bg</item>
@@ -11,6 +26,7 @@
         <item name="android:fastScrollThumbDrawable">@drawable/fastscroll_thumb_holo</item>
         <item name="android:actionBarStyle">@style/ActionBarAppTheme</item>
         <item name="android:homeAsUpIndicator">@drawable/drawer</item>
+        <item name="android:actionDropDownStyle">@style/ActionBarDropDown</item>
     </style>
 
     <style name="PrefTheme" parent="AppTheme">

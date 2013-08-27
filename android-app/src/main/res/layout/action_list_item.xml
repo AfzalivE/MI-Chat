@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="@dimen/listPreferredItemHeightSmall"
-    android:paddingRight="18dp"
-    android:paddingLeft="18dp"
+    android:paddingRight="8dp"
+    android:paddingLeft="8dp"
     android:paddingTop="6dp"
     android:paddingBottom="6dp"
     android:gravity="center_vertical">
@@ -21,8 +21,7 @@
         android:textStyle="bold"
         android:fontFamily="sans-serif-light"
         android:text="username"
-        android:visibility="invisible"
-        />
+        android:visibility="invisible" />
 
     <TextView
         android:id="@+id/message"
@@ -46,6 +45,7 @@
         android:fontFamily="sans-serif-light"
         android:textStyle="italic"
         android:textSize="10sp"
-        android:text="2 min ago" />
+        android:text="2 min ago"
+        android:paddingTop="2dp" />
 
 </RelativeLayout>

@@ -34,7 +34,7 @@ import com.afzaln.mi_chat.R;
  * </pre>
  */
 public class ClearableEditText extends EditText {
-
+    // TODO replace mBtnClear Drawable with a Button
     private Drawable mBtnClear;
 
     public ClearableEditText(Context context, AttributeSet attrs, int defStyle) {
@@ -55,7 +55,7 @@ public class ClearableEditText extends EditText {
     private void init() {
         mBtnClear = getCompoundDrawables()[2];
         if (mBtnClear == null) {
-            mBtnClear = getResources().getDrawable(R.drawable.ic_menu_close_clear_cancel);
+            mBtnClear = getResources().getDrawable(R.drawable.cancel_button_selector);
         }
         mBtnClear.setBounds(0, 0, mBtnClear.getIntrinsicWidth(), mBtnClear.getIntrinsicHeight());
         setClearIconVisible(false);
