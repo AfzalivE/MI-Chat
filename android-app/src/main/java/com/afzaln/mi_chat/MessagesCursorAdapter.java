@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.widget.CursorAdapter;
 import android.text.Html;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -123,7 +122,6 @@ public class MessagesCursorAdapter extends CursorAdapter {
                     @Override
                     public void onClick(View v) {
                         if (holder.imageContainer.getVisibility() == View.VISIBLE) {
-                            Log.d(TAG, "now hiding imagesScrollView");
                             holder.imageContainer.setVisibility(View.GONE);
                         } else {
                             showImages(holder, imgLinksList, context);
@@ -160,13 +158,11 @@ public class MessagesCursorAdapter extends CursorAdapter {
     }
 
     private void showImages(ViewHolder holder, final ArrayList<String> imgLinksList, Context context) {
-        Log.d(TAG, "now showing imagesScrollView");
         holder.imageContainer.setVisibility(View.VISIBLE);
         holder.imageContainer.removeAllViews();
 
         // Trigger the download of the URL asynchronously into the image view.
         for (String imgLink : imgLinksList) {
-            Log.d(TAG, "Loading:" + imgLink);
             ImageView image = new ImageView(context);
             image.setLayoutParams(new ViewGroup.LayoutParams(200, 200));
             holder.imageContainer.addView(image);
@@ -180,7 +176,6 @@ public class MessagesCursorAdapter extends CursorAdapter {
             image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d(TAG, "image clicked");
                     Intent i = new Intent(mContext, ImageActivity.class);
                     Bundle extras = new Bundle();
                     extras.putStringArrayList("imgLinksList", imgLinksList);

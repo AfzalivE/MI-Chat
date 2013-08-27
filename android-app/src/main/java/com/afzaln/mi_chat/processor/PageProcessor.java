@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.afzaln.mi_chat.handler.AutoLoginResponseHandler;
 import com.afzaln.mi_chat.provider.ProviderContract.InfoTable;
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
 import com.afzaln.mi_chat.provider.ProviderContract.UsersTable;
@@ -25,6 +26,9 @@ public class PageProcessor implements ResourceProcessor {
 
     protected static final String TAG = PageProcessor.class.getSimpleName();
     private Context mContext;
+
+    private AutoLoginResponseHandler mLoginResponseHandler;
+
 
     private XmlHttpResponseHandler myResponseHandler = new XmlHttpResponseHandler() {
         @Override
@@ -96,9 +100,12 @@ public class PageProcessor implements ResourceProcessor {
                 cr.insert(InfoTable.CONTENT_URI, info.toContentValues());
             } else if (!info.isUserLoggedIn()) {
                 Log.e(TAG, "user not logged in");
+                mLoginResponseHandler = new AutoLoginResponseHandler(PageProcessor.this);
+                NetUtils.postLogin(mLoginResponseHandler, mContext, null, null);
             }
         } catch (NullPointerException e) {
-            Log.d(TAG, "couldn't get user info");
+            // Don't do anything if user info not found
+            // Log.d(TAG, "couldn't get user info");
         }
 
         try {
@@ -110,6 +117,7 @@ public class PageProcessor implements ResourceProcessor {
             }
             cr.bulkInsert(UsersTable.CONTENT_URI, crValues);
         } catch (NullPointerException e) {
+            // TODO show a warning if couldn't get user list
             Log.d(TAG, "couldn't get user list");
         }
 
@@ -121,6 +129,7 @@ public class PageProcessor implements ResourceProcessor {
             }
             cr.bulkInsert(MessagesTable.CONTENT_URI, crValues);
         } catch (NullPointerException e) {
+            // TODO show a warning if couldn't get message list
             Log.d(TAG, "couldn't get message list");
         }
 
@@ -143,4 +152,7 @@ public class PageProcessor implements ResourceProcessor {
         cr.delete(InfoTable.CONTENT_URI, null, null);
     }
 
+    public Context getContext() {
+        return mContext;
+    }
 }
