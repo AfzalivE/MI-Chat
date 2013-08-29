@@ -94,7 +94,6 @@ public class MessagesCursorAdapter extends CursorAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // TODO API 9 compatibility
-        ((MessageListView) parent).setItemChecked(position, true);
         View view = super.getView(position, convertView, parent);
 
         return view;

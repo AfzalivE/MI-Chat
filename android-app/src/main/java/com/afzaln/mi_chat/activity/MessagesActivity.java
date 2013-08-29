@@ -116,11 +116,6 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         mAdapter = new MessagesCursorAdapter(this, null, 0);
         mListView.setAdapter(mAdapter);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            mListView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
-        }
-        registerForContextMenu(mListView);
-
         mListView.setOnSizeChangedListener(new OnSizeChangedListener() {
             public void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
                 mListView.setSelection(mAdapter.getCount() - 1);
@@ -234,28 +229,28 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, view, menuInfo);
-        getMenuInflater().inflate(R.menu.context_menu, menu);
-    }
-
-    @Override
-    public boolean onContextItemSelected(android.view.MenuItem item) {
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-        CharSequence message;
-        switch (item.getItemId()) {
-            case id.menu_copytext:
-                message = ((TextView) info.targetView.findViewById(id.message)).getText();
-                copyToClipboard(message);
-                return true;
-            case id.menu_reply:
-                CharSequence username = ((TextView) info.targetView.findViewById(id.username)).getText();
-                makeReply(username, mAdapter.getItemViewType(info.position));
-            default:
-                return false;
-        }
-    }
+//    @Override
+//    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenuInfo menuInfo) {
+//        super.onCreateContextMenu(menu, view, menuInfo);
+//        getMenuInflater().inflate(R.menu.context_menu, menu);
+//    }
+//
+//    @Override
+//    public boolean onContextItemSelected(android.view.MenuItem item) {
+//        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+//        CharSequence message;
+//        switch (item.getItemId()) {
+//            case id.menu_copytext:
+//                message = ((TextView) info.targetView.findViewById(id.message)).getText();
+//                copyToClipboard(message);
+//                return true;
+//            case id.menu_reply:
+//                CharSequence username = ((TextView) info.targetView.findViewById(id.username)).getText();
+//                makeReply(username, mAdapter.getItemViewType(info.position));
+//            default:
+//                return false;
+//        }
+//    }
 
     private void makeReply(CharSequence username, int itemType) {
         switch (itemType) {
