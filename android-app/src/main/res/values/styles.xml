@@ -3,34 +3,40 @@
 <!-- Generated with http://android-holo-colors.com -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="EditTextAppTheme" parent="android:Widget.EditText">
+    <style name="EditTextStyle" parent="android:Widget.EditText">
         <item name="android:background">@drawable/edit_text_holo_light</item>
         <item name="android:textColor">#000000</item>
     </style>
 
-    <style name="ButtonAppTheme" parent="android:Widget.Button">
+    <style name="ButtonStyle" parent="android:Widget.Button">
         <item name="android:background">@drawable/btn_default_holo_light</item>
         <item name="android:minHeight">48dip</item>
         <item name="android:minWidth">64dip</item>
         <item name="android:textColor">#000000</item>
     </style>
 
-    <style name="ImageButtonAppTheme" parent="android:Widget.ImageButton">
+    <style name="ImageButtonStyle" parent="android:Widget.ImageButton">
         <item name="android:background">@drawable/btn_default_holo_light</item>
     </style>
 
-    <style name="ActionBarAppTheme" parent="Widget.AppCompat.ActionBar">
+    <style name="ActionBarStyle" parent="Widget.AppCompat.ActionBar">
         <item name="background">@color/mi_maroon_darkest</item>
-        <item name="titleTextStyle">@style/ActionBarTextAppTheme</item>
+        <item name="titleTextStyle">@style/ActionBarTextStyle</item>
     </style>
 
-    <style name="ActionBarTextAppTheme" parent="android:TextAppearance">
+    <style name="ActionBarTextStyle" parent="android:TextAppearance">
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-    <style name="SpinnerAppTheme" parent="android:Widget.Holo.Light.ImageButton">
+    <style name="SpinnerStyle" parent="android:Widget.Holo.Light.ImageButton">
         <item name="android:background">@drawable/spinner_background_holo_light</item>
         <item name="android:dropDownSelector">@drawable/list_selector_holo_light</item>
+    </style>
+
+    <style name="ProgressBarStyle" parent="android:Widget.Holo.ProgressBar">
+        <item name="android:indeterminateDrawable">@drawable/progress_indeterminate_horizontal_holo_light</item>
+        <item name="android:minHeight">16dip</item>
+        <item name="android:maxHeight">16dip</item>
     </style>
 
 </resources>

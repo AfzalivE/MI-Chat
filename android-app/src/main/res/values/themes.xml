@@ -3,21 +3,22 @@
 <!-- Generated with http://android-holo-colors.com -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="NoActionBarTheme" parent="Theme.AppCompat.Light">
+    <style name="Theme.NoActionBarTheme" parent="Theme.AppCompat.Light">
         <item name="android:windowBackground">@null</item>
-        <item name="android:buttonStyle">@style/ButtonAppTheme</item>
+        <item name="android:buttonStyle">@style/ButtonStyle</item>
     </style>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowBackground">@color/bg</item>
-        <item name="android:editTextStyle">@style/EditTextAppTheme</item>
-        <item name="android:buttonStyle">@style/ButtonAppTheme</item>
-        <item name="android:imageButtonStyle">@style/ImageButtonAppTheme</item>
-        <item name="actionBarStyle">@style/ActionBarAppTheme</item>
+        <item name="android:editTextStyle">@style/EditTextStyle</item>
+        <item name="android:buttonStyle">@style/ButtonStyle</item>
+        <item name="android:imageButtonStyle">@style/ImageButtonStyle</item>
+        <item name="actionBarStyle">@style/ActionBarStyle</item>
         <item name="homeAsUpIndicator">@drawable/drawer</item>
+        <item name="android:progressBarStyle">@style/ProgressBarStyle</item>
     </style>
 
-    <style name="PrefTheme" parent="AppTheme">
+    <style name="Theme.PrefTheme" parent="Theme.AppTheme">
         <item name="homeAsUpIndicator">@drawable/ic_ab_up</item>
     </style>
 
