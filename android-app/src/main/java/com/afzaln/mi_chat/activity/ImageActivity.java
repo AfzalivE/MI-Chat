@@ -7,8 +7,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.animation.DecelerateInterpolator;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 
 import com.afzaln.mi_chat.R;
@@ -26,6 +25,7 @@ import static android.view.ViewGroup.LayoutParams;
 public class ImageActivity extends FragmentActivity {
 
     private ViewPager mViewPager;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,12 +36,8 @@ public class ImageActivity extends FragmentActivity {
         Bundle extras = getIntent().getExtras();
         String[] imgLinksList = extras.getStringArray("imgLinksList");
         int imgIndex = extras.getInt("imgIndex");
-        int thumbnailTop = extras.getInt("top");
-        int thumbnailLeft = extras.getInt("left");
-        int thumbnailWidth = extras.getInt("width");
-        int thumbnailHeight = extras.getInt("height");
 
-        mViewPager.setAdapter(new ImagesPagerAdapter(imgLinksList, thumbnailTop, thumbnailLeft, thumbnailWidth, thumbnailHeight));
+        mViewPager.setAdapter(new ImagesPagerAdapter(imgLinksList));
         mViewPager.setCurrentItem(imgIndex);
 
     }
@@ -49,23 +45,9 @@ public class ImageActivity extends FragmentActivity {
     static class ImagesPagerAdapter extends PagerAdapter {
 
         private String[] mImgLinksList;
-        private int mThumbnailTop;
-        private int mThumbnailLeft;
-        private int mThumbnailWidth;
-        private int mThumbnailHeight;
-        private int mLeftDelta;
-        private int mTopDelta;
-        private float mWidthScale;
-        private float mHeightScale;
 
-
-        public ImagesPagerAdapter(String[] imgLinksList, int thumbnailTop, int thumbnailLeft, int thumbnailWidth, int thumbnailHeight) {
+        public ImagesPagerAdapter(String[] imgLinksList) {
             mImgLinksList = imgLinksList;
-            mThumbnailTop = thumbnailTop;
-            mThumbnailLeft = thumbnailLeft;
-            mThumbnailWidth = thumbnailWidth;
-            mThumbnailHeight = thumbnailHeight;
-
         }
 
         @Override
@@ -81,51 +63,14 @@ public class ImageActivity extends FragmentActivity {
 
             UrlImageViewHelper.setUrlDrawable(photoView, mImgLinksList[position], R.drawable.placeholder, new UrlImageViewCallback() {
                 @Override
-                public void onLoaded(final ImageView imageView, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
-                    ViewTreeObserver observer = imageView.getViewTreeObserver();
-                    if (observer != null) {
-                        observer.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-                            @Override
-                            public boolean onPreDraw() {
-                                imageView.getViewTreeObserver().removeOnPreDrawListener(this);
-                                int[] screenLocation = new int[2];
-                                imageView.getLocationOnScreen(screenLocation);
-                                mLeftDelta = mThumbnailLeft - screenLocation[0];
-                                mTopDelta = mThumbnailTop - screenLocation[1];
-
-                                mWidthScale = (float) mThumbnailWidth / imageView.getWidth();
-                                mHeightScale = (float) mThumbnailHeight / imageView.getHeight();
-
-                                runEnterAnimation(imageView);
-
-                                return true;
-                            }
-                        });
-                    }
-//                    ScaleAnimation scale = new ScaleAnimation(0, 1, 0, 1, ScaleAnimation.RELATIVE_TO_SELF, .5f, ScaleAnimation.RELATIVE_TO_SELF, .5f);
-//                    scale.setDuration(300);
-//                    imageView.startAnimation(scale);
+                public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
+                    ScaleAnimation scale = new ScaleAnimation(0, 1, 0, 1, ScaleAnimation.RELATIVE_TO_SELF, .5f, ScaleAnimation.RELATIVE_TO_SELF, .5f);
+                    scale.setDuration(300);
+                    imageView.startAnimation(scale);
                 }
             });
 
             return photoView;
-        }
-
-        private void runEnterAnimation(ImageView imageView) {
-            final long duration = 500;
-
-            imageView.setPivotX(0);
-            imageView.setPivotY(0);
-            imageView.setScaleX(mWidthScale);
-            imageView.setScaleY(mHeightScale);
-            imageView.setTranslationX(mLeftDelta);
-            imageView.setTranslationY(mTopDelta);
-
-            imageView.animate().setDuration(duration).
-                    scaleX(1).scaleY(1).
-                    translationX(0).translationY(0).
-                    setInterpolator(new DecelerateInterpolator());
-
         }
 
         @Override
