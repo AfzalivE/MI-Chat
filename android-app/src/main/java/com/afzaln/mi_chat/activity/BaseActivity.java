@@ -28,8 +28,11 @@ public class BaseActivity extends SlidingFragmentActivity {
             setBehindContentView(R.layout.menu_frame);
             sm.setSlidingEnabled(true);
             sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_CUSTOM);
+            getSupportActionBar().setDisplayOptions(
+                    ActionBar.DISPLAY_SHOW_HOME |
+                    ActionBar.DISPLAY_SHOW_TITLE |
+                    ActionBar.DISPLAY_SHOW_CUSTOM |
+                    ActionBar.DISPLAY_HOME_AS_UP);
             sm.setOnOpenedListener(onOpenedListener);
 
             // customize the SlidingMenu
