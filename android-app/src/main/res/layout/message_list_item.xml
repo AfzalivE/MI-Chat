@@ -9,8 +9,7 @@
     android:paddingTop="6dp"
     android:paddingBottom="6dp"
     android:gravity="center_vertical"
-    android:background="@drawable/message_item_background"
-    android:longClickable="true">
+    android:background="@drawable/message_item_background">
 
     <TextView
         android:id="@+id/username"
