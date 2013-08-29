@@ -67,7 +67,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dip"
             android:contentDescription="@string/send_message"
-            android:nextFocusLeft="@id/text_editor" />
+            android:nextFocusLeft="@id/text_editor"
+            android:visibility="gone" />
 
         <ImageButton
             android:id="@+id/submit_msg"
