@@ -2,6 +2,7 @@ package com.afzaln.mi_chat.activity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -28,6 +29,7 @@ public class BaseActivity extends SlidingFragmentActivity {
             sm.setSlidingEnabled(true);
             sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_CUSTOM);
             sm.setOnOpenedListener(onOpenedListener);
 
             // customize the SlidingMenu

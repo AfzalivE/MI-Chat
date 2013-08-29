@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.view.MenuItemCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -52,30 +53,17 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     private static final int MESSAGE_LOADER = 0;
     private static final String TAG = MessagesActivity.class.getSimpleName();
 
+    private boolean mManualRefresh = false;
     private MessagesCursorAdapter mAdapter;
     private MessageListView mListView;
     private EditText mEditText;
     private ImageButton mSubmitButton;
     private ImageButton mSubmitImgButton;
-    private Menu mMenu;
 
+    private Menu mMenu;
     private AlarmManager mAlarmManager;
     private PendingIntent mPendingIntent;
-    private boolean mManualRefresh = false;
     private LogoutResponseHandler mLogoutResponseHandler = new LogoutResponseHandler(MessagesActivity.this);
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        EasyTracker.getInstance().activityStart(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EasyTracker.getInstance().activityStop(this);
-    }
-
     private TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -97,7 +85,6 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         super.onCreate(savedInstanceState);
         getWindow().setBackgroundDrawable(null);
@@ -122,6 +109,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
 
 //        ViewServer.get(this).addWindow(this);
     }
+
 
     private void initListView() {
         mListView = (MessageListView) findViewById(id.messagelist);
@@ -154,7 +142,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
                 ResourceProcessor processor = ProcessorFactory.getInstance(MessagesActivity.this).getProcessor(ServiceContract.RESOURCE_TYPE_MESSAGE);
                 processor.postResource(bundle);
 
-                showRefreshProgressBar(true);
+                toggleProgressBar(true);
 
                 mEditText.setText("");
                 mSubmitButton.setEnabled(false);
@@ -173,16 +161,21 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
                 ResourceProcessor processor = ProcessorFactory.getInstance(MessagesActivity.this).getProcessor(ServiceContract.RESOURCE_TYPE_MESSAGE);
                 processor.postResource(bundle);
 
-                showRefreshProgressBar(true);
+                toggleProgressBar(true);
             }
         });
 
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        EasyTracker.getInstance().activityStart(this);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        showRefreshProgressBar(true);
 
         // TODO use the Service for this
         // IntentService doesn't work with async-http client because you can't run AsyncTask from it
@@ -199,12 +192,20 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        EasyTracker.getInstance().activityStop(this);
+    }
+
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             menu.findItem(id.action_prefs).setVisible(true);
         }
         mMenu = menu;
+        toggleProgressBar(true);
         return true;
     }
 
@@ -214,8 +215,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         Intent i;
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                setSupportProgressBarIndeterminateVisibility(true);
-                item.setVisible(false);
+                toggleProgressBar(true);
                 mManualRefresh = true;
                 processor.getResource();
                 return true;
@@ -225,7 +225,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
                 break;
             case R.id.action_clearmessages:
                 processor.deleteResource();
-                showRefreshProgressBar(true);
+                toggleProgressBar(true);
                 break;
             case R.id.action_logout:
                 NetUtils.postLogout(mLogoutResponseHandler);
@@ -309,7 +309,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         int prevCount = mAdapter.getCount();
         boolean isListAtEnd = mListView.getLastVisiblePosition() == (prevCount - 1);
         mAdapter.changeCursor(cursor);
-        showRefreshProgressBar(false);
+        toggleProgressBar(false);
         int newCount = mAdapter.getCount();
         boolean newMessagesExist = newCount - prevCount > 0;
 
@@ -342,14 +342,20 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
      */
     @Override
     public void onLoaderReset(Loader<Cursor> cusror) {
-        showRefreshProgressBar(false);
+        toggleProgressBar(false);
         mAdapter.changeCursor(null);
     }
 
-    private void showRefreshProgressBar(boolean value) {
+    private void toggleProgressBar(boolean show) {
         if (mMenu != null) {
-            mMenu.findItem(id.action_refresh).setVisible(!value);
+            MenuItem menuItem = mMenu.findItem(id.action_refresh);
+            if (show) {
+                MenuItemCompat.setActionView(menuItem, R.layout.progress);
+                MenuItemCompat.expandActionView(menuItem);
+            } else {
+                MenuItemCompat.collapseActionView(menuItem);
+                MenuItemCompat.setActionView(menuItem, null);
+            }
         }
-        setSupportProgressBarIndeterminateVisibility(value);
     }
 }
