@@ -11,6 +11,7 @@ import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -27,9 +28,6 @@ import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import org.apache.commons.lang3.StringUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MessagesCursorAdapter extends CursorAdapter {
 
@@ -201,15 +199,21 @@ public class MessagesCursorAdapter extends CursorAdapter {
                 // Trigger the download of the URL asynchronously into the image view.
                 UrlImageViewHelper.setUrlDrawable(imageView, mImgLinksList[i], R.drawable.placeholder, new UrlImageViewCallback() {
                     @Override
-                    public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
+                    public void onLoaded(final ImageView imageView, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
                         viewAnim.setDisplayedChild(1);
-                        if (loadedBitmap.getHeight() > imageView.getMaxHeight()) {
 
+                        int height = imageView.getMaxHeight();
+                        int width = imageView.getMaxWidth();
+                        if (loadedBitmap.getHeight() < imageView.getMaxHeight()) {
+                            height = loadedBitmap.getHeight();
                         }
-                        imageView.setLayoutParams(new FrameLayout.LayoutParams(loadedBitmap.getWidth(), loadedBitmap.getHeight()));
-//                        AlphaAnimation alpha = new AlphaAnimation(0.0f, 1.0f);
-//                        alpha.setDuration(300);
-//                        imageView.startAnimation(alpha);
+
+//                        width = width * height / loadedBitmap.getHeight();
+                        imageView.setLayoutParams(new FrameLayout.LayoutParams(width, height));
+
+                        AlphaAnimation alpha = new AlphaAnimation(0.0f, 1.0f);
+                        alpha.setDuration(300);
+                        imageView.startAnimation(alpha);
                         imageView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
