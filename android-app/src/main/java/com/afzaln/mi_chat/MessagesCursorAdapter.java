@@ -11,12 +11,12 @@ import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.OvershootInterpolator;
-import android.view.animation.ScaleAnimation;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.ViewAnimator;
 
 import com.afzaln.mi_chat.R.color;
 import com.afzaln.mi_chat.activity.ImageActivity;
@@ -29,7 +29,7 @@ import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
 
 public class MessagesCursorAdapter extends CursorAdapter {
 
@@ -114,24 +114,14 @@ public class MessagesCursorAdapter extends CursorAdapter {
         final ViewHolder holder = (ViewHolder) view.getTag();
         setTextViews(holder, userName, userRole, message, timestamp);
 
-        final ArrayList<String> imgLinksList = new ArrayList<String>();
         // TODO adjust action_list_item layout to accomodate images nicely
         if (getItemViewType(cursor) == Message.NORMAL_TYPE) {
             if (imgLinks != null) {
-                Collections.addAll(imgLinksList, StringUtils.split(imgLinks, "|"));
+                final String[] imgLinksList = StringUtils.split(imgLinks, "|");
                 holder.imagesButton.setVisibility(View.VISIBLE);
-                holder.imagesButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (holder.imageContainer.getVisibility() == View.VISIBLE) {
-                            holder.imageContainer.setVisibility(View.GONE);
-                        } else {
-                            showImages(holder, imgLinksList, context);
-                        }
-                    }
-                });
+                holder.imagesButton.setOnClickListener(new ImagesButtonOnClickListener(holder.imageContainer, imgLinksList));
 
-                holder.imagesButton.setText(context.getResources().getQuantityString(R.plurals.numberOfImages, imgLinksList.size(), imgLinksList.size()));
+                holder.imagesButton.setText(context.getResources().getQuantityString(R.plurals.numberOfImages, imgLinksList.length, imgLinksList.length));
             } else {
                 holder.imagesButton.setVisibility(View.GONE);
                 holder.imageContainer.setVisibility(View.GONE);
@@ -148,41 +138,6 @@ public class MessagesCursorAdapter extends CursorAdapter {
         } else {
             holder.messageView.setVisibility(View.VISIBLE);
             holder.messageView.setText(Html.fromHtml(message));
-        }
-    }
-
-    private void showImages(final ViewHolder holder, final ArrayList<String> imgLinksList, Context context) {
-        holder.imageContainer.setVisibility(View.VISIBLE);
-        holder.imageContainer.removeAllViews();
-
-        // Trigger the download of the URL asynchronously into the image view.
-        for (int i = 0; i < imgLinksList.size(); i++) {
-            final int imgIndex = i;
-            ImageView image = new ImageView(context);
-            image.setLayoutParams(new ViewGroup.LayoutParams(200, 200));
-
-            holder.imageContainer.addView(image);
-
-            UrlImageViewHelper.setUrlDrawable(image, imgLinksList.get(i), R.drawable.placeholder, new UrlImageViewCallback() {
-                @Override
-                public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
-                    ScaleAnimation scale = new ScaleAnimation(0, 1, 0, 1, ScaleAnimation.RELATIVE_TO_SELF, .5f, ScaleAnimation.RELATIVE_TO_SELF, .5f);
-                    scale.setDuration(300);
-                    scale.setInterpolator(new OvershootInterpolator());
-                    imageView.startAnimation(scale);
-                    imageView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(mContext, ImageActivity.class);
-                            Bundle extras = new Bundle();
-                            extras.putStringArrayList("imgLinksList", imgLinksList);
-                            extras.putInt("imgIndex", imgIndex);
-                            intent.putExtras(extras);
-                            mContext.startActivity(intent);
-                        }
-                    });
-                }
-            });
         }
     }
 
@@ -212,4 +167,63 @@ public class MessagesCursorAdapter extends CursorAdapter {
         LinearLayout imageContainer;
     }
 
+    private class ImagesButtonOnClickListener implements View.OnClickListener {
+
+        private LinearLayout mContainer;
+        private String[] mImgLinksList;
+
+        private ImagesButtonOnClickListener(LinearLayout container, String[] imgLinksList) {
+            mContainer = container;
+            mImgLinksList = imgLinksList;
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (mContainer.getVisibility() == View.VISIBLE) {
+                mContainer.setVisibility(View.GONE);
+            } else {
+                mContainer.setVisibility(View.VISIBLE);
+                showImages();
+            }
+        }
+
+        private void showImages() {
+            mContainer.removeAllViews();
+
+            for (int i = 0; i < mImgLinksList.length; i++) {
+                final int imgIndex = i;
+
+                final ViewAnimator viewAnim = (ViewAnimator) LayoutInflater.from(mContainer.getContext()).inflate(R.layout.image_layout, mContainer, false);
+                ImageView imageView = (ImageView) viewAnim.findViewById(R.id.image);
+                mContainer.addView(viewAnim);
+                viewAnim.setDisplayedChild(0);
+
+                // Trigger the download of the URL asynchronously into the image view.
+                UrlImageViewHelper.setUrlDrawable(imageView, mImgLinksList[i], R.drawable.placeholder, new UrlImageViewCallback() {
+                    @Override
+                    public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
+                        viewAnim.setDisplayedChild(1);
+                        if (loadedBitmap.getHeight() > imageView.getMaxHeight()) {
+
+                        }
+                        imageView.setLayoutParams(new FrameLayout.LayoutParams(loadedBitmap.getWidth(), loadedBitmap.getHeight()));
+//                        AlphaAnimation alpha = new AlphaAnimation(0.0f, 1.0f);
+//                        alpha.setDuration(300);
+//                        imageView.startAnimation(alpha);
+                        imageView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(mContext, ImageActivity.class);
+                                Bundle extras = new Bundle();
+                                extras.putStringArray("imgLinksList", mImgLinksList);
+                                extras.putInt("imgIndex", imgIndex);
+                                intent.putExtras(extras);
+                                mContext.startActivity(intent);
+                            }
+                        });
+                    }
+                });
+            }
+        }
+    }
 }
