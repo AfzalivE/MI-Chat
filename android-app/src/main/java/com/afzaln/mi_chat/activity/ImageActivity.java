@@ -15,8 +15,6 @@ import com.afzaln.mi_chat.view.MyViewPager;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
-import java.util.ArrayList;
-
 import uk.co.senab.photoview.PhotoView;
 
 import static android.view.ViewGroup.LayoutParams;
@@ -36,7 +34,7 @@ public class ImageActivity extends FragmentActivity {
         mViewPager = (MyViewPager) findViewById(R.id.image_pager);
 
         Bundle extras = getIntent().getExtras();
-        ArrayList<String> imgLinksList = extras.getStringArrayList("imgLinksList");
+        String[] imgLinksList = extras.getStringArray("imgLinksList");
         int imgIndex = extras.getInt("imgIndex");
 
         mViewPager.setAdapter(new ImagesPagerAdapter(imgLinksList));
@@ -46,15 +44,15 @@ public class ImageActivity extends FragmentActivity {
 
     static class ImagesPagerAdapter extends PagerAdapter {
 
-        private ArrayList<String> mImgLinksList;
+        private String[] mImgLinksList;
 
-        public ImagesPagerAdapter(ArrayList<String> imgLinksList) {
+        public ImagesPagerAdapter(String[] imgLinksList) {
             mImgLinksList = imgLinksList;
         }
 
         @Override
         public int getCount() {
-            return mImgLinksList.size();
+            return mImgLinksList.length;
         }
 
         @Override
@@ -63,7 +61,7 @@ public class ImageActivity extends FragmentActivity {
             photoView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
             container.addView(photoView);
 
-            UrlImageViewHelper.setUrlDrawable(photoView, mImgLinksList.get(position), R.drawable.placeholder, new UrlImageViewCallback() {
+            UrlImageViewHelper.setUrlDrawable(photoView, mImgLinksList[position], R.drawable.placeholder, new UrlImageViewCallback() {
                 @Override
                 public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
                     ScaleAnimation scale = new ScaleAnimation(0, 1, 0, 1, ScaleAnimation.RELATIVE_TO_SELF, .5f, ScaleAnimation.RELATIVE_TO_SELF, .5f);
