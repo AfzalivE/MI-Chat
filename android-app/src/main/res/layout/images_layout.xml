@@ -16,7 +16,7 @@
         android:gravity="right"
         android:textStyle="italic"
         android:textColor="@color/light_text"
-        style="@style/SpinnerAppTheme"
+        style="@style/SpinnerStyle"
         android:text="0 images attached"
         android:visibility="gone" />
 
@@ -29,7 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:orientation="horizontal"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:layout_gravity="center_vertical" />
 
     </HorizontalScrollView>
 

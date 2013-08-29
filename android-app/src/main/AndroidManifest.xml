@@ -24,18 +24,13 @@
         <activity
             android:name=".activity.LoginActivity"
             android:label="@string/app_name"
-            android:theme="@style/NoActionBarTheme"
+            android:theme="@style/Theme.NoActionBarTheme"
             android:windowSoftInputMode="stateHidden">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activity.MessagesActivity"
             android:windowSoftInputMode="stateHidden|adjustResize"
-            android:theme="@style/AppTheme">
+            android:theme="@style/Theme.AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -44,11 +39,11 @@
         </activity>
         <activity
             android:name=".activity.ImageActivity"
-            android:theme="@style/TransparentTheme">
+            android:theme="@style/Theme.TransparentTheme">
         </activity>
         <activity
             android:name=".activity.SettingsActivity"
-            android:theme="@style/PrefTheme">
+            android:theme="@style/Theme.PrefTheme">
         </activity>
 
         <provider

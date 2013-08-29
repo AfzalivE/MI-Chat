@@ -38,6 +38,7 @@ import com.afzaln.mi_chat.resource.Message;
 import com.afzaln.mi_chat.service.ServiceContract;
 import com.afzaln.mi_chat.utils.BackoffUtils;
 import com.afzaln.mi_chat.utils.NetUtils;
+import com.afzaln.mi_chat.utils.PrefUtils;
 import com.afzaln.mi_chat.view.MessageListView;
 import com.afzaln.mi_chat.view.MessageListView.OnSizeChangedListener;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -100,6 +101,12 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         super.onCreate(savedInstanceState);
         getWindow().setBackgroundDrawable(null);
+
+        if (!PrefUtils.authCookieExists(this)) {
+            Intent i = new Intent(MessagesActivity.this, LoginActivity.class);
+            this.finish();
+            startActivity(i);
+        }
 
         getSupportLoaderManager().initLoader(MESSAGE_LOADER, null, this);
         initListView();
@@ -258,7 +265,8 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
                 break;
             case Message.ACTION_TYPE:
                 // TODO detect action type
-                mEditText.setText("!!" + username + " ");
+                // Do action specific things
+                mEditText.setText("@" + username + " ");
                 mEditText.setSelection(mEditText.getText().length());
                 break;
             default:

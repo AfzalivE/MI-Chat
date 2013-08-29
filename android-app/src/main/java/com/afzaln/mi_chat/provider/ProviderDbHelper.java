@@ -12,7 +12,7 @@ public class ProviderDbHelper extends SQLiteOpenHelper {
     public final String TAG = getClass().getSimpleName();
 
     private static final String DATABASE_NAME = "mi_chat.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
     public ProviderDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -55,7 +55,7 @@ public class ProviderDbHelper extends SQLiteOpenHelper {
 
         messagesTableBuilder = "CREATE TABLE " + MessagesTable.TABLE_NAME + " ( " +
                 MessagesTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                MessagesTable.MESSAGEID + " LONG, " +
+                MessagesTable.MESSAGEID + " LONG UNIQUE, " +
                 MessagesTable.TYPE + " INTEGER, " +
                 MessagesTable.DATETIME + " LONG, " +
                 MessagesTable.USERID + " LONG, " +
