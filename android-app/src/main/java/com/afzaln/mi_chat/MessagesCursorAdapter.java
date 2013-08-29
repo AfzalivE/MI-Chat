@@ -1,6 +1,5 @@
 package com.afzaln.mi_chat;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -12,7 +11,6 @@ import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -29,6 +27,9 @@ import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MessagesCursorAdapter extends CursorAdapter {
 
@@ -212,19 +213,12 @@ public class MessagesCursorAdapter extends CursorAdapter {
                         imageView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                int[] screenLocation = new int[2];
-                                v.getLocationOnScreen(screenLocation);
                                 Intent intent = new Intent(mContext, ImageActivity.class);
                                 Bundle extras = new Bundle();
                                 extras.putStringArray("imgLinksList", mImgLinksList);
                                 extras.putInt("imgIndex", imgIndex);
                                 intent.putExtras(extras);
-                                intent.putExtra("left", screenLocation[0]);
-                                intent.putExtra("top", screenLocation[1]);
-                                intent.putExtra("width", v.getWidth());
-                                intent.putExtra("height", v.getHeight());
                                 mContext.startActivity(intent);
-                                ((Activity) mContext).overridePendingTransition(0, 0);
                             }
                         });
                     }
