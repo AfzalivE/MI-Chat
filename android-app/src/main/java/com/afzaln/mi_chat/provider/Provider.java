@@ -333,10 +333,10 @@ public class Provider extends ContentProvider {
         long newRowId = -1;
         switch (uriMatcher.match(uri)) {
             case MATCHER_USER:
-                newRowId = writableDb.insertWithOnConflict(UsersTable.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+                newRowId = writableDb.insertWithOnConflict(UsersTable.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
                 break;
             case MATCHER_MESSAGE:
-                newRowId = writableDb.insertWithOnConflict(MessagesTable.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+                newRowId = writableDb.insertWithOnConflict(MessagesTable.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
                 break;
         }
 
