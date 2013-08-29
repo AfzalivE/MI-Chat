@@ -2,6 +2,7 @@ package com.afzaln.mi_chat.activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
@@ -17,6 +18,8 @@ import com.afzaln.mi_chat.handler.LoginResponseHandler;
 import com.afzaln.mi_chat.utils.NetUtils;
 import com.afzaln.mi_chat.utils.PrefUtils;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+
+import static com.afzaln.mi_chat.provider.ProviderContract.InfoTable;
 
 public class LoginActivity extends Activity {
 
@@ -45,6 +48,12 @@ public class LoginActivity extends Activity {
         mLoginFlipper.setOutAnimation(LoginActivity.this, android.R.anim.fade_out);
         mLoginFlipper.setInAnimation(LoginActivity.this, android.R.anim.fade_in);
 
+        Cursor cursor = getContentResolver().query(InfoTable.CONTENT_URI, new String[] {InfoTable.USERNAME}, null, null, InfoTable.USERNAME + " LIMIT 1");
+        if (cursor.moveToNext()) {
+            mUsernameField.setText(cursor.getString(cursor.getColumnIndex(InfoTable.USERNAME)));
+            mPasswordField.requestFocus();
+        }
+        cursor.close();
 
         Button login = (Button) findViewById(R.id.login);
 
