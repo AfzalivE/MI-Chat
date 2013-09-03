@@ -67,25 +67,8 @@
                     android:paddingLeft="12dp"
                     android:paddingTop="12dp" />
 
-                <Button
-                    android:id="@+id/login"
-                    android:layout_width="260dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/password"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="36dp"
-                    android:text="@string/login"
-                    android:textColor="@android:color/white" />
+                <include layout="@layout/login_buttons" />
 
-                <Button
-                    android:id="@+id/signup"
-                    android:layout_width="260dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/login"
-                    android:layout_marginTop="8dp"
-                    android:layout_centerHorizontal="true"
-                    android:text="@string/signup"
-                    android:textColor="@android:color/white" />
             </RelativeLayout>
 
             <RelativeLayout
