@@ -40,21 +40,19 @@ public class NetUtils {
     public static void getPage(XmlHttpResponseHandler myResponseHandler, long lastId) {
         String uri = BASE_URI;
         if (lastId != -1) {
-            uri = uri + "&lastID=" + Long.toString(lastId);
+            uri = BASE_URI + "&lastID=" + Long.toString(lastId);
         }
         getClientInstance().get(uri, myResponseHandler);
     }
 
     public static void postMessage(XmlHttpResponseHandler myResponseHandler, String message, long lastId) {
-        String uri = BASE_URI;
         RequestParams params = new RequestParams();
         params.put("text", message);
         params.put("lastID", Long.toString(lastId));
-        getClientInstance().post(uri, params, myResponseHandler);
+        getClientInstance().post(BASE_URI, params, myResponseHandler);
     }
 
     public static void postLogin(AsyncHttpResponseHandler myResponseHandler, Context context, String username, String password) {
-        String uri = LOGIN_URI;
         AsyncHttpClient client = getClientInstance();
         client.setCookieStore(getCookieStoreInstance(context));
         if (username != null && password != null) {
@@ -63,23 +61,26 @@ public class NetUtils {
             params.put("vb_login_password", password);
             params.put("do", "login");
             params.put("cookieuser", "1");
-            client.post(uri, params, myResponseHandler);
+            client.post(LOGIN_URI, params, myResponseHandler);
         } else {
-            client.post(uri, myResponseHandler);
+            client.post(LOGIN_URI, myResponseHandler);
         }
     }
 
     public static void postLogout(XmlHttpResponseHandler myResponseHandler) {
-        String uri = BASE_URI;
         RequestParams params = new RequestParams();
         params.put("logout", "true");
-        getClientInstance().post(uri, params, myResponseHandler);
+        getClientInstance().post(BASE_URI, params, myResponseHandler);
     }
 
     public static boolean isConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        return activeNetwork.isConnectedOrConnecting();
+        if (cm.getActiveNetworkInfo() != null) {
+            return activeNetwork.isConnectedOrConnecting();
+        } else {
+            return false;
+        }
     }
 }
