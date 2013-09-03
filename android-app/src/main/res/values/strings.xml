@@ -33,6 +33,8 @@
     <string name="copy_text">Copy text</string>
     <string name="reply">Reply</string>
     <string name="signup">Sign up</string>
+    <string name="image_error">Re-expand the attached images to retry</string>
+    <string name="download_error">Download Error</string>
 
     <plurals name="numberOfImages">
         <item quantity="one">1 image attached</item>
