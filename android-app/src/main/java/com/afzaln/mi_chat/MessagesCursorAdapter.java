@@ -32,8 +32,10 @@ import org.apache.commons.lang3.StringUtils;
 public class MessagesCursorAdapter extends CursorAdapter {
 
     private static final String TAG = MessagesCursorAdapter.class.getSimpleName();
+
     private static final int MOD_USER_ROLE = 2;
     private static final int ADMIN_USER_ROLE = 3;
+
     private final int mAdminNameColor;
     private final int mModNameColor;
     private final int mUserameColor;
@@ -86,9 +88,7 @@ public class MessagesCursorAdapter extends CursorAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // TODO API 9 compatibility
         View view = super.getView(position, convertView, parent);
-
         return view;
     }
 
