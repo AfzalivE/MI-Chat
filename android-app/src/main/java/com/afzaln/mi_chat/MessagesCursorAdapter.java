@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewAnimator;
 
@@ -23,7 +24,6 @@ import com.afzaln.mi_chat.R.color;
 import com.afzaln.mi_chat.activity.ImageActivity;
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
 import com.afzaln.mi_chat.resource.Message;
-import com.afzaln.mi_chat.view.MessageListView;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
@@ -70,8 +70,6 @@ public class MessagesCursorAdapter extends CursorAdapter {
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         View listItemView = null;
 
-        ViewHolder holder = new ViewHolder();
-
         switch (getItemViewType(cursor)) {
             case Message.NORMAL_TYPE:
                 listItemView = LayoutInflater.from(context).inflate(R.layout.message_list_item, parent, false);
@@ -81,12 +79,7 @@ public class MessagesCursorAdapter extends CursorAdapter {
                 break;
         }
 
-        holder.userNameView = (TextView) listItemView.findViewById(R.id.username);
-        holder.timestampView = (TextView) listItemView.findViewById(R.id.timestamp);
-        holder.messageView = (TextView) listItemView.findViewById(R.id.message);
-        holder.imagesButton = (Button) listItemView.findViewById(R.id.show_images);
-        holder.imageContainer = (LinearLayout) listItemView.findViewById(R.id.image_container);
-
+        ViewHolder holder = new ViewHolder(listItemView);
         listItemView.setTag(holder);
         return listItemView;
     }
@@ -157,6 +150,16 @@ public class MessagesCursorAdapter extends CursorAdapter {
     }
 
     static class ViewHolder {
+        ViewHolder (View root) {
+            layout = (RelativeLayout) root;
+            userNameView = (TextView) root.findViewById(R.id.username);
+            timestampView = (TextView) root.findViewById(R.id.timestamp);
+            messageView = (TextView) root.findViewById(R.id.message);
+            imagesButton = (Button) root.findViewById(R.id.show_images);
+            imageContainer = (LinearLayout) root.findViewById(R.id.image_container);
+        }
+
+        RelativeLayout layout;
         TextView userNameView;
         TextView timestampView;
         TextView messageView;
@@ -196,9 +199,13 @@ public class MessagesCursorAdapter extends CursorAdapter {
                 viewAnim.setDisplayedChild(0);
 
                 // Trigger the download of the URL asynchronously into the image view.
-                UrlImageViewHelper.setUrlDrawable(imageView, mImgLinksList[i], R.drawable.placeholder, new UrlImageViewCallback() {
+                UrlImageViewHelper.setUrlDrawable(imageView, mImgLinksList[i], new UrlImageViewCallback() {
                     @Override
                     public void onLoaded(final ImageView imageView, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
+                        if (loadedBitmap == null) {
+                            viewAnim.setDisplayedChild(2);
+                            return;
+                        }
                         viewAnim.setDisplayedChild(1);
 
                         int height = imageView.getMaxHeight();
@@ -209,7 +216,6 @@ public class MessagesCursorAdapter extends CursorAdapter {
 
 //                        width = width * height / loadedBitmap.getHeight();
                         imageView.setLayoutParams(new FrameLayout.LayoutParams(width, height));
-
                         AlphaAnimation alpha = new AlphaAnimation(0.0f, 1.0f);
                         alpha.setDuration(300);
                         imageView.startAnimation(alpha);
