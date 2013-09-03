@@ -14,18 +14,13 @@ import android.support.v4.view.MenuItemCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
-import android.widget.AbsListView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.afzaln.mi_chat.AlarmReceiver;
 import com.afzaln.mi_chat.MessagesCursorAdapter;
@@ -130,18 +125,19 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         mSubmitButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAlarmManager.cancel(mPendingIntent);
-                Bundle bundle = new Bundle();
-                bundle.putString("message", mEditText.getText().toString());
+                if (NetUtils.isConnected(MessagesActivity.this)) {
+                    mAlarmManager.cancel(mPendingIntent);
 
-                ResourceProcessor processor = ProcessorFactory.getInstance(MessagesActivity.this).getProcessor(ServiceContract.RESOURCE_TYPE_MESSAGE);
-                processor.postResource(bundle);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("message", mEditText.getText().toString());
 
-                toggleProgressBar(true);
+                    ResourceProcessor processor = ProcessorFactory.getInstance(MessagesActivity.this).getProcessor(ServiceContract.RESOURCE_TYPE_MESSAGE);
+                    processor.postResource(bundle);
 
-                mEditText.setText("");
-                mSubmitButton.setEnabled(false);
-
+                    toggleProgressBar(true);
+                    mEditText.setText("");
+                    mSubmitButton.setEnabled(false);
+                }
             }
         });
 
@@ -149,14 +145,16 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         mSubmitImgButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAlarmManager.cancel(mPendingIntent);
-                Bundle bundle = new Bundle();
-                bundle.putString("message", "[img]http://collider.com/wp-content/uploads/christina-hendricks-1.jpeg[/img][img]http://cdn.evilbeetgossip.com/wp-content/uploads/2013/01/christina_hendricks.jpg[/img]");
+                if (NetUtils.isConnected(MessagesActivity.this)) {
+                    mAlarmManager.cancel(mPendingIntent);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("message", "[img]http://collider.com/wp-content/uploads/christina-hendricks-1.jpeg[/img][img]http://cdn.evilbeetgossip.com/wp-content/uploads/2013/01/christina_hendricks.jpg[/img]");
 
-                ResourceProcessor processor = ProcessorFactory.getInstance(MessagesActivity.this).getProcessor(ServiceContract.RESOURCE_TYPE_MESSAGE);
-                processor.postResource(bundle);
+                    ResourceProcessor processor = ProcessorFactory.getInstance(MessagesActivity.this).getProcessor(ServiceContract.RESOURCE_TYPE_MESSAGE);
+                    processor.postResource(bundle);
+                    toggleProgressBar(true);
+                }
 
-                toggleProgressBar(true);
             }
         });
 
@@ -175,8 +173,10 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         // TODO use the Service for this
         // IntentService doesn't work with async-http client because you can't run AsyncTask from it
         // Use normal Service class maybe
-        ResourceProcessor processor = ProcessorFactory.getInstance(this).getProcessor(ServiceContract.RESOURCE_TYPE_PAGE);
-        processor.getResource();
+        if (NetUtils.isConnected(MessagesActivity.this)) {
+            ResourceProcessor processor = ProcessorFactory.getInstance(this).getProcessor(ServiceContract.RESOURCE_TYPE_PAGE);
+            processor.getResource();
+        }
     }
 
     @Override
@@ -210,9 +210,11 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         Intent i;
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                toggleProgressBar(true);
-                mManualRefresh = true;
-                processor.getResource();
+                if (NetUtils.isConnected(MessagesActivity.this)) {
+                    toggleProgressBar(true);
+                    mManualRefresh = true;
+                    processor.getResource();
+                }
                 return true;
             case R.id.action_prefs:
                 i = new Intent(MessagesActivity.this, SettingsActivity.class);
@@ -223,7 +225,9 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
                 toggleProgressBar(true);
                 break;
             case R.id.action_logout:
-                NetUtils.postLogout(mLogoutResponseHandler);
+                if (NetUtils.isConnected(MessagesActivity.this)) {
+                    NetUtils.postLogout(mLogoutResponseHandler);
+                }
                 break;
         }
         return super.onOptionsItemSelected(item);

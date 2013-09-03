@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@+id/username"
                     android:layout_below="@+id/username"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="20dp"
                     android:background="@drawable/card_white"
                     android:ems="10"
                     android:hint="@string/login_password_hint"
@@ -73,8 +73,18 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/password"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="42dp"
+                    android:layout_marginTop="36dp"
                     android:text="@string/login"
+                    android:textColor="@android:color/white" />
+
+                <Button
+                    android:id="@+id/signup"
+                    android:layout_width="260dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/login"
+                    android:layout_marginTop="8dp"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/signup"
                     android:textColor="@android:color/white" />
             </RelativeLayout>
 
