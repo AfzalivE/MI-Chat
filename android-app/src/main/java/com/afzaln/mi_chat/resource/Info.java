@@ -11,7 +11,7 @@ public class Info {
     int channelId;
     String userName;
     String channelName;
-    boolean loggedIn;
+    boolean loggedIn = false;
 
     public Info(long userId, int userRole, int channelId, String userName, String channelName, boolean loggedIn) {
         this.userId = userId;
