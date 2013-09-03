@@ -14,13 +14,17 @@ import android.support.v4.view.MenuItemCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afzaln.mi_chat.AlarmReceiver;
 import com.afzaln.mi_chat.MessagesCursorAdapter;
@@ -31,10 +35,10 @@ import com.afzaln.mi_chat.processor.ProcessorFactory;
 import com.afzaln.mi_chat.processor.ResourceProcessor;
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
 import com.afzaln.mi_chat.resource.Message;
-import com.afzaln.mi_chat.service.ServiceContract;
 import com.afzaln.mi_chat.utils.BackoffUtils;
 import com.afzaln.mi_chat.utils.NetUtils;
 import com.afzaln.mi_chat.utils.PrefUtils;
+import com.afzaln.mi_chat.utils.ServiceContract;
 import com.afzaln.mi_chat.view.MessageListView;
 import com.afzaln.mi_chat.view.MessageListView.OnSizeChangedListener;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -116,6 +120,9 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
                 mListView.setSelection(mAdapter.getCount() - 1);
             }
         });
+
+        registerForContextMenu(mListView);
+
     }
 
     private void initSubmitButton() {
@@ -196,11 +203,15 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            menu.findItem(id.action_prefs).setVisible(true);
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+//            menu.findItem(id.action_prefs).setVisible(true);
+//        }
         mMenu = menu;
-        toggleProgressBar(true);
+        if (NetUtils.isConnected(MessagesActivity.this)) {
+            toggleProgressBar(true);
+        } else {
+            Toast.makeText(this, "No internet connection available", Toast.LENGTH_LONG).show();
+        }
         return true;
     }
 
@@ -214,6 +225,8 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
                     toggleProgressBar(true);
                     mManualRefresh = true;
                     processor.getResource();
+                } else {
+                    Toast.makeText(this, "No internet connection available", Toast.LENGTH_LONG).show();
                 }
                 return true;
             case R.id.action_prefs:
@@ -233,28 +246,33 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         return super.onOptionsItemSelected(item);
     }
 
-//    @Override
-//    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenuInfo menuInfo) {
-//        super.onCreateContextMenu(menu, view, menuInfo);
-//        getMenuInflater().inflate(R.menu.context_menu, menu);
-//    }
-//
-//    @Override
-//    public boolean onContextItemSelected(android.view.MenuItem item) {
-//        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-//        CharSequence message;
-//        switch (item.getItemId()) {
-//            case id.menu_copytext:
-//                message = ((TextView) info.targetView.findViewById(id.message)).getText();
-//                copyToClipboard(message);
-//                return true;
-//            case id.menu_reply:
-//                CharSequence username = ((TextView) info.targetView.findViewById(id.username)).getText();
-//                makeReply(username, mAdapter.getItemViewType(info.position));
-//            default:
-//                return false;
-//        }
-//    }
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, view, menuInfo);
+        getMenuInflater().inflate(R.menu.context_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(android.view.MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        CharSequence message;
+        switch (item.getItemId()) {
+            case id.menu_copytext:
+                TextView messageView = (TextView) info.targetView.findViewById(id.message);
+                if (messageView.getVisibility() == View.VISIBLE) {
+                    message = ((TextView) info.targetView.findViewById(id.message)).getText();
+                    copyToClipboard(message);
+                } else {
+                    copyToClipboard("");
+                }
+                return true;
+            case id.menu_reply:
+                CharSequence username = ((TextView) info.targetView.findViewById(id.username)).getText();
+                makeReply(username, mAdapter.getItemViewType(info.position));
+            default:
+                return false;
+        }
+    }
 
     private void makeReply(CharSequence username, int itemType) {
         switch (itemType) {
