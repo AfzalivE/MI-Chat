@@ -61,7 +61,7 @@ public class ImageActivity extends FragmentActivity {
             photoView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
             container.addView(photoView);
 
-            UrlImageViewHelper.setUrlDrawable(photoView, mImgLinksList[position], R.drawable.placeholder, new UrlImageViewCallback() {
+            UrlImageViewHelper.setUrlDrawable(photoView, mImgLinksList[position], new UrlImageViewCallback() {
                 @Override
                 public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
                     ScaleAnimation scale = new ScaleAnimation(0, 1, 0, 1, ScaleAnimation.RELATIVE_TO_SELF, .5f, ScaleAnimation.RELATIVE_TO_SELF, .5f);
