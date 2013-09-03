@@ -1,6 +1,8 @@
 package com.afzaln.mi_chat.utils;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -14,6 +16,7 @@ public class NetUtils {
 
     private static final String BASE_URI = "http://www.macinsiders.com/chat/?ajax=true";
     private static final String LOGIN_URI = "http://www.macinsiders.com/login.php";
+    public static final String SIGNUP_URI = "http://www.macinsiders.com/register.php";
 
     public static AsyncHttpClient mClient;
     private static PersistentCookieStore mCookieStore;
@@ -71,5 +74,12 @@ public class NetUtils {
         RequestParams params = new RequestParams();
         params.put("logout", "true");
         getClientInstance().post(uri, params, myResponseHandler);
+    }
+
+    public static boolean isConnected(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork.isConnectedOrConnecting();
     }
 }

@@ -2,8 +2,10 @@ package com.afzaln.mi_chat.activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
@@ -37,7 +39,9 @@ public class LoginActivity extends Activity {
         getWindow().setBackgroundDrawable(null);
 
         if (PrefUtils.authCookieExists(this)) {
-            NetUtils.postLogin(mLoginResponseHandler, LoginActivity.this, null, null);
+            if (NetUtils.isConnected(LoginActivity.this)) {
+                NetUtils.postLogin(mLoginResponseHandler, LoginActivity.this, null, null);
+            }
         }
 
         mUsernameField = (EditText) findViewById(R.id.username);
@@ -64,9 +68,23 @@ public class LoginActivity extends Activity {
                 hideKeyboard();
                 String username = mUsernameField.getText().toString();
                 String password = mPasswordField.getText().toString();
-                NetUtils.postLogin(mLoginResponseHandler, LoginActivity.this, username, password);
+                if (NetUtils.isConnected(LoginActivity.this)) {
+                    NetUtils.postLogin(mLoginResponseHandler, LoginActivity.this, username, password);
+                }
             }
         });
+
+        Button signup = (Button) findViewById(R.id.signup);
+
+        signup.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(NetUtils.SIGNUP_URI));
+                startActivity(intent);
+            }
+        });
+
+
     }
 
     protected void hideKeyboard() {

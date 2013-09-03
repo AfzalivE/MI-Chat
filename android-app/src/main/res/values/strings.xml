@@ -32,6 +32,7 @@
     </string>
     <string name="copy_text">Copy text</string>
     <string name="reply">Reply</string>
+    <string name="signup">Sign up</string>
 
     <plurals name="numberOfImages">
         <item quantity="one">1 image attached</item>
