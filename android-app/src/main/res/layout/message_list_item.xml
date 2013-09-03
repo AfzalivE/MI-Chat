@@ -9,6 +9,7 @@
     android:paddingTop="6dp"
     android:paddingBottom="6dp"
     android:gravity="center_vertical"
+    android:descendantFocusability="blocksDescendants"
     android:background="@drawable/message_item_background">
 
     <TextView

@@ -22,7 +22,9 @@
         android:cacheColorHint="@android:color/white"
         android:scrollbarAlwaysDrawVerticalTrack="false"
         android:scrollbarStyle="insideOverlay"
-        android:paddingBottom="2dp" />
+        android:paddingBottom="2dp"
+        android:drawSelectorOnTop="true"
+        android:clickable="true"/>
 
     <!-- Divider -->
     <View
