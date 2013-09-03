@@ -6,7 +6,7 @@ import android.content.Intent;
 
 import com.afzaln.mi_chat.processor.ProcessorFactory;
 import com.afzaln.mi_chat.processor.ResourceProcessor;
-import com.afzaln.mi_chat.service.ServiceContract;
+import com.afzaln.mi_chat.utils.ServiceContract;
 import com.afzaln.mi_chat.utils.NetUtils;
 
 /**

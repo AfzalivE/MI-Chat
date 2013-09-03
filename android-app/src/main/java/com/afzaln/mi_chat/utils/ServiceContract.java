@@ -1,4 +1,4 @@
-package com.afzaln.mi_chat.service;
+package com.afzaln.mi_chat.utils;
 
 
 public interface ServiceContract {
