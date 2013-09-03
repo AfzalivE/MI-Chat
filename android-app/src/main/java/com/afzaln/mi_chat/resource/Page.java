@@ -91,7 +91,7 @@ public class Page implements Resource {
             }
 
             if (typeAttrs.equals("channelID")) {
-                Integer.parseInt(textContent);
+                channelId = Integer.parseInt(textContent);
                 Log.d("TEST", textContent);
                 continue;
             }
