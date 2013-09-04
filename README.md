@@ -30,12 +30,15 @@ Note
 I have completely removed support for ant build system, using gradle instead.
 If you still want to build with ant, fork this project and import it to your IDE. From there, you're on your own.
 
-Dependencies (from Maven)
+Dependencies
 ------------
 - Android Studio + knowledge of the gradle build system
-- [Ion](https://github.com/koush/ion) by Koush
+- [Android-async-http](https://github.com/loopj/android-async-http)
 - [Crouton](https://github.com/keyboardsurfer/Crouton) by keyboardsurfer
-- [SlidingMenu](https://github.com/jfeinstein10/SlidingMenu) by Jeremy Feinstein (Modified to use ABS)
+- [SlidingMenu](https://github.com/jfeinstein10/SlidingMenu) by Jeremy Feinstein (Modified to use AppCompatLib)
+- [PhotoView](https://github.com/chrisbanes/PhotoView) by Chris Banes
+- [UrlImageViewHelper](https://github.com/koush/UrlImageViewHelper) by Koush
+- [Android-donations-lib](https://github.com/dschuermann/android-donations-lib/) by dschuermann
 - Support v4 and AppCompatLib
 
 #### Included as jars
@@ -52,7 +55,7 @@ Proposed app workflow
 - The result is saved in a local database (tables for Info, Users and Messages) using a ContentProvider/Resolver.
 - Using the MessagesCursorAdapter, the messages information is retrieved and the list in MessagesActivity is populated with each message styled using the BBCode information.
 - Using the UserCursorAdapter, the user list information is retrieved and the list in UserListFragment is populated
-- This GET is called every 3 seconds. To conserve battery, it is only done while the user is within the app and the screen is on. More backoff scenarios will be added later which will allow battery-efficient background refreshing.
+- This GET is called every 3 seconds. To conserve battery, it is only done while the user is within the app and the screen is on. The refresh interval increases if the chatroom is not very active.
 
 - MessageProcessor.postResource() is called to post a message. The response obtained is the same as PageProcessor.getResource() so it is parsed in the same way.
 
