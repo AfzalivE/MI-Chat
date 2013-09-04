@@ -77,6 +77,10 @@ public class BaseActivity extends SlidingFragmentActivity {
 
     protected void hideKeyboard(View view) {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        try {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        } catch (NullPointerException ex) {
+            // keyboard is already hidden
+        }
     }
 }
