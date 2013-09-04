@@ -22,5 +22,10 @@
         android:icon="@android:drawable/ic_menu_revert"
         app:showAsAction="never"
         android:title="@string/action_logout" />
+    <item
+        android:id="@+id/action_about"
+        android:icon="@android:drawable/ic_menu_info_details"
+        app:showAsAction="never"
+        android:title="@string/action_about" />
 
 </menu>

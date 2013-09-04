@@ -2,6 +2,8 @@
 <resources>
 
     <string name="app_name">Macinsiders Chat</string>
+    <string name="author">Developed by <b>Afzal Najam</b></string>
+
     <string name="action_refresh">Refresh</string>
     <string name="action_logout">Logout</string>
     <string name="action_clearmessages">Clear Messages</string>
@@ -35,6 +37,12 @@
     <string name="signup">Sign up</string>
     <string name="image_error">Re-expand the attached images to retry</string>
     <string name="download_error">Download Error</string>
+    <string name="action_about">About</string>
+    <string name="legal">All rights reserved.\nNot liable for any damage incurred from use of this
+        software including but not limited to: monetary loss, temporary paralysis, halitosis,
+        spontaneous combustion, road rash, and or premature hair loss.
+    </string>
+    <string name="author_email">afzalnaj+michat@gmail.com</string>
 
     <plurals name="numberOfImages">
         <item quantity="one">1 image attached</item>

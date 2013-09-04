@@ -242,6 +242,10 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
                     NetUtils.postLogout(mLogoutResponseHandler);
                 }
                 break;
+            case id.action_about:
+                i = new Intent(MessagesActivity.this, AboutActivity.class);
+                startActivity(i);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
