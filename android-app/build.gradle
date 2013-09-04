@@ -18,7 +18,8 @@ dependencies {
     compile "com.loopj:android-async-http:1.4.3"
     compile "de.keyboardsurfer:crouton:1.8.1"
     compile "uk.co.senab:photoview:1.2.1"
-    compile 'com.koushikdutta.urlimageviewhelper:urlimageviewhelper:1.0.4'
+    compile "com.koushikdutta.urlimageviewhelper:urlimageviewhelper:1.0.4"
+    compile "org.sufficientlysecure:donations:2.0.0"
 
     compile fileTree(dir: 'libs', include: '*.jar')
 }

@@ -11,6 +11,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.view.ActionMode;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -35,17 +36,17 @@ import com.afzaln.mi_chat.processor.ProcessorFactory;
 import com.afzaln.mi_chat.processor.ResourceProcessor;
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
 import com.afzaln.mi_chat.resource.Message;
+import com.afzaln.mi_chat.utils.ServiceContract;
 import com.afzaln.mi_chat.utils.BackoffUtils;
 import com.afzaln.mi_chat.utils.NetUtils;
 import com.afzaln.mi_chat.utils.PrefUtils;
-import com.afzaln.mi_chat.utils.ServiceContract;
 import com.afzaln.mi_chat.view.MessageListView;
 import com.afzaln.mi_chat.view.MessageListView.OnSizeChangedListener;
 import com.google.analytics.tracking.android.EasyTracker;
 
 import java.util.Calendar;
 
-public class MessagesActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MessagesActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor>, ActionMode.Callback {
 
     private static int mRefreshInterval = BackoffUtils.DEFAULT_REFRESH_INTERVAL;
 
@@ -59,6 +60,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     private ImageButton mSubmitButton;
     private ImageButton mSubmitImgButton;
 
+    private ActionMode mActionMode;
     private Menu mMenu;
     private AlarmManager mAlarmManager;
     private PendingIntent mPendingIntent;
@@ -120,6 +122,23 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
                 mListView.setSelection(mAdapter.getCount() - 1);
             }
         });
+
+//        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+//                  view.setTag("selected");
+//                if (view.getTag() == "selected") {
+//                    view.setSelected(false);
+//                }
+////                if (view.isSelected()) {
+////                    view.setSelected(false);
+////                    mActionMode.finish();
+////                } else {
+////                    view.setSelected(true);
+////                    mActionMode = startSupportActionMode(MessagesActivity.this);
+////                }
+//            }
+//        });
 
         registerForContextMenu(mListView);
 
@@ -241,10 +260,6 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
                 if (NetUtils.isConnected(MessagesActivity.this)) {
                     NetUtils.postLogout(mLogoutResponseHandler);
                 }
-                break;
-            case id.action_about:
-                i = new Intent(MessagesActivity.this, AboutActivity.class);
-                startActivity(i);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -378,5 +393,42 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
                 MenuItemCompat.setActionView(menuItem, null);
             }
         }
+    }
+
+    @Override
+    public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+        actionMode.getMenuInflater().inflate(R.menu.context_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+        actionMode.finish();
+        return false;
+    }
+
+    @Override
+    public boolean onActionItemClicked(ActionMode actionMode, MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        CharSequence message;
+        switch (item.getItemId()) {
+            case id.menu_copytext:
+//                message = ((TextView) info.targetView.findViewById(id.message)).getText();
+                copyToClipboard("test");
+                actionMode.finish();
+                return true;
+            case id.menu_reply:
+                CharSequence username = ((TextView) info.targetView.findViewById(id.username)).getText();
+                makeReply(username, mAdapter.getItemViewType(info.position));
+                actionMode.finish();
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    @Override
+    public void onDestroyActionMode(ActionMode actionMode) {
+        Log.d(TAG, "destroying action mode");
     }
 }
