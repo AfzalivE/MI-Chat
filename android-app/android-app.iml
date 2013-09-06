@@ -62,7 +62,6 @@
       <excludeFolder url="file://$MODULE_DIR$/build/bundles" />
       <excludeFolder url="file://$MODULE_DIR$/build/classes" />
       <excludeFolder url="file://$MODULE_DIR$/build/dependency-cache" />
-      <excludeFolder url="file://$MODULE_DIR$/build/exploded-bundles" />
       <excludeFolder url="file://$MODULE_DIR$/build/incremental" />
       <excludeFolder url="file://$MODULE_DIR$/build/libs" />
       <excludeFolder url="file://$MODULE_DIR$/build/manifests" />
@@ -71,17 +70,17 @@
     </content>
     <orderEntry type="jdk" jdkName="Android 4.3 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="support-v4-18.0.0" level="project" />
-    <orderEntry type="library" exported="" name="urlimageviewhelper-1.0.4" level="project" />
-    <orderEntry type="library" exported="" name="commons-lang3-3.1" level="project" />
-    <orderEntry type="library" exported="" name="kefirbb-1.0" level="project" />
-    <orderEntry type="library" exported="" name="libGoogleAnalyticsV2" level="project" />
-    <orderEntry type="library" exported="" name="ComAndroidSupportAppcompatV71800.aar" level="project" />
     <orderEntry type="library" exported="" name="ComJeremyfeinsteinSlidingmenu13SNAPSHOT.aar" level="project" />
-    <orderEntry type="library" exported="" name="ComLoopjAndroidAsyncHttp143.aar" level="project" />
-    <orderEntry type="library" exported="" name="DeKeyboardsurferCrouton181.aar" level="project" />
+    <orderEntry type="library" exported="" name="support-v4-18.0.0" level="project" />
+    <orderEntry type="library" exported="" name="ComAndroidSupportAppcompatV71800.aar" level="project" />
     <orderEntry type="library" exported="" name="UkCoSenabPhotoview121.aar" level="project" />
+    <orderEntry type="library" exported="" name="DeKeyboardsurferCrouton181.aar" level="project" />
+    <orderEntry type="library" exported="" name="kefirbb-1.0" level="project" />
     <orderEntry type="library" exported="" name="OrgSufficientlysecureDonations200.aar" level="project" />
+    <orderEntry type="library" exported="" name="libGoogleAnalyticsV2" level="project" />
+    <orderEntry type="library" exported="" name="ComLoopjAndroidAsyncHttp143.aar" level="project" />
+    <orderEntry type="library" exported="" name="commons-lang3-3.1" level="project" />
+    <orderEntry type="library" exported="" name="urlimageviewhelper-1.0.4" level="project" />
   </component>
 </module>
 

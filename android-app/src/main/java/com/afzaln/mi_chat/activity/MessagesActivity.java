@@ -31,7 +31,6 @@ import com.afzaln.mi_chat.AlarmReceiver;
 import com.afzaln.mi_chat.BuildConfig;
 import com.afzaln.mi_chat.MessagesCursorAdapter;
 import com.afzaln.mi_chat.R;
-import com.afzaln.mi_chat.R.id;
 import com.afzaln.mi_chat.handler.LogoutResponseHandler;
 import com.afzaln.mi_chat.processor.ProcessorFactory;
 import com.afzaln.mi_chat.processor.ResourceProcessor;
@@ -100,7 +99,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         getSupportLoaderManager().initLoader(MESSAGE_LOADER, null, this);
         initListView();
 
-        mEditText = (EditText) findViewById(id.text_editor);
+        mEditText = (EditText) findViewById(R.id.text_editor);
         mEditText.addTextChangedListener(textWatcher);
 
         initSubmitButton();
@@ -114,7 +113,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
 
 
     private void initListView() {
-        mListView = (MessageListView) findViewById(id.messagelist);
+        mListView = (MessageListView) findViewById(R.id.messagelist);
         mAdapter = new MessagesCursorAdapter(this, null, 0);
         mListView.setAdapter(mAdapter);
 
@@ -146,7 +145,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     }
 
     private void initSubmitButton() {
-        mSubmitButton = (ImageButton) findViewById(id.submit_msg);
+        mSubmitButton = (ImageButton) findViewById(R.id.submit_msg);
         mSubmitButton.setEnabled(false);
 
         mSubmitButton.setOnClickListener(new OnClickListener() {
@@ -169,7 +168,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         });
 
         if (BuildConfig.DEBUG) {
-            mSubmitImgButton = (ImageButton) findViewById(id.submit_img);
+            mSubmitImgButton = (ImageButton) findViewById(R.id.submit_img);
             mSubmitImgButton.setVisibility(View.VISIBLE);
             mSubmitImgButton.setOnClickListener(new OnClickListener() {
                 @Override
@@ -225,7 +224,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.messages, menu);
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 //            menu.findItem(id.action_prefs).setVisible(true);
 //        }
@@ -265,7 +264,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
                     NetUtils.postLogout(mLogoutResponseHandler);
                 }
                 break;
-            case id.action_about:
+            case R.id.action_about:
                 i = new Intent(MessagesActivity.this, AboutActivity.class);
                 startActivity(i);
                 break;
@@ -276,7 +275,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     @Override
     public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, view, menuInfo);
-        getMenuInflater().inflate(R.menu.context_menu, menu);
+        getMenuInflater().inflate(R.menu.message_item, menu);
     }
 
     @Override
@@ -284,17 +283,17 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         CharSequence message;
         switch (item.getItemId()) {
-            case id.menu_copytext:
-                TextView messageView = (TextView) info.targetView.findViewById(id.message);
+            case R.id.menu_copytext:
+                TextView messageView = (TextView) info.targetView.findViewById(R.id.message);
                 if (messageView.getVisibility() == View.VISIBLE) {
-                    message = ((TextView) info.targetView.findViewById(id.message)).getText();
+                    message = ((TextView) info.targetView.findViewById(R.id.message)).getText();
                     copyToClipboard(message);
                 } else {
                     copyToClipboard("");
                 }
                 return true;
-            case id.menu_reply:
-                CharSequence username = ((TextView) info.targetView.findViewById(id.username)).getText();
+            case R.id.menu_reply:
+                CharSequence username = ((TextView) info.targetView.findViewById(R.id.username)).getText();
                 makeReply(username, mAdapter.getItemViewType(info.position));
             default:
                 return false;
@@ -392,7 +391,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
 
     private void toggleProgressBar(boolean show) {
         if (mMenu != null) {
-            MenuItem menuItem = mMenu.findItem(id.action_refresh);
+            MenuItem menuItem = mMenu.findItem(R.id.action_refresh);
             if (show) {
                 MenuItemCompat.setActionView(menuItem, R.layout.progress);
                 MenuItemCompat.expandActionView(menuItem);
@@ -405,7 +404,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
 
     @Override
     public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-        actionMode.getMenuInflater().inflate(R.menu.context_menu, menu);
+        actionMode.getMenuInflater().inflate(R.menu.message_item, menu);
         return true;
     }
 
@@ -420,13 +419,13 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         CharSequence message;
         switch (item.getItemId()) {
-            case id.menu_copytext:
+            case R.id.menu_copytext:
 //                message = ((TextView) info.targetView.findViewById(id.message)).getText();
                 copyToClipboard("test");
                 actionMode.finish();
                 return true;
-            case id.menu_reply:
-                CharSequence username = ((TextView) info.targetView.findViewById(id.username)).getText();
+            case R.id.menu_reply:
+                CharSequence username = ((TextView) info.targetView.findViewById(R.id.username)).getText();
                 makeReply(username, mAdapter.getItemViewType(info.position));
                 actionMode.finish();
                 return true;

@@ -24,7 +24,7 @@ public class UsersCursorAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        View listItemView = LayoutInflater.from(context).inflate(R.layout.user_list_item, parent, false);
+        View listItemView = LayoutInflater.from(context).inflate(R.layout.item_user, parent, false);
 
         ViewHolder holder = new ViewHolder();
         holder.userNameView = (TextView) listItemView.findViewById(R.id.user_row);

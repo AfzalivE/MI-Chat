@@ -34,7 +34,7 @@
         android:layout_below="@id/separator"
         android:paddingLeft="@dimen/userlist_padding"
         android:paddingRight="@dimen/userlist_padding"
-        tools:listitem="@layout/user_list_item"
+        tools:listitem="@layout/item_user"
         android:layout_marginRight="16dp" />
 
     <include layout="@layout/user_list_shadow" />

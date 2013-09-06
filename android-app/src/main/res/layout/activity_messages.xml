@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <com.afzaln.mi_chat.view.MessageListView
-        tools:listitem="@layout/message_list_item"
+        tools:listitem="@layout/item_message"
         android:id="@+id/messagelist"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

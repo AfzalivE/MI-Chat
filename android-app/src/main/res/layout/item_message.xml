@@ -52,6 +52,6 @@
         android:text="This is a message"
         android:linksClickable="true" />
 
-    <include layout="@layout/images_layout" />
+    <include layout="@layout/item_message_images" />
 
 </RelativeLayout>

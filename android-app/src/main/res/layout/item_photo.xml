@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ViewAnimator xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp"
+    android:animateFirstView="false">
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_gravity="center"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content" />
+
+    <uk.co.senab.photoview.PhotoView
+        android:id="@+id/image"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:maxHeight="@dimen/default_image_size"
+        android:maxWidth="@dimen/default_image_size"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_gravity="center"
+        android:contentDescription="Photo"/>
+
+    <LinearLayout android:orientation="vertical" android:id="@+id/error"
+        android:layout_width="match_parent" android:layout_height="match_parent"
+        android:gravity="center">
+
+        <TextView android:textSize="16sp" android:textColor="#ffff4444" android:gravity="center"
+            android:layout_gravity="center" android:id="@+id/error_text"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="@string/download_error" />
+
+        <TextView android:textSize="14sp" android:textColor="#ff454545" android:gravity="center"
+            android:layout_gravity="center" android:id="@+id/error_text_second"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="@string/image_error" />
+    </LinearLayout>
+
+</ViewAnimator>
