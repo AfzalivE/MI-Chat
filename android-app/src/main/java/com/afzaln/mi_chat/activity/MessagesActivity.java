@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afzaln.mi_chat.AlarmReceiver;
+import com.afzaln.mi_chat.BuildConfig;
 import com.afzaln.mi_chat.MessagesCursorAdapter;
 import com.afzaln.mi_chat.R;
 import com.afzaln.mi_chat.R.id;
@@ -36,10 +37,10 @@ import com.afzaln.mi_chat.processor.ProcessorFactory;
 import com.afzaln.mi_chat.processor.ResourceProcessor;
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
 import com.afzaln.mi_chat.resource.Message;
-import com.afzaln.mi_chat.utils.ServiceContract;
 import com.afzaln.mi_chat.utils.BackoffUtils;
 import com.afzaln.mi_chat.utils.NetUtils;
 import com.afzaln.mi_chat.utils.PrefUtils;
+import com.afzaln.mi_chat.utils.ServiceContract;
 import com.afzaln.mi_chat.view.MessageListView;
 import com.afzaln.mi_chat.view.MessageListView.OnSizeChangedListener;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -167,22 +168,25 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
             }
         });
 
-        mSubmitImgButton = (ImageButton) findViewById(id.submit_img);
-        mSubmitImgButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (NetUtils.isConnected(MessagesActivity.this)) {
-                    mAlarmManager.cancel(mPendingIntent);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("message", "[img]http://collider.com/wp-content/uploads/christina-hendricks-1.jpeg[/img][img]http://cdn.evilbeetgossip.com/wp-content/uploads/2013/01/christina_hendricks.jpg[/img]");
+        if (BuildConfig.DEBUG) {
+            mSubmitImgButton = (ImageButton) findViewById(id.submit_img);
+            mSubmitImgButton.setVisibility(View.VISIBLE);
+            mSubmitImgButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (NetUtils.isConnected(MessagesActivity.this)) {
+                        mAlarmManager.cancel(mPendingIntent);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("message", "[img]http://collider.com/wp-content/uploads/christina-hendricks-1.jpeg[/img][img]http://cdn.evilbeetgossip.com/wp-content/uploads/2013/01/christina_hendricks.jpg[/img]");
 
-                    ResourceProcessor processor = ProcessorFactory.getInstance(MessagesActivity.this).getProcessor(ServiceContract.RESOURCE_TYPE_MESSAGE);
-                    processor.postResource(bundle);
-                    toggleProgressBar(true);
+                        ResourceProcessor processor = ProcessorFactory.getInstance(MessagesActivity.this).getProcessor(ServiceContract.RESOURCE_TYPE_MESSAGE);
+                        processor.postResource(bundle);
+                        toggleProgressBar(true);
+                    }
+
                 }
-
-            }
-        });
+            });
+        }
 
     }
 
@@ -260,6 +264,10 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
                 if (NetUtils.isConnected(MessagesActivity.this)) {
                     NetUtils.postLogout(mLogoutResponseHandler);
                 }
+                break;
+            case id.action_about:
+                i = new Intent(MessagesActivity.this, AboutActivity.class);
+                startActivity(i);
                 break;
         }
         return super.onOptionsItemSelected(item);
