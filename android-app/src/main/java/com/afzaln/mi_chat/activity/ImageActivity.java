@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
+import android.widget.ViewAnimator;
 
 import com.afzaln.mi_chat.R;
 import com.afzaln.mi_chat.view.MyViewPager;
@@ -16,8 +18,6 @@ import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import uk.co.senab.photoview.PhotoView;
-
-import static android.view.ViewGroup.LayoutParams;
 
 /**
  * Created by afzal on 2013-08-23.
@@ -29,7 +29,7 @@ public class ImageActivity extends FragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.image_activity_layout);
+        setContentView(R.layout.activity_image);
 
         mViewPager = (MyViewPager) findViewById(R.id.image_pager);
 
@@ -57,20 +57,28 @@ public class ImageActivity extends FragmentActivity {
 
         @Override
         public View instantiateItem(ViewGroup container, int position) {
-            PhotoView photoView = new PhotoView(container.getContext());
-            photoView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-            container.addView(photoView);
+
+            final ViewAnimator viewAnim = (ViewAnimator) LayoutInflater.from(container.getContext()).inflate(R.layout.item_photo, container, false);
+            PhotoView photoView = (PhotoView) viewAnim.findViewById(R.id.image);
+            container.addView(viewAnim);
+            viewAnim.setDisplayedChild(0);
 
             UrlImageViewHelper.setUrlDrawable(photoView, mImgLinksList[position], new UrlImageViewCallback() {
                 @Override
                 public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
+                    if (loadedBitmap == null) {
+                        viewAnim.setDisplayedChild(2);
+                        return;
+                    }
+                    viewAnim.setDisplayedChild(1);
+
                     ScaleAnimation scale = new ScaleAnimation(0, 1, 0, 1, ScaleAnimation.RELATIVE_TO_SELF, .5f, ScaleAnimation.RELATIVE_TO_SELF, .5f);
                     scale.setDuration(300);
                     imageView.startAnimation(scale);
                 }
             });
 
-            return photoView;
+            return viewAnim;
         }
 
         @Override

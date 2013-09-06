@@ -31,12 +31,12 @@
         <TextView android:textSize="16sp" android:textColor="#ffff4444" android:gravity="center"
             android:layout_gravity="center" android:id="@+id/error_text"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:text="@string/download_error" />
+            android:text="@string/error_download" />
 
         <TextView android:textSize="14sp" android:textColor="#ff454545" android:gravity="center"
             android:layout_gravity="center" android:id="@+id/error_text_second"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:text="@string/image_error" />
+            android:text="@string/error_image" />
     </LinearLayout>
 
 </ViewAnimator>

@@ -74,10 +74,10 @@ public class MessagesCursorAdapter extends CursorAdapter {
 
         switch (getItemViewType(cursor)) {
             case Message.NORMAL_TYPE:
-                listItemView = LayoutInflater.from(context).inflate(R.layout.message_list_item, parent, false);
+                listItemView = LayoutInflater.from(context).inflate(R.layout.item_message, parent, false);
                 break;
             case Message.ACTION_TYPE:
-                listItemView = LayoutInflater.from(context).inflate(R.layout.action_list_item, parent, false);
+                listItemView = LayoutInflater.from(context).inflate(R.layout.item_action, parent, false);
                 break;
         }
 
@@ -193,7 +193,7 @@ public class MessagesCursorAdapter extends CursorAdapter {
             for (int i = 0; i < mImgLinksList.length; i++) {
                 final int imgIndex = i;
 
-                final ViewAnimator viewAnim = (ViewAnimator) LayoutInflater.from(mContainer.getContext()).inflate(R.layout.image_layout, mContainer, false);
+                final ViewAnimator viewAnim = (ViewAnimator) LayoutInflater.from(mContainer.getContext()).inflate(R.layout.item_image, mContainer, false);
                 ImageView imageView = (ImageView) viewAnim.findViewById(R.id.image);
                 mContainer.addView(viewAnim);
                 viewAnim.setDisplayedChild(0);
@@ -210,12 +210,28 @@ public class MessagesCursorAdapter extends CursorAdapter {
 
                         int height = imageView.getMaxHeight();
                         int width = imageView.getMaxWidth();
-                        if (loadedBitmap.getHeight() < imageView.getMaxHeight()) {
-                            height = loadedBitmap.getHeight();
-                        }
+//                        boolean verticalImage = loadedBitmap.getHeight() > loadedBitmap.getWidth();
+//                        if (!verticalImage) {
+//                            if (loadedBitmap.getWidth() < imageView.getMaxWidth()) {
+//                                width = loadedBitmap.getWidth();
+//                            } else {
+                                // width is imageView.getMaxWidth() already
+//                            }
+//                            height = width * loadedBitmap.getHeight() / loadedBitmap.getWidth();
+//
+//                        } else {
+//                            if (loadedBitmap.getHeight() < imageView.getMaxHeight()) {
+//                                height = loadedBitmap.getHeight();
+//                            } else {
+                                // height is imageView.getMaxHeight() already
+//                            }
+//                            width = width * height / loadedBitmap.getHeight();
+//                        }
 
-//                        width = width * height / loadedBitmap.getHeight();
                         imageView.setLayoutParams(new FrameLayout.LayoutParams(width, height));
+                        viewAnim.setLayoutParams(new LinearLayout.LayoutParams(width, height));
+                        mContainer.setLayoutParams(new FrameLayout.LayoutParams(width, height));
+
                         AlphaAnimation alpha = new AlphaAnimation(0.0f, 1.0f);
                         alpha.setDuration(300);
                         imageView.startAnimation(alpha);
