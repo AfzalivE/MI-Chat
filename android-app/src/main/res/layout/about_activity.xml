@@ -2,14 +2,14 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:gravity="center">
 
     <ImageView android:id="@+id/logo"
         android:src="@drawable/ic_app"
         android:layout_width="136dp"
         android:layout_height="136dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp" />
+        android:layout_centerHorizontal="true" />
 
     <TextView android:id="@+id/app_name"
         android:text="@string/app_name"

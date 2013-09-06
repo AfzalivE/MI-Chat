@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.text.util.Linkify;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +17,7 @@ import com.afzaln.mi_chat.R;
 /**
  * Created by afzal on 2013-09-03.
  */
-public class AboutActivity extends BaseActivity {
+public class AboutActivity extends ActionBarActivity {
 
     /**
      * Called when the activity is first created.
