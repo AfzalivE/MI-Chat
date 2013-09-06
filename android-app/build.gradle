@@ -52,7 +52,11 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfig "public final static String BASE_URI = \"http://www.macinsiders.com/chat/?ajax=true&channelID=500006296\";"
+        }
         release {
+            buildConfig "public final static String BASE_URI = \"http://www.macinsiders.com/chat/?ajax=true\";"
             signingConfig signingConfigs.release
         }
     }

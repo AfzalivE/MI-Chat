@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.afzaln.mi_chat.BuildConfig;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
@@ -14,7 +15,7 @@ import org.apache.http.client.params.ClientPNames;
 
 public class NetUtils {
 
-    private static final String BASE_URI = "http://www.macinsiders.com/chat/?ajax=true";
+    private static final String BASE_URI = BuildConfig.BASE_URI;
     private static final String LOGIN_URI = "http://www.macinsiders.com/login.php";
     public static final String SIGNUP_URI = "http://www.macinsiders.com/register.php";
 
