@@ -144,6 +144,24 @@ public class ParserUtils {
             return message.replace("/channelEnter", "").concat(" has entered the channel");
         }
 
+        /* Errors */
+
+        if (message.startsWith("/error UnknownCommand")) {
+            return message.replace("/error UnknownCommand ", "[color=red]Error: Unknown command \"").concat("\"[/color]");
+        }
+
+        if (message.startsWith("/error UserNameNotFound")) {
+            return message.replace("/error UserNameNotFound ", "[color=red]Error: User \"").concat("\" not found[/color]");
+        }
+
+        if (message.startsWith("/error MissingUserName")) {
+            return message.replace("/error MissingUserName", "[color=red]Error: Username not specified[/color]");
+        }
+
+        if (message.startsWith("/error MissingText")) {
+            return message.replace("/error MissingText", "[color=red]Error: Message not specified[/color]");
+        }
+
         return message;
     }
 
