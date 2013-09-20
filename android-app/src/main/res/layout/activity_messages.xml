@@ -23,8 +23,9 @@
         android:scrollbarAlwaysDrawVerticalTrack="false"
         android:scrollbarStyle="insideOverlay"
         android:paddingBottom="2dp"
-        android:drawSelectorOnTop="true"
-        android:clickable="true"/>
+        android:drawSelectorOnTop="false"
+        android:clickable="true"
+        android:fadingEdge="vertical" />
 
     <!-- Divider -->
     <View

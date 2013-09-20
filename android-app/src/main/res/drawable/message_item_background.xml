@@ -17,6 +17,9 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Even though these two point to the same resource, have two states so the drawable will invalidate itself when coming out of pressed state. -->
-    <item android:state_selected="true" android:drawable="@color/ics_blue_semi" />
-    <item                               android:drawable="@drawable/card_white" />
+    <item android:state_pressed="true"                                                              android:drawable="@android:color/transparent" />
+    <item                               android:state_selected="true"                               android:drawable="@android:color/transparent" />
+    <item                                                             android:state_focused="true"  android:drawable="@android:color/transparent" />
+    <item                                                                                           android:drawable="@drawable/card_white" />
+
 </selector>
