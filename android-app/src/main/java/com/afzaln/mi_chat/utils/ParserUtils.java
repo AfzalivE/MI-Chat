@@ -1,5 +1,7 @@
 package com.afzaln.mi_chat.utils;
 
+import com.afzaln.mi_chat.resource.Message;
+
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.kefirsf.bb.BBProcessorFactory;
 import org.kefirsf.bb.ConfigurationFactory;
@@ -144,7 +146,29 @@ public class ParserUtils {
             return message.replace("/channelEnter", "").concat(" has entered the channel");
         }
 
-        /* Errors */
+        return message;
+    }
+
+    public static String process(String userName, String message, int type) {
+
+        switch (type) {
+            case Message.NORMAL_TYPE:
+                break;
+            case Message.ACTION_TYPE:
+                message = processActions(userName, message);
+                break;
+            case Message.ERROR_TYPE:
+                message = processErrors(message);
+                break;
+        }
+
+        return getProcessorInstance().process(StringEscapeUtils.unescapeXml(message));
+    }
+
+    /**
+     * Errors
+     */
+    private static String processErrors(String message) {
 
         if (message.startsWith("/error UnknownCommand")) {
             return message.replace("/error UnknownCommand ", "[color=red]Error: Unknown command \"").concat("\"[/color]");
@@ -155,17 +179,13 @@ public class ParserUtils {
         }
 
         if (message.startsWith("/error MissingUserName")) {
-            return message.replace("/error MissingUserName", "[color=red]Error: Username not specified[/color]");
+            return message.replace("/error MissingUserName", "[color=red]Error: Missing username[/color]");
         }
 
         if (message.startsWith("/error MissingText")) {
-            return message.replace("/error MissingText", "[color=red]Error: Message not specified[/color]");
+            return message.replace("/error MissingText", "[color=red]Error: Missing message text[/color]");
         }
 
         return message;
-    }
-
-    public static String process(String userName, String message) {
-        return getProcessorInstance().process(StringEscapeUtils.unescapeXml(processActions(userName, message)));
     }
 }

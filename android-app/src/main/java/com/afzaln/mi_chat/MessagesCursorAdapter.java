@@ -79,6 +79,9 @@ public class MessagesCursorAdapter extends CursorAdapter {
             case Message.ACTION_TYPE:
                 listItemView = LayoutInflater.from(context).inflate(R.layout.item_action, parent, false);
                 break;
+            case Message.ERROR_TYPE:
+                listItemView = LayoutInflater.from(context).inflate(R.layout.item_action, parent, false);
+                break;
         }
 
         ViewHolder holder = new ViewHolder(listItemView);

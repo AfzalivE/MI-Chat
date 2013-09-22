@@ -11,6 +11,7 @@ public class Message {
 
     public static final int NORMAL_TYPE = 0;
     public static final int ACTION_TYPE = 1;
+    public static final int ERROR_TYPE = 2;
 
     Long messageId;
     int type;
@@ -30,7 +31,7 @@ public class Message {
         this.userRole = userRole;
         this.channelId = channelId;
         this.userName = userName;
-        this.message = ParserUtils.process(userName, messageText);
+        this.message = ParserUtils.process(userName, messageText, type);
         this.imgLinks = imgLinks;
     }
 

@@ -177,7 +177,9 @@ public class Page implements Resource {
                 messageText = messageText.trim();
             }
 
-            if (messageText.startsWith("/")) {
+            if (messageText.startsWith("/error")) {
+                type = Message.ERROR_TYPE;
+            } else if (messageText.startsWith("/")) {
                 type = Message.ACTION_TYPE;
             }
 
