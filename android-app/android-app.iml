@@ -82,6 +82,7 @@
     <orderEntry type="library" exported="" name="ComLoopjAndroidAsyncHttp143.aar" level="project" />
     <orderEntry type="library" exported="" name="commons-lang3-3.1" level="project" />
     <orderEntry type="library" exported="" name="urlimageviewhelper-1.0.4" level="project" />
+    <orderEntry type="library" exported="" name="android-agent-2.426.0" level="project" />
   </component>
 </module>
 

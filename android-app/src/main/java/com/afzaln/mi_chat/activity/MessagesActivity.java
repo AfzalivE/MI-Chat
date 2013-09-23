@@ -43,6 +43,7 @@ import com.afzaln.mi_chat.utils.ServiceContract;
 import com.afzaln.mi_chat.view.MessageListView;
 import com.afzaln.mi_chat.view.MessageListView.OnSizeChangedListener;
 import com.google.analytics.tracking.android.EasyTracker;
+import com.newrelic.agent.android.NewRelic;
 
 import java.util.Calendar;
 
@@ -95,6 +96,8 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
             this.finish();
             startActivity(i);
         }
+
+        NewRelic.withApplicationToken("AA1d045a8dad875a75d8416015d0e2dd1d19ed4dee").start(this.getApplication());
 
         getSupportLoaderManager().initLoader(MESSAGE_LOADER, null, this);
         initListView();

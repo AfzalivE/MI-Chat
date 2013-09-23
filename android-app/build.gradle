@@ -3,6 +3,7 @@ task wrapper(type: Wrapper) {
 }
 
 apply plugin: 'android'
+apply plugin: 'newrelic'
 
 repositories {
     maven {
@@ -20,6 +21,7 @@ dependencies {
     compile "uk.co.senab:photoview:1.2.1"
     compile "com.koushikdutta.urlimageviewhelper:urlimageviewhelper:1.0.4"
     compile "org.sufficientlysecure:donations:2.0.0"
+    compile 'com.newrelic.agent.android:android-agent:2.426.0'
 
     compile fileTree(dir: 'libs', include: '*.jar')
 }
