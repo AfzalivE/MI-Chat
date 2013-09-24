@@ -24,6 +24,7 @@
 		74CD1F4D17F0A0DD009DFF05 /* michatTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 74CD1F4C17F0A0DD009DFF05 /* michatTests.m */; };
 		74FB73D317F1F9A1007C38E7 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 74FB73D217F1F9A1007C38E7 /* Message.m */; };
 		74FB73D917F1FE14007C38E7 /* MessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74FB73D817F1FE14007C38E7 /* MessagesViewController.m */; };
+		74FB73DC17F208F9007C38E7 /* MessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 74FB73DB17F208F9007C38E7 /* MessageCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +62,8 @@
 		74FB73D217F1F9A1007C38E7 /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
 		74FB73D717F1FE14007C38E7 /* MessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MessagesViewController.h; path = ../MessagesViewController.h; sourceTree = "<group>"; };
 		74FB73D817F1FE14007C38E7 /* MessagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MessagesViewController.m; path = ../MessagesViewController.m; sourceTree = "<group>"; };
+		74FB73DA17F208F9007C38E7 /* MessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageCell.h; sourceTree = "<group>"; };
+		74FB73DB17F208F9007C38E7 /* MessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +128,8 @@
 				74CD1F2D17F0A0DD009DFF05 /* AppDelegate.h */,
 				74CD1F2E17F0A0DD009DFF05 /* AppDelegate.m */,
 				74CD1F3017F0A0DD009DFF05 /* Main_iPhone.storyboard */,
+				74FB73DA17F208F9007C38E7 /* MessageCell.h */,
+				74FB73DB17F208F9007C38E7 /* MessageCell.m */,
 				74FB73D117F1F9A1007C38E7 /* Message.h */,
 				74FB73D217F1F9A1007C38E7 /* Message.m */,
 				74CD1F3317F0A0DD009DFF05 /* Main_iPad.storyboard */,
@@ -266,6 +271,7 @@
 				74CD1F3817F0A0DD009DFF05 /* ViewController.m in Sources */,
 				74FB73D917F1FE14007C38E7 /* MessagesViewController.m in Sources */,
 				74CD1F2F17F0A0DD009DFF05 /* AppDelegate.m in Sources */,
+				74FB73DC17F208F9007C38E7 /* MessageCell.m in Sources */,
 				74FB73D317F1F9A1007C38E7 /* Message.m in Sources */,
 				74CD1F2B17F0A0DD009DFF05 /* main.m in Sources */,
 			);

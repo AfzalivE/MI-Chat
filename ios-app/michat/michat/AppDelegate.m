@@ -21,18 +21,21 @@
   Message *message = [[Message alloc] init];
   message.message = @"test";
   message.userName = @"username";
+  message.time = @"2 sec ago";
   
   [messages addObject:message];
   
   message = [[Message alloc] init];
   message.message = @"test2";
   message.userName = @"username2";
+  message.time = @"7 sec ago";
   
   [messages addObject:message];
   
   message = [[Message alloc] init];
   message.message = @"test3";
   message.userName = @"username3";
+  message.time = @"12 sec ago";
 
   [messages addObject:message];
   

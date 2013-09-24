@@ -8,6 +8,7 @@
 
 #import "MessagesViewController.h"
 #import "Message.h"
+#import "MessageCell.h"
 
 @interface MessagesViewController ()
 
@@ -57,10 +58,12 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MessageCell"];
+  
+    MessageCell *cell = (MessageCell *) [tableView dequeueReusableCellWithIdentifier:@"MessageCell"];
     Message *message = [self.messages objectAtIndex:indexPath.row];
-    cell.textLabel.text = message.message;
-    cell.detailTextLabel.text = message.userName;
+    cell.messageLabel.text = message.message;
+    cell.userNameLabel.text = message.userName;
+    cell.timeLabel.text = message.time;
   
     return cell;
 }

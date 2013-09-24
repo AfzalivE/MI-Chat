@@ -10,8 +10,9 @@
 
 @interface Message : NSObject
 
-@property (nonatomic, copy) NSString *message;
 @property (nonatomic, copy) NSString *userName;
+@property (nonatomic, copy) NSString *message;
+@property (nonatomic, copy) NSString *time;
 
 // add more properties later
 
