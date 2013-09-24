@@ -7,13 +7,40 @@
 //
 
 #import "AppDelegate.h"
+#import "MessagesViewController.h"
+#import "Message.h"
 
-@implementation AppDelegate
+@implementation AppDelegate {
+    NSMutableArray *messages;
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
-    return YES;
+  // Override point for customization after application launch.
+  messages = [NSMutableArray arrayWithCapacity:20];
+  Message *message = [[Message alloc] init];
+  message.message = @"test";
+  message.userName = @"username";
+  
+  [messages addObject:message];
+  
+  message = [[Message alloc] init];
+  message.message = @"test2";
+  message.userName = @"username2";
+  
+  [messages addObject:message];
+  
+  message = [[Message alloc] init];
+  message.message = @"test3";
+  message.userName = @"username3";
+
+  [messages addObject:message];
+  
+  UINavigationController *navigationController = (UINavigationController *) self.window.rootViewController;
+  MessagesViewController *messagesViewController = (MessagesViewController *) [[navigationController viewControllers] objectAtIndex:0];
+  messagesViewController.messages = messages;
+  
+  return YES;
 }
 							
 - (void)applicationWillResignActive:(UIApplication *)application

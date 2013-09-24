@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>DCAE70E2-5A45-4954-8E9D-9BD4A90D3131</string>
+	<key>IDESourceControlProjectName</key>
+	<string>michat</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>553947EE-6F28-473F-9122-21EB174B2CBC</key>
+		<string>ssh://github.com/AfzalivE/MI-Chat.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>ios-app/michat/michat.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>553947EE-6F28-473F-9122-21EB174B2CBC</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/AfzalivE/MI-Chat.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>553947EE-6F28-473F-9122-21EB174B2CBC</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>553947EE-6F28-473F-9122-21EB174B2CBC</string>
+			<key>IDESourceControlWCCName</key>
+			<string>MIChat</string>
+		</dict>
+	</array>
+</dict>
+</plist>

@@ -22,6 +22,8 @@
 		74CD1F4317F0A0DD009DFF05 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74CD1F2217F0A0DD009DFF05 /* UIKit.framework */; };
 		74CD1F4B17F0A0DD009DFF05 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 74CD1F4917F0A0DD009DFF05 /* InfoPlist.strings */; };
 		74CD1F4D17F0A0DD009DFF05 /* michatTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 74CD1F4C17F0A0DD009DFF05 /* michatTests.m */; };
+		74FB73D317F1F9A1007C38E7 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 74FB73D217F1F9A1007C38E7 /* Message.m */; };
+		74FB73D917F1FE14007C38E7 /* MessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74FB73D817F1FE14007C38E7 /* MessagesViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +57,10 @@
 		74CD1F4817F0A0DD009DFF05 /* michatTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "michatTests-Info.plist"; sourceTree = "<group>"; };
 		74CD1F4A17F0A0DD009DFF05 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		74CD1F4C17F0A0DD009DFF05 /* michatTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = michatTests.m; sourceTree = "<group>"; };
+		74FB73D117F1F9A1007C38E7 /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
+		74FB73D217F1F9A1007C38E7 /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
+		74FB73D717F1FE14007C38E7 /* MessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MessagesViewController.h; path = ../MessagesViewController.h; sourceTree = "<group>"; };
+		74FB73D817F1FE14007C38E7 /* MessagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MessagesViewController.m; path = ../MessagesViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,9 +120,13 @@
 		74CD1F2417F0A0DD009DFF05 /* michat */ = {
 			isa = PBXGroup;
 			children = (
+				74FB73D717F1FE14007C38E7 /* MessagesViewController.h */,
+				74FB73D817F1FE14007C38E7 /* MessagesViewController.m */,
 				74CD1F2D17F0A0DD009DFF05 /* AppDelegate.h */,
 				74CD1F2E17F0A0DD009DFF05 /* AppDelegate.m */,
 				74CD1F3017F0A0DD009DFF05 /* Main_iPhone.storyboard */,
+				74FB73D117F1F9A1007C38E7 /* Message.h */,
+				74FB73D217F1F9A1007C38E7 /* Message.m */,
 				74CD1F3317F0A0DD009DFF05 /* Main_iPad.storyboard */,
 				74CD1F3617F0A0DD009DFF05 /* ViewController.h */,
 				74CD1F3717F0A0DD009DFF05 /* ViewController.m */,
@@ -254,7 +264,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				74CD1F3817F0A0DD009DFF05 /* ViewController.m in Sources */,
+				74FB73D917F1FE14007C38E7 /* MessagesViewController.m in Sources */,
 				74CD1F2F17F0A0DD009DFF05 /* AppDelegate.m in Sources */,
+				74FB73D317F1F9A1007C38E7 /* Message.m in Sources */,
 				74CD1F2B17F0A0DD009DFF05 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -474,6 +486,7 @@
 				74CD1F5217F0A0DD009DFF05 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		74CD1F5317F0A0DD009DFF05 /* Build configuration list for PBXNativeTarget "michatTests" */ = {
 			isa = XCConfigurationList;
@@ -482,6 +495,7 @@
 				74CD1F5517F0A0DD009DFF05 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
