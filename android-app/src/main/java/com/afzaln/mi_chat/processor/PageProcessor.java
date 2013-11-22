@@ -18,6 +18,7 @@ import com.afzaln.mi_chat.resource.User;
 import com.afzaln.mi_chat.utils.NetUtils;
 import com.loopj.android.http.XmlHttpResponseHandler;
 
+import org.apache.http.Header;
 import org.w3c.dom.Document;
 
 import java.util.List;
@@ -35,15 +36,15 @@ public class PageProcessor implements ResourceProcessor {
         }
 
         @Override
-        public void onSuccess(Document response) {
+        public void onSuccess(int statusCode, Header[] headers, Document response) {
 //            Log.d(TAG, "onSuccess");
             updateContentProvider(response);
         }
 
         @Override
-        public void onFailure(Throwable e, Document response) {
+        public void onFailure(int statusCode, Header[] headers, Document errorResponse, Throwable error) {
             Log.d(TAG, "onFailure");
-            e.printStackTrace();
+            error.printStackTrace();
             // Response failed :(
         }
 

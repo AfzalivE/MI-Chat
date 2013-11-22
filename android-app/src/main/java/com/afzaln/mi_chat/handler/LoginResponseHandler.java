@@ -6,7 +6,9 @@ import android.util.Log;
 import com.afzaln.mi_chat.activity.LoginActivity;
 import com.afzaln.mi_chat.activity.MessagesActivity;
 import com.afzaln.mi_chat.utils.PrefUtils;
-import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import org.apache.http.Header;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
@@ -14,7 +16,7 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 /**
  * Created by anajam on 8/26/13.
  */
-public class LoginResponseHandler extends AsyncHttpResponseHandler {
+public class LoginResponseHandler extends TextHttpResponseHandler {
 
     private static final String TAG = LoginResponseHandler.class.getSimpleName();
     LoginActivity mActivity;
@@ -30,7 +32,7 @@ public class LoginResponseHandler extends AsyncHttpResponseHandler {
     }
 
     @Override
-    public void onSuccess(String response) {
+    public void onSuccess(int statusCode, Header[] headers, String response) {
         if (PrefUtils.authCookieExists(mActivity)) {
             Intent i = new Intent(mActivity, MessagesActivity.class);
             mActivity.finish();
@@ -43,7 +45,7 @@ public class LoginResponseHandler extends AsyncHttpResponseHandler {
     }
 
     @Override
-    public void onFailure(Throwable e, String response) {
+    public void onFailure(int statusCode, Header[] headers, String response, Throwable error) {
         Log.d(TAG, "onFailure");
         mActivity.mLoginFlipper.showPrevious();
         Crouton.makeText(mActivity, "Couldn't sign in, please try again", Style.ALERT).show();
