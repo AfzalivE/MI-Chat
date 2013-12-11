@@ -1,6 +1,7 @@
 branches:
   only:
     - master
+    - prod
 language:
   - java
 jdk:
