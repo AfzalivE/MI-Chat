@@ -16,7 +16,7 @@ dependencies {
     compile 'de.keyboardsurfer:crouton:1.8.1'
     compile 'com.github.chrisbanes.photoview:library:1.2.2'
     compile 'com.koushikdutta.urlimageviewhelper:urlimageviewhelper:1.0.4'
-    compile 'org.sufficientlysecure:donations:2.1.0’
+    compile 'org.sufficientlysecure:donations:2.1.0'
     compile 'com.newrelic.agent.android:android-agent:3.214.0'
 
     compile fileTree(dir: 'libs', include: '*.jar')
