@@ -4,12 +4,14 @@ import android.util.Log;
 
 import com.afzaln.mi_chat.processor.PageProcessor;
 import com.afzaln.mi_chat.utils.PrefUtils;
-import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import org.apache.http.Header;
 
 /**
  * Created by anajam on 8/26/13.
  */
-public class AutoLoginResponseHandler extends AsyncHttpResponseHandler {
+public class AutoLoginResponseHandler extends TextHttpResponseHandler {
 
     private static final String TAG = AutoLoginResponseHandler.class.getSimpleName();
     PageProcessor mParent;
@@ -24,7 +26,7 @@ public class AutoLoginResponseHandler extends AsyncHttpResponseHandler {
     }
 
     @Override
-    public void onSuccess(String response) {
+    public void onSuccess(int statusCode, Header[] headers, String response) {
         if (PrefUtils.authCookieExists(mParent.getContext())) {
             mParent.getResource();
         } else {
@@ -34,7 +36,7 @@ public class AutoLoginResponseHandler extends AsyncHttpResponseHandler {
     }
 
     @Override
-    public void onFailure(Throwable e, String response) {
+    public void onFailure(int statusCode, Header[] headers, String response, Throwable error) {
         Log.d(TAG, "onFailure");
     }
 
