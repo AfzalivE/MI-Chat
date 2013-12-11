@@ -37,17 +37,20 @@ android {
     signingConfigs {
         release {
             def Properties localProps = new Properties()
-            localProps.load(new FileInputStream(file('../local.properties')))
-            def Properties keyProps = new Properties()
-            assert localProps['keystore.props.file']
-            File keyProperties = file(localProps['keystore.props.file']);
-            if (keyProperties.exists()) {
-                keyProps.load(new FileInputStream(keyProperties));
+            File localProperties = file('../local.properties')
+            if (localProperties.exists()) {
+                localProps.load(new FileInputStream(localProperties))
+                def Properties keyProps = new Properties()
+                assert localProps['keystore.props.file']
+                File keyProperties = file(localProps['keystore.props.file'])
+                if (keyProperties.exists()) {
+                    keyProps.load(new FileInputStream(keyProperties))
 
-                storeFile file(keyProps['store'])
-                keyAlias keyProps['alias']
-                storePassword keyProps['storePass']
-                keyPassword keyProps['pass']
+                    storeFile file(keyProps['store'])
+                    keyAlias keyProps['alias']
+                    storePassword keyProps['storePass']
+                    keyPassword keyProps['pass']
+                }
             }
         }
     }
