@@ -41,14 +41,16 @@ android {
             if (localProperties.exists()) {
                 localProps.load(new FileInputStream(localProperties))
                 def Properties keyProps = new Properties()
-                File keyProperties = file(localProps['keystore.props.file'])
-                if (keyProperties.exists()) {
-                    keyProps.load(new FileInputStream(keyProperties))
+                if (localProps['keystore.props.file'] != null) {
+                    File keyProperties = file(localProps['keystore.props.file'])
+                    if (keyProperties.exists()) {
+                        keyProps.load(new FileInputStream(keyProperties))
 
-                    storeFile file(keyProps['store'])
-                    keyAlias keyProps['alias']
-                    storePassword keyProps['storePass']
-                    keyPassword keyProps['pass']
+                        storeFile file(keyProps['store'])
+                        keyAlias keyProps['alias']
+                        storePassword keyProps['storePass']
+                        keyPassword keyProps['pass']
+                    }
                 }
             }
         }
