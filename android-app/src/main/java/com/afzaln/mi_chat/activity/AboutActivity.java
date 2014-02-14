@@ -35,12 +35,14 @@ public class AboutActivity extends ActionBarActivity {
                 ActionBar.DISPLAY_HOME_AS_UP);
 
         PackageInfo packageInfo = null;
+        String versionName = "";
         try {
             packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            versionName = packageInfo.versionName;
         } catch (PackageManager.NameNotFoundException e) {
+
         }
 
-        String versionName = packageInfo.versionName;
         TextView versionView = (TextView) findViewById(R.id.version);
         versionView.setText("version " + versionName);
 

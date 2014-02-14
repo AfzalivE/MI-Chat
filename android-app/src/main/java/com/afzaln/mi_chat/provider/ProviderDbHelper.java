@@ -66,9 +66,9 @@ public class ProviderDbHelper extends SQLiteOpenHelper {
                 MessagesTable.IMGLINKS + " TEXT" +
                 ");";
 
-        String sqlInfo = infoTableBuilder.toString();
-        String sqlUsers = usersTableBuilder.toString();
-        String sqlMessages = messagesTableBuilder.toString();
+        String sqlInfo = infoTableBuilder;
+        String sqlUsers = usersTableBuilder;
+        String sqlMessages = messagesTableBuilder;
 
         db.execSQL(sqlInfo);
         db.execSQL(sqlUsers);
