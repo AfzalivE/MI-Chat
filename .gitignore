@@ -37,3 +37,6 @@ analytics.xml
 # SonarQube stuff
 .sonar
 sonar-project.properties
+
+# Crashlytics API
+android-app/crashlytics.properties
