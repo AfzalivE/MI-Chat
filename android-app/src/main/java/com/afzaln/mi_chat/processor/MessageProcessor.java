@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.afzaln.mi_chat.handler.MessagesResponseHandler;
 import com.afzaln.mi_chat.provider.ProviderContract.InfoTable;
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
 import com.afzaln.mi_chat.provider.ProviderContract.UsersTable;
@@ -17,7 +18,6 @@ import com.afzaln.mi_chat.resource.User;
 import com.afzaln.mi_chat.utils.NetUtils;
 import com.loopj.android.http.XmlHttpResponseHandler;
 
-import org.apache.http.Header;
 import org.w3c.dom.Document;
 
 import java.util.List;
@@ -29,31 +29,7 @@ public class MessageProcessor implements ResourceProcessor {
 
     protected static final String TAG = PageProcessor.class.getSimpleName();
     private Context mContext;
-    private XmlHttpResponseHandler myResponseHandler = new XmlHttpResponseHandler() {
-        @Override
-        public void onStart() {
-            Log.d(TAG, "onStart");
-        }
-
-        @Override
-        public void onSuccess(int statusCode, Header[] headers, Document response) {
-            Log.d(TAG, "onSuccess");
-            updateContentProvider(response);
-        }
-
-        @Override
-        public void onFailure(int statusCode, Header[] headers, Document errorResponse, Throwable error) {
-            Log.d(TAG, "onFailure");
-            error.printStackTrace();
-            // Response failed :(
-        }
-
-        @Override
-        public void onFinish() {
-            Log.d(TAG, "onFinish");
-            // Completed the request (either success or failure)
-        }
-    };
+    private XmlHttpResponseHandler mMessagesResponseHandler = new MessagesResponseHandler(MessageProcessor.this);
 
     public MessageProcessor(Context context) {
         mContext = context;
@@ -70,10 +46,11 @@ public class MessageProcessor implements ResourceProcessor {
         // get the last id
         long lastId = getLastMessageId();
 
-        NetUtils.postMessage(myResponseHandler, message, lastId);
+        NetUtils.postMessage(mMessagesResponseHandler, message, lastId);
     }
 
-    private void updateContentProvider(Document result) {
+    @Override
+    public void updateContentProvider(Document result) {
         Page page = new Page(result);
         List<User> userList;
         List<Message> messageList;
@@ -118,7 +95,7 @@ public class MessageProcessor implements ResourceProcessor {
 
     private long getLastMessageId() {
         ContentResolver contentResolver = mContext.getContentResolver();
-        Cursor cursor = contentResolver.query(MessagesTable.CONTENT_URI, new String[] {MessagesTable.MESSAGEID}, null, null, MessagesTable.MESSAGEID + " DESC LIMIT 1");
+        Cursor cursor = contentResolver.query(MessagesTable.CONTENT_URI, new String[]{MessagesTable.MESSAGEID}, null, null, MessagesTable.MESSAGEID + " DESC LIMIT 1");
 
         if (cursor.moveToNext()) {
             Log.d(TAG, Long.toString(cursor.getLong(0)));

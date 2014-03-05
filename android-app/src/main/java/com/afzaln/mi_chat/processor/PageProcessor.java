@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.afzaln.mi_chat.handler.AutoLoginResponseHandler;
+import com.afzaln.mi_chat.handler.MessagesResponseHandler;
 import com.afzaln.mi_chat.provider.ProviderContract.InfoTable;
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
 import com.afzaln.mi_chat.provider.ProviderContract.UsersTable;
@@ -18,7 +19,6 @@ import com.afzaln.mi_chat.resource.User;
 import com.afzaln.mi_chat.utils.NetUtils;
 import com.loopj.android.http.XmlHttpResponseHandler;
 
-import org.apache.http.Header;
 import org.w3c.dom.Document;
 
 import java.util.List;
@@ -28,32 +28,7 @@ public class PageProcessor implements ResourceProcessor {
     protected static final String TAG = PageProcessor.class.getSimpleName();
     private Context mContext;
     private AutoLoginResponseHandler mLoginResponseHandler;
-
-    private XmlHttpResponseHandler myResponseHandler = new XmlHttpResponseHandler() {
-        @Override
-        public void onStart() {
-//            Log.d(TAG, "onStart");
-        }
-
-        @Override
-        public void onSuccess(int statusCode, Header[] headers, Document response) {
-//            Log.d(TAG, "onSuccess");
-            updateContentProvider(response);
-        }
-
-        @Override
-        public void onFailure(int statusCode, Header[] headers, Document errorResponse, Throwable error) {
-            Log.d(TAG, "onFailure");
-            error.printStackTrace();
-            // Response failed :(
-        }
-
-        @Override
-        public void onFinish() {
-//            Log.d(TAG, "onFinish");
-            // Completed the request (either success or failure)
-        }
-    };
+    private XmlHttpResponseHandler mPageResponseHandler = new MessagesResponseHandler(PageProcessor.this);
 
     public PageProcessor(Context context) {
         mContext = context;
@@ -64,7 +39,7 @@ public class PageProcessor implements ResourceProcessor {
         // get the last id
         long lastId = getLastMessageId();
         // call get with the last id
-        NetUtils.getPage(myResponseHandler, lastId);
+        NetUtils.getPage(mPageResponseHandler, lastId);
     }
 
     private long getLastMessageId() {
@@ -83,7 +58,8 @@ public class PageProcessor implements ResourceProcessor {
         }
     }
 
-    private void updateContentProvider(Document result) {
+    @Override
+    public void updateContentProvider(Document result) {
         Page page = new Page(result);
         List<User> userList;
         List<Message> messageList;
