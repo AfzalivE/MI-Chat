@@ -40,3 +40,4 @@ sonar-project.properties
 
 # Crashlytics API
 android-app/crashlytics.properties
+com_crashlytics_export_strings.xml
