@@ -1,5 +1,4 @@
 apply plugin: 'android'
-//apply plugin: 'crashlytics'
 
 repositories {
     maven { url 'https://github.com/AfzalivE/my-mvn-repo/raw/master/' }
@@ -58,6 +57,7 @@ android {
             buildConfigField "String", "BASE_URI", "\"http://www.macinsiders.com/chat/?ajax=true\";"
         }
         release {
+            apply plugin: 'crashlytics'
             buildConfigField "Boolean", "DEBUG_BUILD", "false";
             buildConfigField "String", "BASE_URI", "\"http://www.macinsiders.com/chat/?ajax=true\";"
             signingConfig signingConfigs.release
