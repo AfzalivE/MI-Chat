@@ -3,6 +3,7 @@ package com.afzaln.mi_chat.activity;
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
@@ -43,6 +44,7 @@ import com.afzaln.mi_chat.utils.ServiceContract;
 import com.afzaln.mi_chat.view.MessageListView;
 import com.afzaln.mi_chat.view.MessageListView.OnSizeChangedListener;
 import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.MapBuilder;
 
 import java.util.Calendar;
 
@@ -192,7 +194,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     @Override
     public void onStart() {
         super.onStart();
-        EasyTracker.getInstance().activityStart(this);
+        EasyTracker.getInstance(this).activityStart(this);
     }
 
     @Override
@@ -218,7 +220,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     @Override
     public void onStop() {
         super.onStop();
-        EasyTracker.getInstance().activityStop(this);
+        EasyTracker.getInstance(this).activityStop(this);
     }
 
 
@@ -243,6 +245,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         Intent i;
         switch (item.getItemId()) {
             case R.id.action_refresh:
+                sendAnalytics(this, "refresh");
                 if (NetUtils.isConnected(MessagesActivity.this)) {
                     toggleProgressBar(true);
                     mManualRefresh = true;
@@ -252,19 +255,23 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
                 }
                 return true;
             case R.id.action_prefs:
+                sendAnalytics(this, "preferences");
                 i = new Intent(MessagesActivity.this, SettingsActivity.class);
                 startActivity(i);
                 break;
             case R.id.action_clearmessages:
+                sendAnalytics(this, "clear_messages");
                 processor.deleteResource();
                 toggleProgressBar(true);
                 break;
             case R.id.action_logout:
+                sendAnalytics(this, "logout");
                 if (NetUtils.isConnected(MessagesActivity.this)) {
                     NetUtils.postLogout(mLogoutResponseHandler);
                 }
                 break;
             case R.id.action_about:
+                sendAnalytics(this, "about");
                 i = new Intent(MessagesActivity.this, AboutActivity.class);
                 startActivity(i);
                 break;
@@ -284,6 +291,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         CharSequence message;
         switch (item.getItemId()) {
             case R.id.menu_copytext:
+                sendAnalytics(this, "copy_text");
                 TextView messageView = (TextView) info.targetView.findViewById(R.id.message);
                 if (messageView.getVisibility() == View.VISIBLE) {
                     message = ((TextView) info.targetView.findViewById(R.id.message)).getText();
@@ -293,6 +301,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
                 }
                 return true;
             case R.id.menu_reply:
+                sendAnalytics(this, "reply");
                 CharSequence username = ((TextView) info.targetView.findViewById(R.id.username)).getText();
                 makeReply(username, mAdapter.getItemViewType(info.position));
             default:
@@ -437,5 +446,19 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     @Override
     public void onDestroyActionMode(ActionMode actionMode) {
         Log.d(TAG, "destroying action mode");
+    }
+
+    public void sendAnalytics(Context context, String label) {
+        EasyTracker easyTracker = EasyTracker.getInstance(context);
+
+        easyTracker.send(MapBuilder
+            .createEvent("ui_action",
+                         label,
+                         label,
+                         null)
+            .build());
+
+
+
     }
 }
