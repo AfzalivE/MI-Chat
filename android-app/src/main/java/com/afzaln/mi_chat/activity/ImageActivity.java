@@ -1,6 +1,5 @@
 package com.afzaln.mi_chat.activity;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
@@ -14,8 +13,8 @@ import android.widget.ViewAnimator;
 
 import com.afzaln.mi_chat.R;
 import com.afzaln.mi_chat.view.MyViewPager;
-import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
-import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
 
 import uk.co.senab.photoview.PhotoView;
 
@@ -63,10 +62,10 @@ public class ImageActivity extends FragmentActivity {
             container.addView(viewAnim);
             viewAnim.setDisplayedChild(0);
 
-            UrlImageViewHelper.setUrlDrawable(photoView, mImgLinksList[position], new UrlImageViewCallback() {
+            FutureCallback<ImageView> imageDisplayCallback = new FutureCallback<ImageView>() {
                 @Override
-                public void onLoaded(ImageView imageView, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
-                    if (loadedBitmap == null) {
+                public void onCompleted(Exception e, ImageView result) {
+                    if (e != null) {
                         viewAnim.setDisplayedChild(2);
                         return;
                     }
@@ -74,9 +73,13 @@ public class ImageActivity extends FragmentActivity {
 
                     ScaleAnimation scale = new ScaleAnimation(0, 1, 0, 1, ScaleAnimation.RELATIVE_TO_SELF, .5f, ScaleAnimation.RELATIVE_TO_SELF, .5f);
                     scale.setDuration(300);
-                    imageView.startAnimation(scale);
+                    result.startAnimation(scale);
                 }
-            });
+            };
+
+            Ion.with(photoView)
+               .load(mImgLinksList[position])
+               .setCallback(imageDisplayCallback);
 
             return viewAnim;
         }

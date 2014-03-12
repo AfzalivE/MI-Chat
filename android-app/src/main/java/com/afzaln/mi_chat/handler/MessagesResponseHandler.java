@@ -1,7 +1,5 @@
 package com.afzaln.mi_chat.handler;
 
-import android.util.Log;
-
 import com.afzaln.mi_chat.processor.ResourceProcessor;
 import com.loopj.android.http.XmlHttpResponseHandler;
 
@@ -21,25 +19,25 @@ public class MessagesResponseHandler extends XmlHttpResponseHandler {
 
     @Override
     public void onStart() {
-        Log.d(TAG, "onStart");
+//        Log.d(TAG, "onStart");
     }
 
     @Override
     public void onSuccess(int statusCode, Header[] headers, Document response) {
-        Log.d(TAG, "onSuccess");
+//        Log.d(TAG, "onSuccess");
         mProcessor.updateContentProvider(response);
     }
 
     @Override
     public void onFailure(int statusCode, Header[] headers, Document errorResponse, Throwable error) {
-        Log.d(TAG, "onFailure");
+//        Log.d(TAG, "onFailure");
         error.printStackTrace();
         // Response failed :(
     }
 
     @Override
     public void onFinish() {
-        Log.d(TAG, "onFinish");
+//        Log.d(TAG, "onFinish");
         // Completed the request (either success or failure)
     }
 }

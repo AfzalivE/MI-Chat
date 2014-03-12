@@ -3,7 +3,6 @@ package com.afzaln.mi_chat;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.widget.CursorAdapter;
 import android.text.Html;
@@ -24,8 +23,8 @@ import com.afzaln.mi_chat.R.color;
 import com.afzaln.mi_chat.activity.ImageActivity;
 import com.afzaln.mi_chat.provider.ProviderContract.MessagesTable;
 import com.afzaln.mi_chat.resource.Message;
-import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
-import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -87,12 +86,6 @@ public class MessagesCursorAdapter extends CursorAdapter {
         ViewHolder holder = new ViewHolder(listItemView);
         listItemView.setTag(holder);
         return listItemView;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View view = super.getView(position, convertView, parent);
-        return view;
     }
 
     @Override
@@ -202,43 +195,26 @@ public class MessagesCursorAdapter extends CursorAdapter {
                 viewAnim.setDisplayedChild(0);
 
                 // Trigger the download of the URL asynchronously into the image view.
-                UrlImageViewHelper.setUrlDrawable(imageView, mImgLinksList[i], new UrlImageViewCallback() {
+                FutureCallback<ImageView> imageDisplayCallback = new FutureCallback<ImageView>() {
                     @Override
-                    public void onLoaded(final ImageView imageView, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
-                        if (loadedBitmap == null) {
+                    public void onCompleted(Exception e, ImageView result) {
+                        if (e != null) {
                             viewAnim.setDisplayedChild(2);
                             return;
                         }
                         viewAnim.setDisplayedChild(1);
 
-                        int height = imageView.getMaxHeight();
-                        int width = imageView.getMaxWidth();
-//                        boolean verticalImage = loadedBitmap.getHeight() > loadedBitmap.getWidth();
-//                        if (!verticalImage) {
-//                            if (loadedBitmap.getWidth() < imageView.getMaxWidth()) {
-//                                width = loadedBitmap.getWidth();
-//                            } else {
-                                // width is imageView.getMaxWidth() already
-//                            }
-//                            height = width * loadedBitmap.getHeight() / loadedBitmap.getWidth();
-//
-//                        } else {
-//                            if (loadedBitmap.getHeight() < imageView.getMaxHeight()) {
-//                                height = loadedBitmap.getHeight();
-//                            } else {
-                                // height is imageView.getMaxHeight() already
-//                            }
-//                            width = width * height / loadedBitmap.getHeight();
-//                        }
+                        int height = result.getMaxHeight();
+                        int width = result.getMaxWidth();
 
-                        imageView.setLayoutParams(new FrameLayout.LayoutParams(width, height));
+                        result.setLayoutParams(new FrameLayout.LayoutParams(width, height));
                         viewAnim.setLayoutParams(new LinearLayout.LayoutParams(width, height));
                         mContainer.setLayoutParams(new FrameLayout.LayoutParams(width, height));
 
                         AlphaAnimation alpha = new AlphaAnimation(0.0f, 1.0f);
                         alpha.setDuration(300);
-                        imageView.startAnimation(alpha);
-                        imageView.setOnClickListener(new View.OnClickListener() {
+                        result.startAnimation(alpha);
+                        result.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 Intent intent = new Intent(mContext, ImageActivity.class);
@@ -250,7 +226,12 @@ public class MessagesCursorAdapter extends CursorAdapter {
                             }
                         });
                     }
-                });
+                };
+                Ion.with(imageView)
+                   .resize(imageView.getMaxWidth(), imageView.getMaxHeight())
+                   .centerCrop()
+                   .load(mImgLinksList[i])
+                   .setCallback(imageDisplayCallback);
             }
         }
     }
