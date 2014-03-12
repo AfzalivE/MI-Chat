@@ -1,5 +1,9 @@
 package com.loopj.android.http;
 
+import android.util.Log;
+
+import com.crashlytics.android.Crashlytics;
+
 import org.apache.http.Header;
 import org.apache.http.HttpStatus;
 import org.w3c.dom.Document;
@@ -14,6 +18,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 public class XmlHttpResponseHandler extends TextHttpResponseHandler {
+
+    private static final String TAG = XmlHttpResponseHandler.class.getSimpleName();
 
     // for overriding
     public void onStart() {}
@@ -48,19 +54,11 @@ public class XmlHttpResponseHandler extends TextHttpResponseHandler {
 
     @Override
     public void onFailure(int statusCode, Header[] headers, String responseBody, Throwable error) {
-        try {
-            if (responseBody != null) {
-                Object xmlResponse = parseResponse(responseBody);
-                if (xmlResponse instanceof Document) {
-                    onFailure(statusCode, headers, (Document) xmlResponse, error);
-                } else {
-                    onFailure(statusCode, headers, responseBody, error);
-                }
-            } else {
-                onFailure(statusCode, headers, "", error);
-            }
-        } catch (Exception ex) {
-            onFailure(statusCode, headers, responseBody, ex);
+        // Submit to Crashlytics to analyze the kinds of errors
+        Crashlytics.log(Log.ERROR, TAG, error.getMessage());
+        // ignore if responseBody is null or empty
+        if (responseBody != null && !responseBody.isEmpty()) {
+            Crashlytics.log(Log.ERROR, TAG, responseBody);
         }
     }
 

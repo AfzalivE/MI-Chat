@@ -53,9 +53,9 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField "String", "BASE_URI", "\"http://www.macinsiders.com/chat/?ajax=true&channelID=500006296\";"
+//            buildConfigField "String", "BASE_URI", "\"http://www.macinsiders.com/chat/?ajax=true&channelID=500006296\";"
             buildConfigField "Boolean", "DEBUG_BUILD", "true";
-//            buildConfigField "String", "BASE_URI", "\"http://www.macinsiders.com/chat/?ajax=true\";"
+            buildConfigField "String", "BASE_URI", "\"http://www.macinsiders.com/chat/?ajax=true\";"
         }
         release {
             buildConfigField "Boolean", "DEBUG_BUILD", "false";
