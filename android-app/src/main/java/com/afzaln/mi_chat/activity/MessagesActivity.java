@@ -25,6 +25,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,6 +61,9 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
     private MessageListView mListView;
     private EditText mEditText;
     private ImageButton mSubmitButton;
+    private ImageButton mOptionsButton;
+    private LinearLayout mOptionsPanel;
+
     private ImageButton mSubmitImgButton;
 
     private ActionMode mActionMode;
@@ -104,7 +108,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         mEditText = (EditText) findViewById(R.id.text_editor);
         mEditText.addTextChangedListener(textWatcher);
 
-        initSubmitButton();
+        initButtons();
 
         mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent intent = new Intent(this, AlarmReceiver.class);
@@ -146,7 +150,7 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
 
     }
 
-    private void initSubmitButton() {
+    private void initButtons() {
         mSubmitButton = (ImageButton) findViewById(R.id.submit_msg);
         mSubmitButton.setEnabled(false);
 
@@ -165,6 +169,19 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
                     toggleProgressBar(true);
                     mEditText.setText("");
                     mSubmitButton.setEnabled(false);
+                }
+            }
+        });
+
+        mOptionsButton = (ImageButton) findViewById(R.id.show_options);
+        mOptionsPanel = (LinearLayout) findViewById(R.id.options_panel);
+        mOptionsButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOptionsPanel.getVisibility() == View.VISIBLE) {
+                    mOptionsPanel.setVisibility(View.GONE);
+                } else {
+                    mOptionsPanel.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -452,12 +469,11 @@ public class MessagesActivity extends BaseActivity implements LoaderManager.Load
         EasyTracker easyTracker = EasyTracker.getInstance(context);
 
         easyTracker.send(MapBuilder
-            .createEvent("ui_action",
-                         label,
-                         label,
-                         null)
-            .build());
-
+                .createEvent("ui_action",
+                        label,
+                        label,
+                        null)
+                .build());
 
 
     }

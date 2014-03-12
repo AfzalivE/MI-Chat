@@ -34,6 +34,40 @@
         android:layout_height="1dp" />
 
     <LinearLayout
+        android:id="@+id/options_panel"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/options_bold"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:textStyle="bold"
+            android:textSize="16dp"
+            android:text="B"
+            android:textColor="#66FFFFFF"/>
+
+        <Button
+            android:id="@+id/options_italic"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:textStyle="italic"
+            android:textSize="16dp"
+            android:text="I"
+            android:textColor="#66FFFFFF"/>
+
+        <Button
+            android:id="@+id/options_underline"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:textSize="16dp"
+            android:text="U"
+            android:textColor="#66FFFFFF"/>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/bottom_panel"
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -72,6 +106,16 @@
             android:contentDescription="@string/send_message"
             android:nextFocusLeft="@id/text_editor"
             android:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/show_options"
+            android:src="@android:drawable/arrow_up_float"
+            android:drawablePadding="0dip"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginLeft="4dip"
+            android:contentDescription="@string/show_options_panel"
+            android:nextFocusLeft="@id/text_editor" />
 
         <ImageButton
             android:id="@+id/submit_msg"

@@ -45,6 +45,7 @@
     <string name="error_download">Download Error</string>
     <string name="error_image">Re-expand the attached images to retry</string>
     <string name="error_image_activity">Re-open the image to retry</string>
+    <string name="show_options_panel">Show options panel</string>
 
     <plurals name="numberOfImages">
         <item quantity="one">1 image attached</item>
